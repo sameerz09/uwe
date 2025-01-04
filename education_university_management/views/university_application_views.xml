@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Tree view for university application-->
+    <record id="university_application_view_tree" model="ir.ui.view">
+        <field name="name">university.application.view.tree</field>
+        <field name="model">university.application</field>
+        <field name="arch" type="xml">
+            <tree string="Student Application">
+                <field name="application_no"/>
+                <field name="name"/>
+                <field name="last_name"/>
+                <field name="gender"/>
+                <field name="date_of_birth"/>
+                <field name="email"/>
+                <field name="mobile"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <!--Form view for university application-->
+    <record id="university_application_view_form" model="ir.ui.view">
+        <field name="name">university.application.view.form</field>
+        <field name="model">university.application</field>
+        <field name="arch" type="xml">
+            <form string="Student Application">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,verify,approve,send,done"/>
+                    <button name="action_send_verification" type="object"
+                            class="oe_highlight"
+                            string="Send for Verification"
+                            help="Click to send the application for verification purpose"
+                            invisible=" state != 'draft'"/>
+                     <button name="action_send_mail" type="object"
+                            class="oe_highlight"
+                            string="Send by email"
+                            help="Click to send the email"
+                            invisible=" state != 'approve'"/>
+                    <button name="action_verify_application" type="object"
+                            class="oe_highlight"
+                            groups="education_university_management.education_university_management_group_hod"
+                            string="Verify Application"
+                            help="Click to verify the application and documents"
+                            invisible="state != 'verification'"/>
+                    <button name="action_create_student"
+                            string="Create Student"
+                            type="object" class="oe_highlight"
+                            groups="education_university_management.education_university_management_group_hod"
+                            help="Click to create Student"
+                            invisible="state != 'send'"/>
+                    <button name="%(education_university_management.application_reject_action)d"
+                            string="Reject"
+                            groups="education_university_management.education_university_management_group_hod"
+                            type="action" invisible="state != 'approve'"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                                name="action_document_view"
+                                type="object" icon="fa-list-ol">
+                            <field string="Documents" name="document_count"
+                                   widget="statinfo"/>
+                        </button>
+                    </div>
+                    <field name="image" widget="image"
+                           class="oe_left oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="application_no"/>
+                        </h1>
+                        <br/>
+                        <h2>
+                            <table>
+                                <tr>
+                                    <td style="padding-right:10px;">
+                                        <field name="title"
+                                               placeholder="Mr"
+                                               readonly="state == 'done'"/>
+                                    </td>
+                                    <td style="padding-right:10px;">
+                                        <field name="name"
+                                               placeholder="First Name"
+                                               required="1"
+                                               readonly="state == 'done'"/>
+                                    </td>
+                                    <td style="padding-right:10px;">
+                                        <field name="middle_name"
+                                               placeholder="Middle Name"
+                                               readonly="state == 'done'"/>
+                                    </td>
+                                    <td style="padding-right:10px;">
+                                        <field name="last_name"
+                                               placeholder="Last Name"
+                                               required="1"
+                                               readonly="state == 'done'"/>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-right:10px;">
+                                        <field name="application_type"
+                                               readonly="state == 'done'"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </h2>
+                    </div>
+                    <br/>
+                    <br/>
+                    <notebook>
+                        <page string="Personal Details">
+                            <group string="Personal Details">
+                                <group>
+                                    <field name="date_of_birth"
+                                           readonly="state == 'done'"/>
+
+                                    <field name="gender"
+                                           readonly="state == 'done'"/>
+                                    <field name="passport_no"
+                                           readonly="state == 'done'"/>
+                                    <field name="country_issue_id"
+                                           readonly="state == 'done'"/>
+                                </group>
+                                <group>
+                                <field name="address"/>
+                                    <field name="city" placeholder="City"
+                                       readonly="state == 'done'"/>
+
+                                <field name="street"
+                                       placeholder="Street..."
+                                       class="o_address_street"
+                                       readonly="state == 'done'"/>
+                                <field name="sale_id" readonly="1"/>
+                                <field name="user_id" readonly="1"/>
+                                <field name="partner_id" readonly="1"/>
+                                </group>
+                                <group>
+
+                                    <field name="mobile" widget="phone"
+                                           readonly="state == 'done'"/>
+                                     <field name="phone" widget="phone"
+                                           readonly="state == 'done'"/>
+                                    <field name="email" widget="email"
+                                           readonly="state == 'done'"/>
+                                </group>
+                                </group>
+                            <group string="Fee status and Visa History">
+                                       <group>
+                                          <field name="country_id"
+                                          readonly="state == 'done'" string="Country of birth"/>
+                                           <field name="country_residence_id"  string="Present Country"
+                                           readonly="state == 'done'"/>
+                                            <field name="studied_place" widget="radio" string="Are you currently resident in UAE?"
+                                           readonly="state == 'done'"/>
+                                            <field name="visa_status" widget="radio" string="Current Visa Status:"
+                                           readonly="state == 'done'"/>
+                                              </group>
+                                  <group>
+                                      <field name="nationality_id"
+                                      readonly="state == 'done'"/>
+                                       <field name="visa_expired" string="Date current visa expires:"
+                                           readonly="state == 'done'"/>
+                                  </group>
+                            </group>
+                        </page>
+                        <page string="Admission Details">
+                            <group string="Admission Details">
+                                <group>
+                                    <field name="academic_year_id" required="1"
+                                           readonly="state == 'done'"/>
+                                    <field name="admission_date"
+                                           readonly="state == 'done'"/>
+
+                                </group>
+<!--                                <group>-->
+<!--                                    <field name="course_id"-->
+<!--                                           options='{"no_create": True}'-->
+<!--                                           readonly="state == 'done'"/>-->
+
+                                    <field name="department_ids"
+                                           invisible="1"/>
+                                    <field name="department_id"
+                                           options='{"no_create": True}'
+                                           domain="[('id', 'in', department_ids)]"
+                                           readonly="state == 'done'" invisible="1"/>
+                                    <field name="semester_ids" invisible="1"/>
+                                    <field name="semester_id"
+                                           options='{"no_create": True}'
+                                           domain="[('id', 'in', semester_ids)]"
+                                           readonly="state == 'done'" invisible="1"/>
+                                    <field name="batch_ids" invisible="1"/>
+                                    <field name="batch_id"
+                                           options='{"no_create": True}'
+                                           domain="[('id', 'in', batch_ids)]"
+                                           readonly="state == 'done'" invisible="1"/>
+                                </group>
+                                 <group string="Details of course(s) for which you wish to apply">
+<!--                                          <field name="course_ids" >-->
+<!--                                                  <tree string="Course Title" editable="bottom">-->
+                                                      <field name="course_id" required="1"/>
+<!--                                                  </tree>-->
+
+<!--                                          </field>-->
+                                 </group>
+                                 <group string="Academic qualifications">
+                                          <field name="academic_ids" >
+                                              <tree editable="bottom">
+                                                  <field name="program"/>
+                                                  <field name="start_date"/>
+                                                  <field name="end_date"/>
+                                                  <field name="award_date"/>
+                                                  <field name="university_id"/>
+                                                  <field name="result"/>
+                                                  <field name="lang_id"/>
+                                              </tree>
+                                          </field>
+                            </group>
+                             <group>
+                                 <div style="width: 1200%; margin-top: 3rem;">
+                                <p style="width:100%">Please complete this section. It is very important to provide all the relevant details to enable us to assess your English level and determine whether you meet our
+                                     entry level criteria in English. You will be required to provide evidence of your English level.</p>
+                                 <br/>
+
+                                     <p>Do you have any of the English qualifications listed below? (please tick all that apply):</p>
+
+                                        <field name="english_requirements" widget="radio" options="{'horizontal': true}"/>
+                                             <group>
+                                         <field name="score" />
+                                         <field name="date_achieved" />
+                                             </group>
+                             </div>
+                             </group>
+                        </page>
+                        <page string="Work experience">
+                                <group>
+                                    <div style="width: 1200%; margin-top: 3rem;">
+                                        <p>Please give details of work all experience, training and employment. Continue on a separate sheet if necessary.</p>
+
+                                    <field name="experience_ids"  >
+                                            <tree string="Work experience" editable="bottom">
+                                    <field name="job_id"/>
+                                     <field name="organization_id"/>
+                                     <field name="start_date"/>
+                                     <field name="end_date"/>
+                                     <field name="duty_type"/>
+                                    </tree>
+                                    </field>
+                                    </div>
+                                </group>
+                            <group string="Personal statement">
+                                <div style="width: 1200%;">
+                                <p>Applicants are required to provide a personal statement in support of your application. On a separate piece of paper please state your reasons for choosing this course,
+give details of any relevant experience, your career plans and otherrelevant supporting information. In order for your application to be processed your personal statement
+                                    must explain why you want to study in the UAE, why you wish to come to UWA, why you have chosen your course, and how it will help you fulfill your career goals.</p>
+                                </div>
+                             </group>
+<!--                                 <field name="personal_statement_ids" widget="many2many_binary" class="oe_inline"/>-->
+                        <group string="Physical or other disability or medical condition">
+                                <div style="width: 800%;">
+                                <p>Do you have a disability or any condition which might necessitate special arrangements or facilities?</p>
+                               </div>
+                                     <field name="medical_status" widget="radio" options="{'horizontal': true}"/>
+                                         <field name="medical_paper" invisible="medical_status != 'yes'"/>
+<!--                            <field name="attachment_ids" widget="many2many_binary" class="oe_inline" invisible="medical_status != 'yes'"/>-->
+
+                            </group>
+
+                             <group string="How did you hear about us?">
+                                     <field name="media_type"  widget="radio" options="{'horizontal': true}"/>
+                                     <field name="website"/>
+                                     <field name="social_media"/>
+                                     <field name="other_source"/>
+                            </group>
+                            <group string="References">
+                                 <div style="width: 1200%; margin-top: 3rem;">
+                                        <p>Names and addresses of two referees (the University may contact referees if required).</p>
+                                 </div>
+                                <group>
+                                   <field name="ref_name1" readonly="state == 'done'"/>
+                                   <field name="ref_work1" readonly="state == 'done'"/>
+                                   <field name="ref_address1" readonly="state == 'done'"/>
+                                   <field name="ref_city1" readonly="state == 'done'"/>
+                                   <field name="ref_county1" readonly="state == 'done'"/>
+                                   <field name="ref_postcode1" readonly="state == 'done'"/>
+                                   <field name="ref_tel1" readonly="state == 'done'"/>
+                                   <field name="ref_mob1" readonly="state == 'done'"/>
+                                   <field name="ref_email1" readonly="state == 'done'" widget="email"/>
+                                </group>
+                                 <group>
+                                   <field name="ref_name2" readonly="state == 'done'"/>
+                                   <field name="ref_work2" readonly="state == 'done'"/>
+                                   <field name="ref_address2" readonly="state == 'done'"/>
+                                   <field name="ref_city2" readonly="state == 'done'"/>
+                                   <field name="ref_county2" readonly="state == 'done'"/>
+                                   <field name="ref_postcode2" readonly="state == 'done'"/>
+                                   <field name="ref_tel2" readonly="state == 'done'"/>
+                                   <field name="ref_mob2" readonly="state == 'done'"/>
+                                   <field name="ref_email2" readonly="state == 'done'" widget="email"/>
+                                </group>
+                             <group string="Declaration">
+                                 <div style="width: 1200%; ">
+                                        <p>All personal information will be treated strictly in terms of the Data Protection Act 1998. We will contact you by email, phone and post with information relevant to your application.
+I confirm that, to the best of my knowledge, the information given in this form is correct and complete .</p>
+                                 </div>
+                             <field name="applicant_sign" widget="signature"/>
+                                </group>
+                            </group>
+                        </page>
+                     <page string="DOCUMENT CHECKLIST">
+                                <group>
+                                    <div style="width: 1200%; margin-top: 3rem;">
+                                        <p>Please make sure you include the following documents with your application</p>
+                                    </div>
+                                    <field name="doc_form"/>
+                                    <field name="doc_cert"/>
+                                    <field name="doc_passport"/>
+                                     <field name="doc_english"/>
+                                     <field name="doc_visa"/>
+                                     <field name="doc_photo"/>
+                                     <field name="doc_id"/>
+                                     <field name="last_academic_certificate" invisible="application_type == 'new'"/>
+                                </group>
+                         <group>
+                             <div>
+                             <p><h3>Terms and Conditions:</h3>
+
+                                1.The overall responsibility of providing correct Data, Information’s and up to date documents is on the students.
+                                 2.Payments for registrations are non-refundable cause the payment may involve agents’ payments and other 3rd part payments.
+3.All payments need to be paid in advance as described in the payment plan, if for any reasons the payment delayed for any reasons for more than 3 days then a
+    10% late payment fees have to be paid.
+                                 4.If fees paid fully in advance students are entitled for 10% advance payment discount.
+                                 5.The responsibility of checking information’s regarding visa, accreditations, governments approvals of degrees are the responsibility of the students.
+                                 6.Students acknowledge that United World Education have an MOU with the university of West Alabama and are a different legal entity.
+                                 7.Students acknowledge that courses can be provided on class room, Labs or online as seen fit and recommended by management.
+
+                             </p>
+                             </div>
+                         </group>
+                     </page>
+
+
+<!--                                        <field name="state_id"-->
+<!--                                               class="o_address_state"-->
+<!--                                               placeholder="State"-->
+<!--                                               options='{"no_open": True}'-->
+<!--                                               readonly="state == 'done'"/>-->
+<!--                                        <field name="zip" placeholder="ZIP"-->
+<!--                                               class="o_address_zip"-->
+<!--                                               readonly="state == 'done'"/>-->
+
+<!--                                        <field name="country_id"-->
+<!--                                               placeholder="Country"-->
+<!--                                               class="o_address_country"-->
+<!--                                               readonly="state == 'done'"-->
+
+<!--
+                                    <field name="is_same_address"
+                                           readonly="state == 'done'"/>
+
+                                </group>
+                                <group string="Permanent Address"
+                                       readonly="state == 'done'"
+                                       invisible="is_same_address">
+
+                                    <span class="o_form_label o_td_label"
+                                          name="address_name">
+                                        <b>Permanent Address</b>
+                                    </span>
+                                    <div class="o_address_format">
+                                        <field name="per_street"
+                                               placeholder="Street..."
+                                               class="o_address_street"/>
+                                        <field name="per_street2"
+                                               placeholder="Street 2..."
+                                               class="o_address_street"/>
+                                        <field name="per_city"
+                                               placeholder="City"
+                                               class="o_address_city"/>
+                                        <field name="per_state_id"
+                                               class="o_address_state"
+                                               placeholder="State"
+                                               options='{"no_open": True}'/>
+                                        <field name="per_zip"
+                                               placeholder="ZIP"
+                                               class="o_address_zip"/>
+                                        <field name="per_country_id"
+                                               placeholder="Country"
+                                               class="o_address_country"
+                                               options='{"no_open": True, "no_create": True}'/>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+
+
+                        <page string="Previous Education">
+                            <group>
+                                <group>
+                                    <field name="prev_institute" invisible="state == 'done'" readonly="1"/>
+                                    <field name="prev_result" invisible="state == 'done'" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="prev_course" invisible="state == 'done'" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Reject Reason"
+                              invisible="not reject_reason">
+                            <group>
+                                <field name="reject_reason"
+                                       invisible="not reject_reason"/>
+
+                            </group>
+                        </page>-->
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"
+                           widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <!--Search view for university application-->
+    <record id="university_application_view_search" model="ir.ui.view">
+        <field name="name">Student Application</field>
+        <field name="model">university.application</field>
+        <field name="arch" type="xml">
+            <search string="Search Application">
+                <filter string="New Application" name="new_application"
+                        domain="[('state','!=','done')]"/>
+            </search>
+        </field>
+    </record>
+    <!--Menu action for university application-->
+    <record id="university_application_action" model="ir.actions.act_window">
+        <field name="name">Student Application</field>
+        <field name="res_model">university.application</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="search_view_id" ref="university_application_view_search"/>
+        <field name="context">{'search_default_new_application': 1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your first student application here.
+            </p>
+        </field>
+    </record>
+    <menuitem id="university_application_menu" name="Application"
+              parent="menu_university_admission_root"
+              action="university_application_action" sequence="0"/>
+</odoo>

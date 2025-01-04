@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        ================================CRON UNPAID ==================================================================================================
+  <record model="ir.cron" id="website_sale_orders_cron">
+            <field name="name">Account: Fetch Upaid Student</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_fetch_unpaid_student()</field>
+<!--             <field name="limit">100</field>-->
+            <field name="active" eval="True"/>
+        </record>
+ <record id="account_payment_inherit" model="ir.ui.view">
+            <field name="name">account.payment.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_bank_id" position="after">
+                    <field name="paid"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

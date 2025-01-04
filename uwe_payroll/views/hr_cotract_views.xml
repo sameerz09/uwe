@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="uwe_hr_contract_form_view" model="ir.ui.view">
+      <field name="name">uwe.hr.contract.form</field>
+      <field name="model">hr.contract</field>
+      <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//group[@name='salary']" position="after">
+          <group name="usd_salary">
+            <label for="wage_usd"/>
+              <div class="o_row mw-50" name="wage_usd">
+                <field name="wage_usd" class="oe_inline o_hr_narrow_field" nolabel="1"/>
+                <div class="mb-3" name="wage_period_label">/ month</div>
+              </div>
+          </group>
+          <group name="egp_salary">
+            <label for="wage_egp"/>
+              <div class="o_row mw-50" name="wage_egp">
+                <field name="wage_egp" class="oe_inline o_hr_narrow_field" nolabel="1"/>
+                <div class="mb-3" name="wage_period_label">/ month</div>
+              </div>
+          </group>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

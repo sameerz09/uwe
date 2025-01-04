@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree view of university subject-->
+<!--    <record id="university_subject_view_tree" model="ir.ui.view">-->
+<!--        <field name="name">university.subject.view.tree</field>-->
+<!--        <field name="model">university.subject</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree string="Subject">-->
+<!--                <field name="code"/>-->
+<!--                <field name="name"/>-->
+<!--                <field name="type"/>-->
+<!--                <field name="weightage"/>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="view_crm_meeting_search" model="ir.ui.view">-->
+<!--        <field name="name">calendar.event.form.inherit</field>-->
+<!--        <field name="model">calendar.event</field>-->
+<!--        <field name="inherit_id" ref="calendar.view_calendar_event_search"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='description']" position="after">-->
+<!--                <field name="opportunity_id"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+    <!-- Form view of Partner-->
+    <record id="res_partner_custom_view_from" model="ir.ui.view">
+        <field name="name">res.partner.custom.view.form</field>
+        <field name="model">res.partner</field>
+         <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+         <xpath expr="//field[@name='name']" position="after">
+                    <field name="first_name" />
+                    <field name="middle_name" invisible ="1"/>
+                    <field name="last_name" />
+                </xpath>
+        </field>
+    </record>
+
+
+    <record id="sale_order_custom_view_from" model="ir.ui.view">
+        <field name="name">sale.order.custom.view.form</field>
+        <field name="model">sale.order</field>
+         <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+         <xpath expr="//field[@name='source_id']" position="after">
+                    <field name="application_id" />
+                </xpath>
+             <xpath expr="//button[@name='action_cancel']" position="after">
+                   <button name="action_create_application" type="object"
+                            string="Register Student"
+                            invisible="state not in ('sale')"
+                            class="btn-primary"
+                            groups="base.group_user"/>
+                </xpath>
+        <xpath expr="//sheet[1]" position="before">
+                        <div class="oe_button_box" name="button_box">
+                           <button class="oe_stat_button" type="object"
+                                name="action_view_application_form"
+                                invisible="application_id == False"
+                                groups="base.group_user"
+                                icon="fa-bars">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Student</span>
+                                <span class="o_stat_text">Registration</span>
+                            </div>
+                        </button>
+                     </div>
+        </xpath>
+        </field>
+    </record>
+
+    <!-- Menu action of university subject-->
+<!--    <record id="university_subject_action" model="ir.actions.act_window">-->
+<!--        <field name="name">Subject</field>-->
+<!--        <field name="res_model">university.subject</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--    </record>-->
+
+<!--    <menuitem parent="menu_university_configuration_root"-->
+<!--              name="Subject Management"-->
+<!--              id="menu_university_subject_management" sequence="1"-->
+<!--    />-->
+<!--    <menuitem action="university_subject_action"-->
+<!--              parent="menu_university_subject_management"-->
+<!--              id="university_subject_menu"/>-->
+</odoo>

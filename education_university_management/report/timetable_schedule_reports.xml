@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_A4Landscape" model="report.paperformat">
+        <field name="name">A4 Lanscape</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">295</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">3</field>
+        <field name="margin_right">3</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">10</field>
+        <field name="dpi">92</field>
+    </record>
+    <!-- report_template.xml -->
+    <template id="report_timetable_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                    <!-- Header section -->
+                        <div class="row">
+                            <div class="col-6">
+                                <img class="logo" src="/web/image/res.company/1/logo" style="width:200px; height:200px;"/>
+                            </div>
+                            <div class="col-6">
+                                <img class="logo" src="/education_university_management/static/src/img/logo_uwa.jpg"/>
+                            </div>
+                            <!-- <img class="logo-left" src="/your_module_name/static/src/img/left_logo.png" /> -->
+                            <!-- <img class="logo-right" src="/your_module_name/static/src/img/right_logo.png" /> -->
+                        </div>
+
+                        <div class="report-title row" style="background-color: #C0242D;  color: white; padding: 15px 30px; font-size: 24px; font-weight: bold; text-align: center; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
+                            <span>
+                                <t t-esc="doc.batch_id.department_id.name"/> ( <t t-esc="doc.batch_id.academic_year_id.name"/> )
+                            </span>
+                        </div>
+
+                        <div class="row" style="border: 2px solid transparent;">
+                            <div class="col" style="padding: 15px 30px; text-align: center; color: #C0242D; font-size: 18px; font-weight: bold; border-right: 2px solid white; background-color: #C0242D;">FRI</div>
+                            <div class="col" style="padding: 15px 30px; text-align: center; color: white; font-size: 18px; font-weight: bold; border-right: 2px solid white; background-color: #C0242D;">FRI</div>
+                            <div class="col" style="padding: 15px 30px; text-align: center; color: white; font-size: 18px; font-weight: bold; border-right: 2px solid white; background-color: #C0242D;">SAT</div>
+                            <div class="col" style="padding: 15px 30px; text-align: center; color: white; font-size: 18px; font-weight: bold; border-right: 2px solid white; background-color: #C0242D;">SUN</div>
+                            <div class="col" style="padding: 15px 30px; text-align: center; color: white; font-size: 18px; font-weight: bold; border-right: 2px solid white; background-color: #000000;">MON</div>
+                            <div class="col" style="padding: 15px 30px; text-align: center; color: white; font-size: 18px; font-weight: bold; border-right: 2px solid white; background-color: #000000;">TUE</div>
+                            <div class="col" style="padding: 15px 30px; text-align: center; color: white; font-size: 18px; font-weight: bold; border-right: 2px solid white; background-color: #000000;">WED</div>
+                            <div class="col" style="padding: 15px 30px; text-align: center; color: white; font-size: 18px; font-weight: bold; border-right: 2px solid white; background-color: #000000;">THU</div>
+                        </div>
+                        <t t-foreach="doc.uwa_timetable_ids" t-as="line">
+                            <div class="row" style="border: 2px solid transparent;">
+                                    <div style="width: 12.5%; padding: 15px 30px; text-align: center; color: white; font-size: 16px; font-weight: bold; border-right: 2px solid white; background-color: #C0242D;">
+                                        <t t-set="hours" t-value="int(line.time_from)"/>
+                                        <t t-set="minutes" t-value="int((line.time_from - int(line.time_from)) * 60)"/>
+                                        <span t-esc="hours"/> : <span t-esc="minutes"/>
+                                    </div>
+                                    <t t-if="line.friday_subject.subject_style == 'campus'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid #C0242D; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.friday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-elif="line.friday_subject.subject_style == 'online'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid black; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.friday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid #C0242D; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.friday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="line.saturday_subject.subject_style == 'campus'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid #C0242D; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.saturday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-elif="line.saturday_subject.subject_style == 'online'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid black; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.saturday_subject.name"/>
+                                        </div>
+                                    </t>
+                                     <t t-else="">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid #C0242D; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.saturday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="line.sunday_subject.subject_style == 'campus'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid #C0242D; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.sunday_subject.name"/>
+                                        </div>
+                                    </t>
+                                     <t t-elif="line.sunday_subject.subject_style == 'online'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid black; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.sunday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid #C0242D; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.sunday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="line.monday_subject.subject_style == 'campus'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid #C0242D; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.monday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-elif="line.monday_subject.subject_style == 'online'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid black; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.monday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                         <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid black; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.monday_subject.name"/>
+                                        </div>
+                                    </t>                                    
+                                    <t t-if="line.tuesday_subject.subject_style == 'campus'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid #C0242D; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.tuesday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-elif="line.tuesday_subject.subject_style == 'online'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid black; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.tuesday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid black; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.tuesday_subject.name"/>
+                                        </div>
+                                    </t>    
+                                    <t t-if="line.wednesday_subject.subject_style == 'campus'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid #C0242D; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.wednesday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-elif="line.wednesday_subject.subject_style == 'online'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid black; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.wednesday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid black; background-color: white; border-right: 2px solid white;">
+                                            <span t-esc="line.wednesday_subject.name"/>
+                                        </div>
+                                    </t>   
+                                    <t t-if="line.thuresday_subject.subject_style == 'campus'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid #C0242D; background-color: white;">
+                                            <span t-esc="line.thuresday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-elif="line.thuresday_subject.subject_style == 'online'">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid black; background-color: white;">
+                                            <span t-esc="line.thuresday_subject.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid black; background-color: white;">
+                                            <span t-esc="line.thuresday_subject.name"/>
+                                        </div>
+                                    </t>  
+                            </div>
+                        </t>
+                        <!-- <t t-set="lines" t-value="doc.get_lines_time_table()"/>
+                        <t t-foreach="lines" t-as="line">
+                            <div class="row">
+                                <t t-foreach="line" t-as="cell">
+                                    <div class="col">
+                                        <div class="time" style="padding: 15px 30px; text-align: center; font-size: 18px; font-weight: bold; border-right: 2px solid white;"> 
+                                            <t t-esc="cell.time_from"/>
+                                        </div>
+                                        <div class="course" style="padding: 15px 30px; text-align: center; font-size: 18px; font-weight: bold; border-right: 2px solid white; background-color: #C0242D;">
+                                            <t t-esc="cell.subject.name"/>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </t> -->
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    
+    <record id="report_timetable" model="ir.actions.report">
+        <field name="name">Timetable Schedule Report</field>
+        <field name="model">university.timetable</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">education_university_management.report_timetable_template</field>
+        <field name="report_file">education_university_management.report_timetable_template</field>
+        <field name="binding_model_id" ref="education_university_management.model_university_timetable"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="education_university_management.paperformat_A4Landscape"></field>
+    </record>
+</odoo>

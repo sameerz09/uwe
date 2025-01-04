@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="university_receipt_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-6">
+                                <img class="logo" src="/web/image/res.company/1/logo" style="width:200px; height:200px;"/>
+                            </div>
+                            <div class="col-6">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                               <div class="row">
+                                    <div class="col-6">
+                                        <span>Dhs. درهم</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>Fils. فلس</span>
+                                    </div>
+                               </div>
+                               <div class="row">
+                                    <div class="col-6" style="border: 2px solid black;">
+                                        <span t-esc="str(doc.amount).split('.')[0]"/>
+                                    </div>
+                                    <div class="col-6" style="border: 2px solid black;">
+                                        <span t-esc="str(doc.amount).split('.')[1]"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                            </div>
+                            <div class="col-4 text-center">
+                                <div class="row">
+                                    <div class="col-12 ml-5" style="border: 2px solid black; border-radius: 10px;">
+                                        <span>ســــند قبــــض</span>
+                                        <hr style="border-top: 1px solid #C0242D;"></hr>
+                                        <span>Receipt Voucher</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                            </div>
+                            <div class="col-3">
+                                <span>NO. </span>
+                                <span t-esc="doc.name"/>
+                            </div>
+                        </div>
+                        <br></br>
+                        <div class="row" style="direction: rtl;">
+                            <div class="col-5">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <span>التاريخ</span>
+                                    </div>
+                                    <div class="col-4" style="border: 2px solid black;">
+                                        <span t-esc="doc.date"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <span>Date</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                            </div>
+                        </div>
+                        <br></br>
+                        <div class="row">
+                            <div class="col-4">
+                                <span>Received from Mr./M/s.</span>
+                            </div>
+                            <div class="col-4" style="border: 2px solid black;">
+                                <t t-if="doc.partner_id.get_student_name()">
+                                    <span t-esc="doc.partner_id.get_student_name()"/>
+                                </t>
+                                <t t-else="">
+                                    <span t-esc="doc.partner_id.name"/>
+                                </t>
+                                <!-- <span t-esc="doc.partner_id.name"/> -->
+                            </div>
+                            <div class="col-4" style="direction: rtl;">
+                                <span>استلمنا من السيد / السيدة</span>
+                            </div>
+                        </div>
+                        <br></br>
+                        <div class="row">
+                            <div class="col-4">
+                                <span>The sum of Dhs</span>
+                            </div>
+                            <div class="col-4 text-center" style="border: 2px solid black;">
+                                <span t-esc="doc.amount"/>
+                            </div>
+                            <div class="col-4" style="direction: rtl;">
+                                <span>مبلغ و قدره فقط</span>
+                            </div>
+                        </div>
+                        <br></br>
+                        <div class="row">
+                            <div class="col-6" style="direction: rtl;">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <span>نقدا / بموجب شيك رقم</span>
+                                    </div>
+                                    <div class="col-4" style="border: 2px solid black;">
+                                        <hr style="border-top: 1px solid #C0242D;"></hr>
+                                    </div>
+                                    <div class="col-4">
+                                        <span>By Cash/Cheque No</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3" style="direction: rtl;">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <span>بتاريخ</span>
+                                    </div>
+                                    <div class="col-4" style="border: 2px solid black;">
+                                        <hr style="border-top: 1px solid #C0242D;"></hr>
+                                    </div>
+                                    <div class="col-4">
+                                        <span>Date</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3" style="direction: rtl;">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <span>البنك</span>
+                                    </div>
+                                    <div class="col-4" style="border: 2px solid black;">
+                                        <hr style="border-top: 1px solid #C0242D;"></hr>
+                                    </div>
+                                    <div class="col-4">
+                                        <span>Bank</span>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>
+                        <br></br>
+                        <div class="row">
+                            <div class="col-4">
+                                <span>Being</span>
+                            </div>
+                            <div class="col-4" style="border: 2px solid black;">
+                                <span t-esc="doc.ref"/>
+                            </div>
+                            <div class="col-4" style="direction: rtl;">
+                                <span>و ذلك عن</span>
+                            </div>
+                        </div>
+                        <br></br>
+                        <div class="row">
+                            <div class="col-12" style="border: 2px solid black;">
+                                <hr style="border-top: 1px solid #C0242D;"></hr>
+                            </div>
+                        </div>
+                        <br></br>
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <span>Receiver Sig</span>
+                                    </div>
+                                    <div class="col-4" style="border: 2px solid black; font-weight: bold;">
+                                        <span>Karim Khames</span>
+                                    </div>
+                                    <div class="col-4">
+                                        <span>توقيع المستلم</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <span>Signature</span>
+                                    </div>
+                                    <div class="col-4" style="border: 2px solid black; font-weight: bold;">
+                                        <span></span>
+                                    </div>
+                                    <div class="col-4">
+                                        <span>التوقيع</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="university_receipt" model="ir.actions.report">
+        <field name="name">UWA Receipt</field>
+        <field name="model">account.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">education_university_management.university_receipt_template</field>
+        <field name="report_file">education_university_management.university_receipt_template</field>
+        <field name="binding_model_id" ref="education_university_management.model_account_payment"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

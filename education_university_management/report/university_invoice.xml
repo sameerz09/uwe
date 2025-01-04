@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="university_invoic_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-6">
+                                <h2 style="color: #C0242D;">UWA</h2>
+                                <p>Dubai , United Arab Emirates</p>
+                            </div>
+                            <div class="col-6 text-right">
+                                <img class="logo" src="/web/image/res.company/1/logo" style="width:200px; height:200px;"/>
+                            </div>
+                        </div>
+                        <!-- add line with color #C0242D-->
+                        <div class="row">
+                            <div class="col-12">
+                                <hr style="border-top: 1px solid #C0242D;"></hr>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <p style="color: #C0242D;">Invoice</p>
+                                <span t-esc="doc.name"/>
+                            </div>
+                            <div class="col-4">
+                                <p style="color: #C0242D;">Date</p>
+                                <span t-esc="doc.invoice_date"/>
+                            </div>
+                            <div class="col-4">
+                                <span t-esc="doc.partner_id.street"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <hr style="border-top: 1px solid #C0242D;"></hr>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <p style="color: #C0242D;">Instructions</p>
+                                <p>Authorized Person:</p>
+                                <p>Kareem Khames</p>
+                                <p>UWA Accountant</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                        </div>
+                        <div class="row">
+                            <div class="col-2" style="color: white; font-weight: bold; background-color: #C0242D;">
+                                <span>Quantity</span>
+                            </div>
+                            <div class="col-6" style="color: white; font-weight: bold; background-color: #C0242D;">
+                                <span>Description</span>
+                            </div>
+                            <div class="col-2" style="color: white; font-weight: bold; background-color: #C0242D;">
+                                <span>Unit Price</span>
+                            </div>
+                            <div class="col-2" style="color: white; font-weight: bold; background-color: #C0242D;">
+                                <span>Total</span>
+                            </div>
+                        </div>
+
+                        <t t-foreach="doc.invoice_line_ids" t-as="line">
+                            <div class="row">
+                                <div class="col-2">
+                                    <span t-esc="line.quantity"/>
+                                </div>
+                                <div class="col-6">
+                                    <span t-esc="line.name"/>
+                                </div>
+                                <div class="col-2">
+                                    <span t-esc="line.price_unit"/>
+                                    <span t-esc="doc.currency_id.name"/>
+                                </div>
+                                <div class="col-2">
+                                    <span t-esc="line.price_subtotal"/>
+                                    <span t-esc="doc.currency_id.name"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <hr style="border-top: 1px solid #C0242D;"></hr>
+                                </div>
+                            </div>
+                        </t>
+                        <div class="row">
+                            <div class="col-6">
+                            </div>
+                            <div class="col-3" style="font-weight: bold;">
+                                <spna>Total Due By </spna>
+                                <span t-esc="doc.invoice_date_due"/>
+                            </div>
+                            <div class="col-3" style="font-weight: bold;">
+                                <span>Total</span>
+                                <span t-esc="doc.amount_total"/>
+                                <span t-esc="doc.currency_id.name"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="university_invoice" model="ir.actions.report">
+        <field name="name">UWA Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">education_university_management.university_invoic_template</field>
+        <field name="report_file">education_university_management.university_invoic_template</field>
+        <field name="binding_model_id" ref="education_university_management.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_university_application_document">
+    <t t-call="web.external_layout">
+        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+<!--        <t t-set="forced_vat" t-value="doc.fiscal_position_id.foreign_vat"/> &lt;!&ndash; So that it appears in the footer of the report instead of the company VAT if it's set &ndash;&gt;-->
+<!--        <t t-set="address">-->
+<!--            <div t-field="doc.partner_id"-->
+<!--                t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />-->
+<!--            <p t-if="doc.partner_id.vat">-->
+<!--                <t t-if="doc.company_id.account_fiscal_country_id.vat_label" t-out="doc.company_id.account_fiscal_country_id.vat_label"/>-->
+<!--                <t t-else="">Tax ID</t>: <span t-field="doc.partner_id.vat"/>-->
+<!--            </p>-->
+<!--        </t>-->
+<!--        <t t-if="doc.partner_shipping_id == doc.partner_invoice_id-->
+<!--                             and doc.partner_invoice_id != doc.partner_id-->
+<!--                             or doc.partner_shipping_id != doc.partner_invoice_id">-->
+<!--            <t t-set="information_block">-->
+<!--                <strong>-->
+<!--                    <t t-if="doc.partner_shipping_id == doc.partner_invoice_id">-->
+<!--                        Invoicing and Shipping Address:-->
+<!--                    </t>-->
+<!--                    <t t-else="">-->
+<!--                        Invoicing Address:-->
+<!--                    </t>-->
+<!--                </strong>-->
+<!--                <div t-field="doc.partner_invoice_id"-->
+<!--                    t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>-->
+<!--                <t t-if="doc.partner_shipping_id != doc.partner_invoice_id">-->
+<!--                    <strong>Shipping Address:</strong>-->
+<!--                    <div t-field="doc.partner_shipping_id"-->
+<!--                        t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>-->
+<!--                </t>-->
+<!--            </t>-->
+<!--        </t>-->
+        <div class="page">
+            <div class="oe_structure"/>
+
+            <h2 class="mt-4">
+                <span>STUDENT APPLICATION FORM </span>
+            </h2>
+
+            <div class="row mt-4 mb-2" id="informations">
+                <h3>
+                <span>Personal details</span>
+            </h3>
+                <div  class="col-auto col-3 mw-100 mb-2" name="informations_title">
+                    <strong>Title</strong>
+                    <span class="m-0" t-field="doc.title"></span><br>
+
+                </br>
+                    <strong>First name(s)</strong>
+                    <span class="m-0" t-field="doc.name"></span><br/>
+                    <strong>Family name(s)</strong>
+                    <span class="m-0" t-field="doc.last_name"></span>
+                </div>
+
+                <div t-if="doc.gender" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Gender:</strong>
+                    <span class="m-0" t-field="doc.gender"></span>
+                </div>
+                <div t-if="doc.date_of_birth" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Date of birth</strong>
+                    <span class="m-0" t-field="doc.date_of_birth"></span>
+                </div><br/>
+                  <div t-if="doc.passport_no" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Passport number</strong>
+                    <span class="m-0" t-field="doc.passport_no"></span>
+                </div>
+                 <div t-if="doc.country_issue_id" class="col-auto col-3 mw-100 mb-2">
+                    <strong>country of issue</strong>
+                    <span class="m-0" t-field="doc.country_issue_id"></span>
+                </div>
+                <br></br>
+                <div t-if="doc.address" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Address</strong>
+                    <span class="m-0" t-field="doc.address"></span>
+                </div>
+                <br></br>
+                <div t-if="doc.city" class="col-auto col-3 mw-100 mb-2">
+                    <strong>City</strong>
+                    <span class="m-0" t-field="doc.city"></span>
+                </div>
+            <br></br>
+                <div t-if="doc.street" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Street:</strong>
+                    <span class="m-0" t-field="doc.street"></span>
+                </div>
+                <br></br>
+                <div t-if="doc.mobile" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Mobile 1:</strong>
+                    <span class="m-0" t-field="doc.mobile"></span>
+                </div>
+                <br></br>
+                <div t-if="doc.phone" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Mobile 2:</strong>
+                    <span class="m-0" t-field="doc.phone"></span>
+                </div>
+                <br></br>
+                <div t-if="doc.email" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Current email</strong>
+                    <span class="m-0" t-field="doc.email"></span>
+                </div>
+                 <h3>
+                <span>Fee status and Visa History</span>
+            </h3>
+                 <div t-if="doc.country_id" class="col-auto col-2 mw-100 mb-2">
+                    <strong>Country of birth</strong>
+                    <span class="m-0" t-field="doc.country_id"></span>
+                </div>
+                 <div t-if="doc.country_residence_id" class="col-auto col-2 mw-100 mb-2">
+                    <strong>Present Country</strong>
+                    <span class="m-0" t-field="doc.country_residence_id"></span>
+                </div>
+                <div t-if="doc.studied_place" class="col-auto col-2 mw-100 mb-2">
+                    <strong>Have you studied in the UAE?</strong>
+                    <span class="m-0" t-field="doc.studied_place"></span>
+                </div>
+                <div t-if="doc.visa_status" class="col-auto col-2 mw-100 mb-2">
+                    <strong>Are you currently resident in UAE?</strong>
+                    <span class="m-0" t-field="doc.visa_status"></span>
+                </div>
+                <div t-if="doc.visa_status" class="col-auto col-2 mw-100 mb-2">
+                    <strong>Current Visa Status:</strong>
+                    <span class="m-0" t-field="doc.visa_status"></span>
+                </div>
+                  <div t-if="doc.visa_status" class="col-auto col-2 mw-100 mb-2">
+                    <strong>Date current visa expires</strong>
+                    <span class="m-0" t-field="doc.visa_expired"></span>
+                </div>
+            </div>
+                <div class="row mt-4 mb-2" id="courses">
+                <h3>
+                <span>Details of course(s) for which you wish to apply</span>
+            </h3>
+            </div>
+             <div class="oe_structure"></div>
+            <table class="table table-sm o_main_table table-borderless mt-4">
+                <!-- In case we want to repeat the header, remove "display: table-row-group" -->
+                <thead style="display: table-row-group">
+                    <tr>
+                        <th name="th_description" class="text-start">Course title</th>
+                    </tr>
+                </thead>
+                <tbody class="sale_tbody">
+                    <t t-foreach="doc.course_ids" t-as="line">
+                        <tr>
+                         <td name="td_courses" class="text-start">
+                         <span t-field="line.course_id">3</span>
+                        </td>
+                         </tr>
+                    </t>
+                </tbody>
+            </table>
+    <div class="row mt-4 mb-6" id="academic">
+                <h3>
+                <span>Academic qualifications</span>
+            </h3>
+        <p>Please list results, including those which are pending. Please attach photocopies of your certificates or transcripts.
+You must give details of every institution at which you have studied even if you did not receive an award from that
+institution.</p>
+            </div>
+             <div class="oe_structure"></div>
+            <table class="table table-sm o_main_table table-borderless mt-4">
+                <!-- In case we want to repeat the header, remove "display: table-row-group" -->
+                <thead style="display: table-row-group">
+                    <tr>
+                        <th name="th_description" class="text-start">Program</th>
+                        <th name="th_description" class="text-start">Start Date</th>
+                        <th name="th_description" class="text-start">End Date</th>
+                        <th name="th_description" class="text-start">Date of Award</th>
+                        <th name="th_description" class="text-start">Name of school</th>
+                        <th name="th_description" class="text-start">Qualification and Result</th>
+                        <th name="th_description" class="text-start">Language of Study</th>
+                    </tr>
+                </thead>
+                <tbody class="sale_tbody">
+                    <t t-foreach="doc.academic_ids" t-as="quali">
+                        <tr>
+                         <td name="td_program" class="text-start">
+                         <span t-field="quali.program">3</span>
+                        </td>
+                        <td name="td_start_date" class="text-start">
+                         <span t-field="quali.start_date">3</span>
+                        </td>
+                        <td name="td_end_date" class="text-start">
+                         <span t-field="quali.end_date">3</span>
+                        </td>
+                        <td name="td_award_date" class="text-start">
+                         <span t-field="quali.award_date">3</span>
+                        </td>
+                        <td name="td_university" class="text-start">
+                         <span t-field="quali.university_id">3</span>
+                        </td>
+                         <td name="td_result" class="text-start">
+                         <span t-field="quali.result">3</span>
+                        </td>
+                        <td name="td_lang" class="text-start">
+                         <span t-field="quali.lang_id">3</span>
+                        </td>
+                         </tr>
+                    </t>
+                </tbody>
+            </table>
+             <div class="row mt-4 mb-6" id="english">
+                <h3>
+                <span>English Language requirements</span>
+            </h3>
+        <p>Please complete this section. It is very important to provide all the relevant details to enable us to assess your English level and determine whether you meet our
+entry level criteria in English. You will be required to provide evidence of your English level.
+</p>
+            </div>
+            <div t-if="doc.english_requirements" class="col-auto col-2 mw-100 mb-2">
+                    <strong>Do you have any of the English qualifications listed below? (please tick all that apply):</strong>
+                    <span class="m-0" t-field="doc.english_requirements"></span>
+                </div>
+            <div t-if="doc.score" class="col-auto col-2 mw-100 mb-2">
+                    <strong>Grade / score:</strong>
+                    <span class="m-0" t-field="doc.score"></span>
+                </div>
+              <div t-if="doc.date_achieved" class="col-auto col-2 mw-100 mb-2">
+                    <strong>Date Achieved</strong>
+                    <span class="m-0" t-field="doc.date_achieved"></span>
+                </div>
+
+
+            <div class="row mt-4 mb-6" id="work">
+                <h3>
+                <span>Work experience</span>
+            </h3>
+        <p>Please give details of work all experience, training and employment. Continue on a separate sheet if necessary.</p>
+            </div>
+             <div class="oe_structure"></div>
+            <table class="table table-sm o_main_table table-borderless mt-4">
+                <!-- In case we want to repeat the header, remove "display: table-row-group" -->
+                <thead style="display: table-row-group">
+                    <tr>
+                        <th name="th_description" class="text-start">Job title</th>
+                        <th name="th_description" class="text-start">Name of Organization</th>
+                        <th name="th_description" class="text-start">From (mm/yy)</th>
+                        <th name="th_description" class="text-start">To (mm/yy)</th>
+                        <th name="th_description" class="text-start">Full- or part-time</th>
+                    </tr>
+                </thead>
+                <tbody class="sale_tbody">
+                    <t t-foreach="doc.experience_ids" t-as="work">
+                        <tr>
+                         <td name="td_work" class="text-start">
+                         <span t-field="work.job_id">3</span>
+                        </td>
+                            <td name="td_organization" class="text-start">
+                         <span t-field="work.organization_id">3</span>
+                        </td>
+                        <td name="td_start_date" class="text-start">
+                         <span t-field="work.start_date">3</span>
+                        </td>
+                        <td name="td_end_date" class="text-start">
+                         <span t-field="work.end_date">3</span>
+                        </td>
+                        <td name="td_duty_type" class="text-start">
+                         <span t-field="work.duty_type">3</span>
+                        </td>
+                         </tr>
+                    </t>
+                </tbody>
+            </table>
+             <div class="row mt-4 mb-6" id="work">
+                <h3>
+                <span>Personal statement</span>
+            </h3>
+        <p>Applicants are required to provide a personal statement in support of your application. On a separate piece of paper please state your reasons for choosing this course,
+give details of any relevant experience, your career plans and otherrelevant supporting information. In order for your application to be processed your personal statement
+must explain why you want to study in the UAE, why you wish to come to UWA, why you have chosen your course, and how it will help you fulfill your career goals.</p>
+            </div>
+            <div class="row mt-4 mb-6" id="work">
+                <h3>
+                <span>Physical or other disability or medical condition</span>
+            </h3>
+        <p>Do you have a disability or any condition which might necessitate special arrangements or facilities?</p>
+            </div>
+            <div t-if="doc.medical_status" class="col-auto col-6 mw-100 mb-2">
+                    <strong>If Yes please provide details on a separate sheet of paper</strong>
+                </div>
+
+            <div class="row mt-4 mb-6" id="work">
+                <h3>
+                <span>How did you hear about us?</span>
+            </h3>
+            </div>
+            <div t-if="doc.media_type" class="col-auto col-6 mw-100 mb-2">
+                    <span class="m-0" t-field="doc.media_type"></span>
+                </div>
+             <div t-if="doc.website" class="col-auto col-2 mw-100 mb-2">
+                    <strong>Website / Online directory listing (please specify)</strong>
+                    <span class="m-0" t-field="doc.website"></span>
+                </div>
+            <div t-if="doc.social_media" class="col-auto col-2 mw-100 mb-2">
+                    <strong>Social Media website (please specify)</strong>
+                    <span class="m-0" t-field="doc.social_media"></span>
+                </div>
+            <div t-if="doc.other_source" class="col-auto col-2 mw-100 mb-2">
+                    <strong>Other (please specify)</strong>
+                    <span class="m-0" t-field="doc.other_source"></span>
+                </div>
+            <div class="row mt-4 mb-6" id="ref">
+                <h3>
+                <span>References</span>
+            </h3>
+                <p>Names and addresses of two referees (the University may contact referees if required).</p>
+            </div>
+            <table>
+                <tr>
+                    <td>
+            <div t-if="doc.ref_name1" class="col-auto col-200 mw-100 mb-2">
+                    <strong>Name</strong>
+                    <span class="m-0" t-field="doc.ref_name1"></span>
+                </div>
+                    </td>
+                    <td>
+            <div t-if="doc.ref_name2" class="col-auto col-200 mw-100 mb-2">
+                    <strong>Name</strong>
+                    <span class="m-0" t-field="doc.ref_name2"></span>
+                </div>
+                </td>
+                </tr>
+            <tr>
+                    <td>
+            <div t-if="doc.ref_work1" class="col-auto col-200 mw-100 mb-2">
+                    <strong>University/Company</strong>
+                    <span class="m-0" t-field="doc.ref_work1"></span>
+                </div>
+                    </td>
+                    <td>
+            <div t-if="doc.ref_work2" class="col-auto col-200 mw-100 mb-2">
+                    <strong>University/Company</strong>
+                    <span class="m-0" t-field="doc.ref_work2"></span>
+                </div>
+                </td>
+                </tr>
+        <tr>
+                    <td>
+            <div t-if="doc.ref_address1" class="col-auto col-200 mw-100 mb-2">
+                    <strong>Address</strong>
+                    <span class="m-0" t-field="doc.ref_address1"></span>
+                </div>
+                    </td>
+                    <td>
+            <div t-if="doc.ref_address2" class="col-auto col-200 mw-100 mb-2">
+                    <strong>Address</strong>
+                    <span class="m-0" t-field="doc.ref_address2"></span>
+                </div>
+                </td>
+                </tr>
+         <tr>
+                    <td>
+            <div t-if="doc.ref_city1" class="col-auto col-200 mw-100 mb-2">
+                    <strong>City</strong>
+                    <span class="m-0" t-field="doc.ref_city1"></span>
+                </div>
+                    </td>
+                    <td>
+            <div t-if="doc.ref_city2" class="col-auto col-200 mw-100 mb-2">
+                    <strong>City</strong>
+                    <span class="m-0" t-field="doc.ref_city2"></span>
+                </div>
+                </td>
+                </tr>
+        <tr>
+                    <td>
+            <div t-if="doc.ref_county1" class="col-auto col-200 mw-100 mb-2">
+                    <strong>County</strong>
+                    <span class="m-0" t-field="doc.ref_county1"></span>
+                </div>
+                    </td>
+                    <td>
+            <div t-if="doc.ref_county2" class="col-auto col-200 mw-100 mb-2">
+                    <strong>County</strong>
+                    <span class="m-0" t-field="doc.ref_county2"></span>
+                </div>
+                </td>
+                </tr>
+         <tr>
+                    <td>
+            <div t-if="doc.ref_postcode1" class="col-auto col-200 mw-100 mb-2">
+                    <strong>Postcode</strong>
+                    <span class="m-0" t-field="doc.ref_postcode1"></span>
+                </div>
+                    </td>
+                    <td>
+            <div t-if="doc.ref_postcode2" class="col-auto col-200 mw-100 mb-2">
+                    <strong>Postcode</strong>
+                    <span class="m-0" t-field="doc.ref_postcode2"></span>
+                </div>
+                </td>
+                </tr>
+        <tr>
+                    <td>
+            <div t-if="doc.ref_tel1" class="col-auto col-200 mw-100 mb-2">
+                    <strong>Telephone</strong>
+                    <span class="m-0" t-field="doc.ref_tel1"></span>
+                </div>
+                    </td>
+                    <td>
+            <div t-if="doc.ref_tel2" class="col-auto col-200 mw-100 mb-2">
+                    <strong>Telephone</strong>
+                    <span class="m-0" t-field="doc.ref_tel2"></span>
+                </div>
+                </td>
+                </tr>
+             <tr>
+                    <td>
+            <div t-if="doc.ref_mob1" class="col-auto col-200 mw-100 mb-2">
+                    <strong>Mobile</strong>
+                    <span class="m-0" t-field="doc.ref_mob1"></span>
+                </div>
+                    </td>
+                    <td>
+            <div t-if="doc.ref_mob2" class="col-auto col-200 mw-100 mb-2">
+                    <strong>Mobile</strong>
+                    <span class="m-0" t-field="doc.ref_mob2"></span>
+                </div>
+                </td>
+                </tr>
+
+             <tr>
+                    <td>
+            <div t-if="doc.ref_email1" class="col-auto col-200 mw-100 mb-2">
+                    <strong>Email</strong>
+                    <span class="m-0" t-field="doc.ref_email1"></span>
+                </div>
+                    </td>
+                    <td>
+            <div t-if="doc.ref_email2" class="col-auto col-200 mw-100 mb-2">
+                    <strong>Email</strong>
+                    <span class="m-0" t-field="doc.ref_email2"></span>
+                </div>
+                </td>
+                </tr>
+            </table>
+            <div class="row mt-4 mb-6" id="work">
+                <h3>
+                <span>Declaration</span>
+            </h3>
+        <p>All personal information will be treated strictly in terms of the Data Protection Act 1998. We will contact you by email, phone and post
+with information relevant to your application.
+I confirm that, to the best of my knowledge, the information given in this form is correct and complete .</p>
+            </div>
+
+            <div class="row mt-4 mb-6" id="work">
+                <h3>
+                <span>DOCUMENT CHECKLIST - DO NOT SEND ORIGINAL DOCUMENTS</span>
+            </h3>
+        <p>Please make sure you include the following documents with your application</p>
+            </div>
+            <div class="col-auto col-3 mw-100 mb-2">
+                    <strong>Application Form</strong>
+                    <span class="m-0" t-field="doc.doc_form"></span>
+                </div>
+
+             <div class="col-auto col-3 mw-100 mb-2">
+                    <strong>Copies of your Academic Certificates/Transcripts</strong>
+                    <span class="m-0" t-field="doc.doc_cert"></span>
+                </div>
+             <div class="col-auto col-3 mw-100 mb-2">
+                    <strong>opy of your English Language Examination Results</strong>
+                    <span class="m-0" t-field="doc.doc_english"></span>
+                </div>
+               <div class="col-auto col-3 mw-100 mb-2">
+                    <strong>Copy of current passport</strong>
+                    <span class="m-0" t-field="doc.doc_passport"></span>
+                </div>
+             <div class="col-auto col-3 mw-100 mb-2">
+                    <strong>VISA Copy</strong>
+                    <span class="m-0" t-field="doc.doc_visa"></span>
+                </div>
+            <div class="col-auto col-3 mw-100 mb-2">
+                    <strong>Personal Photo</strong>
+                    <span class="m-0" t-field="doc.doc_photo"></span>
+                </div>
+            <div class="col-auto col-3 mw-100 mb-2">
+                    <strong>ID copy</strong>
+                    <span class="m-0" t-field="doc.doc_id"></span>
+                </div>
+            <div>
+            <p><h3>Terms and Conditions:</h3>
+
+                                 <br>1.The overall responsibility of providing correct Data, Information’s and up to date documents is on the students.</br>
+                                 <br>2.Payments for registrations are non-refundable cause the payment may involve agents’ payments and other 3rd part payments.</br>
+<br>3.All payments need to be paid in advance as described in the payment plan, if for any reasons the payment delayed for any reasons for more than 3 days then a
+    10% late payment fees have to be paid.</br>
+                                 <br>4.If fees paid fully in advance students are entitled for 10% advance payment discount.</br>
+                                 <br>5.The responsibility of checking information’s regarding visa, accreditations, governments approvals of degrees are the responsibility of the students.</br>
+                                 <br>6.Students acknowledge that United World Education have an MOU with the university of West Alabama and are a different legal entity.</br>
+                                 <br>7.Students acknowledge that courses can be provided on class room, Labs or online as seen fit and recommended by management.</br>
+
+                             </p>
+                </div>
+             <div class="col-auto col-3 mw-100 mb-2">
+                    <strong>Signature of Applicant</strong>
+                </div>
+        </div>
+    </t>
+</template>
+
+<template id="report_application_raw">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="education_university_management.report_university_application_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+
+<template id="report_university_application">
+    <t t-call="education_university_management.report_application_raw"/>
+</template>
+
+<!--<template id="report_saleorder_pro_forma">-->
+<!--    <t t-call="web.html_container">-->
+<!--        <t t-set="is_pro_forma" t-value="True"/>-->
+<!--        <t t-set="docs" t-value="docs.with_context(proforma=True)"/>-->
+<!--        <t t-foreach="docs" t-as="doc">-->
+<!--            <t t-call="sale.report_saleorder_document" t-lang="doc.partner_id.lang"/>-->
+<!--        </t>-->
+<!--    </t>-->
+<!--</template>-->
+
+ <!-- Allow edits (e.g. studio) without changing the often inherited base template -->
+<!--<template id="document_tax_totals" inherit_id="account.document_tax_totals_template" primary="True"></template>-->
+
+</odoo>

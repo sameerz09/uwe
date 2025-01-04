@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Tree view of scholarship_type-->
+    <record id="scholarship_type_view_tree" model="ir.ui.view">
+        <field name="name">scholarship.type.view.tree</field>
+        <field name="model">scholarship.type</field>
+        <field name="arch" type="xml">
+            <tree string="scholarship Type">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="percentage"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="scholarship_type_view_form" model="ir.ui.view">
+        <field name="name">scholarship.type.view.form</field>
+        <field name="model">scholarship.type</field>
+        <field name="arch" type="xml">
+            <form string="Fee Type">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" string="Name"/>
+                        </group>
+                        <group>
+                            <field name="percentage"/>
+                        </group>
+                        <field name="description"
+                               placeholder="Details about the scholarship_type_view_form"
+                               string="Description"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--Menu action of fee_types-->
+    <record id="scholarship_type_action" model="ir.actions.act_window">
+        <field name="name">Scholarship Type</field>
+        <field name="res_model">scholarship.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem action="scholarship_type_action"
+              parent="menu_university_fee_management"
+              id="scholarship_types_menu" sequence="1"/>
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_attendance_report_wizard_form" model="ir.ui.view">
+        <field name="name">attendance.report.wizard.form</field>
+        <field name="model">attendance.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Report Wizard">
+                <group>
+                    <field name="period_selection"/>
+                    <field name="subject_id"/>
+                    <field name="date_from" invisible="period_selection != 'custom'" required="period_selection != 'custom'"/>
+                    <field name="date_to" invisible="period_selection != 'custom'" required="period_selection != 'custom'"/>
+                </group>
+                <footer>
+                    <button string="Generate" type="object" name="generate_report" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.actions.act_window" id="penalty_action_domain">
+            <field name="name">Penalty Filter</field>
+            <field name="res_model">hr.penalty</field>
+            <field name="domain">[('employee_id','=',active_id)]</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="view_employee_form_penalty_inherit" model="ir.ui.view">
+            <field name="name">view.employee.form.penalty.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="hr_penalty.penalty_action_domain" icon="fa-warning" type="action">
+                        <field name="penalty_count" widget="statinfo" string="Penalty"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_penalty_view_form" model="ir.ui.view">
+            <field name="name">hr.penalty</field>
+            <field name="model">hr.penalty</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar"
+                           statusbar_visible="draft,approve"/>
+                        <button name="action_approve" type="object" string="Approved"
+                            invisible="state in ('approve','accounting','posted','reject')"
+                            class="btn-primary"/>
+                        <button name="action_accounting" type="object"
+                            string="Accounting"
+                            invisible="state in ('draft','accounting','posted','reject') or punishment_type != 'penalty'"
+                            class="btn-primary"
+                            groups="employee_bonus_manager.employee_bonus_manager_group_department"/>
+                        <button name="action_post_journal_entry" type="object"
+                            string="Accounting Approve"
+                            invisible="state in ('draft','approve','posted','reject')"
+                            class="btn-primary"
+                            groups="employee_bonus_manager.employee_bonus_manager_group_department"/>
+
+<!--                        <button name="action_mail_send" type="object" string="Send Email" groups="hr_penalty.group_manager"/>-->
+
+                    </header>
+                    <sheet>
+                         <div class="oe_button_box" name="button_box">
+                           <button class="oe_stat_button" type="object"
+                                name="action_view_journal_items_penalty"
+                                invisible="move_id == False"
+                                groups="account.group_account_manager"
+                                icon="fa-bars">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Journal</span>
+                                <span class="o_stat_text">Items</span>
+                            </div>
+                        </button>
+                     </div>
+                    <h1>
+                        <field name="reference" invisible="1"/>
+                    </h1>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="employee_id"  required =  "1"  readonly = "state != 'draft'"/>
+
+                                <field name="violation_config_id"  required="1"/>
+                                <field name="penalty_config"/>
+
+                            </group>
+                            <group>
+                                <field name="violation_date" readonly="state != 'draft' "/>
+                                <field name="punishment_type" />
+                            </group>
+                            <group>
+                                <field name="last_penalty_id" />
+                            </group>
+                        </group>
+                        <notebook>
+                             <page string="Accounting Information"
+                              groups="account.group_account_manager">
+                            <group>
+                                <group>
+                                    <field name="journal_id"/>
+                                    <field name="move_id"/>
+                                </group>
+                                <group>
+                                    <field name="deduct_amount"
+                                      readonly="state == 'posted'"
+                                      required="state == 'accounting'"/>
+                                    <field name="credit_account_id"
+                                      readonly="state == 'posted'"
+                                      required="state == 'accounting'"/>
+                                    <field name="debit_account_id"
+                                    readonly="state == 'posted'"
+                                   required="state == 'accounting'"/>
+                                </group>
+                            </group>
+                        </page>
+                        </notebook>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="hr_penalty_view_tree" model="ir.ui.view">
+            <field name="name">hr.penalty.tree</field>
+            <field name="model">hr.penalty</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="employee_id"/>
+                    <field name="violation_config_id"/>
+                    <field name="violation_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <!-- Penalty Config -->
+
+<!--         <record id="hr_penalty_config_view_form" model="ir.ui.view">-->
+<!--            <field name="name">hr.penalty.config</field>-->
+<!--            <field name="model">hr.penalty.config</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form>-->
+<!--                    <sheet>-->
+<!--                        <group>-->
+<!--                            <field name="rule_name" />-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                 <field name="rule_no"  required =  "1"/>-->
+<!--                                <field name="name"  required =  "1"/>-->
+<!--                                <field name="penailty_name"  required =  "1"  />-->
+<!--                            </group>-->
+<!--                    </sheet>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--         </record>-->
+
+    <record model="ir.actions.act_window" id="penalty_config_action">
+            <field name="name">Penalty Cofiguration</field>
+            <field name="res_model">hr.penalty.config</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="hr_penalty_config_view_tree" model="ir.ui.view">
+            <field name="name">hr.penalty.tree</field>
+            <field name="model">hr.penalty.config</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="rule_name"/>
+                    <field name="name"/>
+                    <field name="penailty_name"/>
+                </tree>
+            </field>
+        </record>
+        <menuitem id="hr_penalty_config_action" name="Penalty Configuration" groups="base.group_user"
+                   action="penalty_config_action" sequence="3" parent="hr.menu_human_resources_configuration"/>
+        <!-- end Penality Config -->
+
+        <record model="ir.actions.act_window" id="penalty_menu_action">
+            <field name="name">Penalty</field>
+            <field name="res_model">hr.penalty</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="hr_custom_menu"
+                  name="Employees Services"
+                  parent="hr.menu_hr_root"
+                  groups="base.group_user"/>
+        <menuitem id="hr_penalty_menu" name="Penalty" groups="hr.group_hr_user"
+                     parent="hr_penalty.hr_custom_menu"/>
+        <menuitem id="hr_penalty_action" name="Penalty" groups="base.group_user"
+                   action="penalty_menu_action" sequence="3" parent="hr_penalty_menu"/>
+    </data>
+
+</odoo>

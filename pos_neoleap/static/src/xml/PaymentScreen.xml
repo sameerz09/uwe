@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="pos_neoleap.PaymentScreenPaymentLinesNeoleap" t-inherit="point_of_sale.PaymentScreenPaymentLines" t-inherit-mode="extension" owl="1">
+        
+        <xpath expr="//div[hasclass('paymentline')]//div[contains(string(), 'Transaction cancelled')]" position="after">
+          <t t-if="line.payment_status == 'retry'">
+            <div class="button send_force_done manual-transaction" 
+                title="Force Payment Manually" 
+                t-on-click="() => this.trigger('handle-payment-manually', line)">
+              MANUAL
+            </div>
+          </t>
+        </xpath>
+        
+    </t>
+
+</templates>
