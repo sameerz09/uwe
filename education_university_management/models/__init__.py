@@ -21,6 +21,7 @@
 ###############################################################################
 from . import account_journal
 from . import account_move
+from . import account_payment
 from . import exam_result
 from . import exam_subject_line
 from . import exam_valuation

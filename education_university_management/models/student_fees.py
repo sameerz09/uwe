@@ -104,6 +104,18 @@ class StudentFees(models.Model):
             'domain': [('student_fees_id', '=', self.id)],
         }
 
+    # for adding log note
+    def add_log_note(self, log_message):
+        # Ensure this method is called on a single record
+        if len(self) != 1:
+            raise ValueError("This method should be called on a single record.")
+        # Add the log note to the chatter of the specific record
+        self.message_post(
+            body=log_message,
+            message_type='comment',
+            subtype_xmlid='mail.mt_note'  # Ensures it's a log note
+        )
+
 
 class StudentAccountMove(models.Model):
     _inherit = 'account.move'
