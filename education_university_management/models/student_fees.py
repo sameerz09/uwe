@@ -89,7 +89,7 @@ class StudentFees(models.Model):
                     'partner_id': self.student_id.partner_id.id,
                 })],
             })
-            # invoice.action_post()
+            invoice.action_post()
             # line.invoice_id = invoice.id
 
     def action_reset_draft(self):
