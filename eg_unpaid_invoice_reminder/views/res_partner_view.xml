@@ -1,0 +1,12 @@
+<odoo>
+    <record id="partner_inherit_unpaid_invoice_reminder_form_view" model="ir.ui.view">
+        <field name="name">partner.inherit.unpaid.invoice.reminder.form.view</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='accounting']/group/group[1]" position="inside">
+                <field name="unsubscribe_send_unpaid_invoice_mail"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
