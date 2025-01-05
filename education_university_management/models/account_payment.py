@@ -8,10 +8,10 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     @api.model_create_multi
-    def create(self, vals_list):
-        payments = super(AccountPayment, self).create(vals_list)
+    def create(self, vals):
+        payments = super(AccountPayment, self).create(vals)
 
-        for vals, payment in zip(vals_list, payments):
+        for vals, payment in zip(vals, payments):
             partner_id = vals.get('partner_id')
             if partner_id:
                 partner = self.env['res.partner'].browse(partner_id)
@@ -27,7 +27,9 @@ class AccountPayment(models.Model):
                         f"and the amount is {vals.get('amount')}."
                     )
                     if vals.get('ref'):
+                        move_id = self.env['account.move'].search([('payment_reference', '=', vals.get('ref'))])
                         message += f" The invoice reference is '{vals.get('ref')}'."
+                        message += f" The due invoice date is '{move_id.invoice_date_due}'."
 
                     # Add log note to the first draft student fee record
                     student_fees[0].add_log_note(message)
