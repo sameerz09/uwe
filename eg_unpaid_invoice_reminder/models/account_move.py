@@ -1,5 +1,5 @@
 from odoo import fields, models, api, _
-
+from datetime import date
 
 class AccountMove(models.Model):
     _inherit = "account.move"
@@ -11,12 +11,13 @@ class AccountMove(models.Model):
         if unpaid_invoice_reminder:
             # Get the server's domain
             server_domain = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-
+            today = date.today()
             invoice_ids = self.search([
                 ("state", "=", "posted"),
                 ("payment_state", "!=", "paid"),
                 ("move_type", "in", ["out_invoice"]),
-                ("partner_id.unsubscribe_send_unpaid_invoice_mail", "=", False)
+                ("partner_id.unsubscribe_send_unpaid_invoice_mail", "=", False),
+                ("invoice_date_due", "=", today),
             ])
             for invoice_id in invoice_ids:
                 access_token = invoice_id._portal_ensure_token()
