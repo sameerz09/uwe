@@ -23,7 +23,7 @@ class AccountPayment(models.Model):
                 if student_fees:
                     # Construct the log message
                     message = (
-                        f"This student's fees have a payment. The highest name is '{payment.highest_name}' "
+                        f"This student's fees have a payment at '{payment.write_date}' "
                         f"and the amount is {vals.get('amount')}."
                     )
                     if vals.get('ref'):
