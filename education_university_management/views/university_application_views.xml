@@ -31,11 +31,11 @@
                             string="Send for Verification"
                             help="Click to send the application for verification purpose"
                             invisible=" state != 'draft'"/>
-                     <button name="action_send_mail" type="object"
-                            class="oe_highlight"
-                            string="Send by email"
-                            help="Click to send the email"
-                            invisible=" state != 'approve'"/>
+<!--                     <button name="action_send_mail" type="object"-->
+<!--                            class="oe_highlight"-->
+<!--                            string="Send by email"-->
+<!--                            help="Click to send the email"-->
+<!--                            invisible=" state != 'approve'"/>-->
                     <button name="action_verify_application" type="object"
                             class="oe_highlight"
                             groups="education_university_management.education_university_management_group_hod"
@@ -47,7 +47,7 @@
                             type="object" class="oe_highlight"
                             groups="education_university_management.education_university_management_group_hod"
                             help="Click to create Student"
-                            invisible="state != 'send'"/>
+                            invisible="state != 'approve'"/>
                     <button name="%(education_university_management.application_reject_action)d"
                             string="Reject"
                             groups="education_university_management.education_university_management_group_hod"

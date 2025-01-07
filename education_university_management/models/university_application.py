@@ -96,8 +96,7 @@ class UniversityApplication(models.Model):
     company_id = fields.Many2one('res.company', string='Company',
                                  help="Company of the application",
                                  default=lambda self: self.env.user.company_id)
-    email = fields.Char(string="Current email", required=True,
-                        help="Enter E-mail id for contact purpose")
+    email = fields.Char(string="Current email", help="Enter E-mail id for contact purpose")
     phone = fields.Char(string="Mobile 2",
                         help="Enter Phone no. for contact purpose")
     mobile = fields.Char(string="Mobile 1", required=True,
@@ -169,7 +168,7 @@ class UniversityApplication(models.Model):
         help="Your Blood Group is")
     state = fields.Selection([('draft', 'Draft'),
                               ('verification', 'Verify'),
-                              ('approve', 'Approve'), ('reject', 'Rejected'),('send', 'Email Sent'),
+                              ('approve', 'Approve'), ('reject', 'Rejected'),
                               ('done', 'Done')], string='State', required=True,
                              default='draft', track_visibility='onchange',
                              help="Status of the application")
