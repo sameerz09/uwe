@@ -51,6 +51,8 @@ class UniversityBatch(models.Model):
     #                                 help="In which department this "
     #                                      "batch belongs to")
     department_id = fields.Many2one('university.department', string="Department", required=True)
+    timetable_id = fields.Many2one('university.timetable', string="Timetable", required=True)
+    email_sender_id = fields.Many2one('ir.mail_server', string="Email Sender", required=True)
     academic_year_id = fields.Many2one('university.academic.year',
                                        string="Academic Year", required=True,
                                        help="Select the academic year")

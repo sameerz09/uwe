@@ -87,6 +87,8 @@
                             <field name="academic_year_id"/>
                             <field name="faculty_id"/>
                             <field name="department_id"/>
+                            <field name="timetable_id"/>
+                            <field name="email_sender_id"/>
                         </group>
                         <notebook>
                             <page string="Students">
