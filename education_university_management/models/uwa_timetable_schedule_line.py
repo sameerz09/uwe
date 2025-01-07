@@ -6,6 +6,10 @@ class UwaTimeScheduleLine(models.Model):
 
 
     time_from = fields.Float(string='From', help="Start and End time of Period.", required=True)
+    time_am_pm = fields.Selection(
+        [('am', 'am'), ('pm', 'pm')],
+        string='AM/PM', required=True, default='am',
+        )
     friday_subject = fields.Many2one('university.subject',
                               string='Friday',
                               help="Select the subject to schedule timetable")
