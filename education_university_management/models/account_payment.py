@@ -29,7 +29,8 @@ class AccountPayment(models.Model):
                     if vals.get('ref'):
                         move_id = self.env['account.move'].search([('payment_reference', '=', vals.get('ref'))])
                         message += f" The invoice reference is '{vals.get('ref')}'."
-                        message += f" The due invoice date is '{move_id.invoice_date_due}'."
+                        if move_id.invoice_date_due:
+                          message += f" The due invoice date is '{move_id.invoice_date_due}'."
 
                     # Add log note to the first draft student fee record
                     student_fees[0].add_log_note(message)
