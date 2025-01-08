@@ -66,6 +66,11 @@
             <form string="Course">
                 <header>
                      <button name="action_open_attendance_wizard" type="object" string="Print Attendance Report" class="btn-primary"/>
+                    <button name="action_send_mail" type="object"
+                            class="oe_highlight"
+                            string="Send by email"
+                            help="Click to send the email"
+                            />
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -82,9 +87,10 @@
                             <field name="batch_strength"/>
                             <field name="year_id"/>
                             <field name="semester_id"/>
+                            <field name="academic_year_id"/>
+
                         </group>
                         <group>
-                            <field name="academic_year_id"/>
                             <field name="faculty_id"/>
                             <field name="department_id"/>
                             <field name="timetable_id"/>
