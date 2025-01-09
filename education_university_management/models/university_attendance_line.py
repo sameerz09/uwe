@@ -19,7 +19,7 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from odoo import fields, models
+from odoo import fields, models, _
 
 
 class UniversityAttendanceLine(models.Model):
@@ -51,3 +51,45 @@ class UniversityAttendanceLine(models.Model):
                                help="Select batch for the attendance")
     date = fields.Date(string='Date', required=True, help="Attendance date")
     attendance_type = fields.Selection([('present', 'Present'), ('late', 'Late'),('absent', 'Absent'), ('excused', 'Excused')], string='Attendance Status', default='present', required=True, help="Select the attendance type")
+
+    def action_apsent_warning(self):
+
+        # Search for students with more than 10 'absent' records
+        student_absences = self.read_group(
+            [('attendance_type', '=', 'absent')],
+            ['student_id'],  # Group by student
+            ['student_id']
+        )
+
+        # Filter students with absences > 10
+        students_to_warn = [
+            record for record in student_absences if record['student_id_count'] > 5
+        ]
+
+        for student in students_to_warn:
+            student_id = student['student_id'][0]
+            student_name = student['student_id'][1]
+            email = self.env['university.student'].browse(student_id).email
+
+            if not email:
+                continue  # Skip students without an email
+
+            mail_message = _(
+                "<p>Hello <strong>{student_name}</strong>,</p>"
+                "<p>We noticed that your attendance records show more than 5 absences.</p>"
+                "<p>Please take immediate steps to address your attendance and avoid further issues.</p>"
+                "<p>For more details, contact your batch or subject supervisor.</p>"
+                "<p>Thanks,</p>"
+                "<p>Your University</p>"
+            ).format(student_name=student_name)
+
+            values = {
+                'model': 'university.student',
+                'res_id': student_id,
+                'subject': "Attendance Warning: Excessive Absences",
+                'body': mail_message,
+                'body_html': mail_message,
+                'email_to': email,
+            }
+
+            self.env['mail.mail'].sudo().create(values).send()

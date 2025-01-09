@@ -40,6 +40,7 @@
         'data/online_application_menu_data.xml',
         'data/mail_template_data.xml',
         'data/mail_template_data_custom.xml',
+        'data/data.xml',
         'wizard/application_reject_views.xml',
         'views/education_university_management_menus.xml',
         'views/res_partner_views.xml',
