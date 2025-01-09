@@ -54,7 +54,13 @@
                                     <div style="width: 12.5%; padding: 15px 30px; text-align: center; color: white; font-size: 16px; font-weight: bold; border-right: 2px solid white; background-color: #C0242D;">
                                         <t t-set="hours" t-value="int(line.time_from)"/>
                                         <t t-set="minutes" t-value="int((line.time_from - int(line.time_from)) * 60)"/>
-                                        <span t-esc="hours"/> : <span t-esc="minutes"/> <span t-esc="line.time_am_pm"/>
+                                       <t t-if="line.time_from > 9">
+                                            <span t-esc="hours"/> : <span t-esc="minutes"/> <span t-esc="line.time_am_pm"/>
+                                        </t>
+                                        <t t-else="">
+                                            0<span t-esc="hours"/> : <span t-esc="minutes"/> <span t-esc="line.time_am_pm"/>
+                                        </t>
+
                                     </div>
                                     <t t-if="line.friday_subject.subject_style == 'campus'">
                                         <div class="col" style="width: 12.5%; padding: 15px 30px; text-align: center; color: black; font-size: 16px; font-weight: bold; border: 2px solid #C0242D; background-color: white; border-right: 2px solid white;">
