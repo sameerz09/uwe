@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Action for the wizard -->
+        <record id="action_student_reports_wizard" model="ir.actions.act_window">
+            <field name="name">Student Reports</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">student.reports</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu item for the wizard -->
+        <menuitem id="menu_student_reports_wizard"
+                  name="Student Reports"
+                  parent="menu_university_admission_root"
+                  action="action_student_reports_wizard"
+                  sequence="15"/>
+
+        <!-- Form view for the wizard -->
+        <record id="view_student_reports_wizard_form" model="ir.ui.view">
+            <field name="name">student.reports.wizard.form</field>
+            <field name="model">student.reports</field>
+            <field name="arch" type="xml">
+                <form string="Student Reports">
+                    <group>
+                        <field name="student_id"/>
+                        <field name="reports"/>
+                    </group>
+                    <footer>
+                        <button name="generate_report" string="Generate Report" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

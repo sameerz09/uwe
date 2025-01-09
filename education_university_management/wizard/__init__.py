@@ -20,3 +20,4 @@
 #
 ###############################################################################
 from . import application_reject
+from . import student_reports
