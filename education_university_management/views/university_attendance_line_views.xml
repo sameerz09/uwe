@@ -48,6 +48,24 @@
             </tree>
         </field>
     </record>
+
+    <record id="university_attendance_line_search_view" model="ir.ui.view">
+    <field name="name">university.attendance.line.search</field>
+    <field name="model">university.attendance.line</field>
+    <field name="arch" type="xml">
+        <search>
+            <!-- Filter for attendance_type -->
+            <filter string="Absent" name="attendance_type_absent" domain="[('attendance_type', '=', 'absent')]" />
+
+            <!-- Date Grouping -->
+            <group expand="1" string="Group By">
+                <filter string="Date (Month)" name="group_date_month" context="{'group_by': 'date:month'}"/>
+                <filter string="Date (Day)" name="group_date_day" context="{'group_by': 'date:day'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
     <!--Menu action for viewing student attendance-->
     <record id="view_attendance_students_action"
             model="ir.actions.act_window">
@@ -65,4 +83,16 @@
         <field name="target">current</field>
         <field name="domain">[('batch_id', '=', active_id)]</field>
     </record>
+
+     <record id="view_attendance_absent_action" model="ir.actions.act_window">
+    <field name="name">Batch Attendance</field>
+    <field name="res_model">university.attendance.line</field>
+    <field name="view_mode">tree,form</field>
+    <field name="search_view_id" ref="university_attendance_line_search_view"/>
+    <field name="context">{'search_default_attendance_type_absent': 1, 'group_by': 'date'}</field>
+</record>
+
+       <menuitem id="university_absent_menu" name="Absent"
+              parent="menu_university_admission_root"
+              action="view_attendance_absent_action" sequence="10"/>
 </odoo>
