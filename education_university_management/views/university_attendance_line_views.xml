@@ -89,7 +89,7 @@
     <field name="res_model">university.attendance.line</field>
     <field name="view_mode">tree,form</field>
     <field name="search_view_id" ref="university_attendance_line_search_view"/>
-    <field name="context">{'search_default_attendance_type_absent': 1, 'group_by': 'date'}</field>
+    <field name="context">{'search_default_attendance_type_absent': 1, 'group_by': ['date:month', 'date:day']}</field>
 </record>
 
        <menuitem id="university_absent_menu" name="Absent"
