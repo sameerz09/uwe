@@ -43,6 +43,7 @@
         'data/data.xml',
         'wizard/application_reject_views.xml',
         'wizard/student_reports_wizard.xml',
+        'wizard/student_reports.xml',
         'views/education_university_management_menus.xml',
         'views/res_partner_views.xml',
         'views/fee_category_views.xml',
