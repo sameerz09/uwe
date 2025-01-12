@@ -13,7 +13,7 @@ class StudentReports(models.TransientModel):
     reports = fields.Selection(
         [
             ("marks", "Student  marks "),
-            ("schedule ", "Schedule "),
+            ("schedule", "Schedule "),
             ("study_letter", "Study letter"),
             ("withdraw_form", "Withdraw Form"),
         ],
@@ -33,8 +33,8 @@ class StudentReports(models.TransientModel):
             res = self.env['student.marks'].create(vals)
             return self.env.ref('education_university_management.action_student_marks_report').report_action(res)
         elif self.reports == "schedule":
-            pass
-
+            res = self.student_id.batch_id.timetable_id
+            return self.env.ref('education_university_management.report_timetable').report_action(res)
         elif self.reports == "study_letter":
             res = self.env['student.letter'].create(vals)
             return self.env.ref('education_university_management.action_study_letter_report').report_action(res)
