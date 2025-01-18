@@ -112,3 +112,23 @@ class StudentPortal(CustomerPortal):
             return request.render("portal.portal_my_home", values)
         else:
             return request.redirect('/home')
+
+    @http.route(['/helpdesk/submit_ticket'], type='http', auth='public', website=True)
+    def submit_ticket(self, **kwargs):
+        # Fetch available Helpdesk Teams
+        teams = request.env['helpdesk.team'].sudo().search([])
+        return request.render('website_helpdesk.ticket_submit_form', {
+            'teams': teams,
+        })
+
+    @http.route(['/website/form/helpdesk.ticket'], type='http', auth="public", website=True)
+    def website_form_ticket(self, **kwargs):
+        team_id = int(kwargs.get('team_id', 0))
+        ticket = request.env['helpdesk.ticket'].sudo().create({
+            'name': kwargs.get('name'),
+            'description': kwargs.get('description'),
+            'partner_name': kwargs.get('partner_name'),
+            'partner_email': kwargs.get('partner_email'),
+            'team_id': team_id,
+        })
+        return request.redirect('/your-ticket-has-been-submitted')

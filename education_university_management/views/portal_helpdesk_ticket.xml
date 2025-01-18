@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <!-- Inherit the Helpdesk Submit Ticket Form -->
+        <template id="ticket_submit_form_inherit" inherit_id="website_helpdesk.ticket_submit_form">
+            <!-- Locate the hidden 'team_id' input and modify it to make it visible -->
+            <xpath expr="//input[@name='team_id']" position="attributes">
+                <attribute name="type">text</attribute>
+            </xpath>
+        </template>
+    </data>
+</odoo>

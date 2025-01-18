@@ -32,7 +32,7 @@
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
     'website': 'https://www.cybrosys.com',
-    'depends': ['mail', 'hr_recruitment', 'account', 'website','sale'],
+    'depends': ['mail', 'hr_recruitment', 'account', 'website','sale', 'helpdesk', 'website_helpdesk'],
     'data': [
         'security/education_university_management_groups.xml',
         'security/ir.model.access.csv',
@@ -81,6 +81,7 @@
         'views/attendance_report_wizard_views.xml',
         'views/university_exam_result_views.xml',
         'views/student_fees_views.xml',
+        'views/portal_helpdesk_ticket.xml',
         'report/ir_actions_report.xml',
         'report/ir_actions_report_templates.xml',
         'report/timetable_schedule_reports.xml',
@@ -92,6 +93,7 @@
         'web.assets_frontend': [
             '/education_university_management/static/src/css/web_style.css',
             '/education_university_management/static/src/js/online_application.js'
+            # '/education_university_management/static/src/js/custom_form_handler.js',
         ],
         # 'web.report_assets_common': [
         #     'education_university_management/static/src/css/report_styles.css',
