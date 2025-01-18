@@ -21,4 +21,4 @@
 ###############################################################################
 from . import education_online_application
 from . import education_university_management
-from . import helpdesk_form_inherit
+# from . import helpdesk_form_inherit
