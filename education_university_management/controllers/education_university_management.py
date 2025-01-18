@@ -121,14 +121,14 @@ class StudentPortal(CustomerPortal):
             'teams': teams,
         })
 
-    @http.route(['/website/form/helpdesk.ticket'], type='http', auth="public", website=True)
-    def website_form_ticket(self, **kwargs):
-        team_id = int(kwargs.get('team_id', 0))
-        ticket = request.env['helpdesk.ticket'].sudo().create({
-            'name': kwargs.get('name'),
-            'description': kwargs.get('description'),
-            'partner_name': kwargs.get('partner_name'),
-            'partner_email': kwargs.get('partner_email'),
-            'team_id': team_id,
-        })
-        return request.redirect('/your-ticket-has-been-submitted')
+    # @http.route(['/website/form/helpdesk.ticket'], type='http', auth="public", website=True)
+    # def website_form_ticket(self, **kwargs):
+    #     team_id = int(kwargs.get('team_id', 0))
+    #     ticket = request.env['helpdesk.ticket'].sudo().create({
+    #         'name': kwargs.get('name'),
+    #         'description': kwargs.get('description'),
+    #         'partner_name': kwargs.get('partner_name'),
+    #         'partner_email': kwargs.get('partner_email'),
+    #         'team_id': team_id,
+    #     })
+    #     return request.redirect('/your-ticket-has-been-submitted')
