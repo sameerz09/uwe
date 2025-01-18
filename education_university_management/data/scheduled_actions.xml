@@ -1,0 +1,14 @@
+<odoo>
+    <data> <!-- Set noupdate="0" to recreate on upgrade -->
+        <record id="ir_cron_update_fee_descriptions" model="ir.cron">
+            <field name="name">Update Fee Descriptions</field>
+            <field name="model_id" ref="education_university_management.model_student_fees_line"/>
+            <field name="state">code</field>
+            <field name="code">model.update_fee_descriptions()</field>
+            <field name="interval_type">days</field>
+            <field name="interval_number">1</field>
+<!--            <field name="numbercall">-1</field> &lt;!&ndash; Ensure it runs indefinitely &ndash;&gt;-->
+            <field name="active">True</field> <!-- Set to True to activate -->
+        </record>
+    </data>
+</odoo>

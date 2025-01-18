@@ -37,30 +37,72 @@ class StudentFees(models.Model):
     def action_student_fees_done(self):
         self.state = 'done'
 
+    # def action_create_fees_line(self):
+    #     if self.search_count([('student_id', '=', self.student_id.id), ('fee_structure_id', '=', self.fee_structure_id.id), ('state', '=', 'done')]) == 1:
+    #         raise ValidationError(
+    #             _('Fees for this student on this fee structure already exists.'))
+    #     if len(self.fee_structure_id.structure_line_ids) < 1:
+    #         raise UserError(_('There are no fees in this Fee Structure'))
+    #     due_date = self.date
+    #     for fee in self.fee_structure_id.structure_line_ids:
+    #         if not fee.fee_type_id.is_registraion_fees:
+    #             # make the due date the 28 day of the month
+    #             due_date = fields.Date.to_string(fields.Date.from_string(due_date).replace(day=28))
+    #             if fee.fee_type_id.due_month:
+    #                 # make the month of the due date the same as the due month, the value of the due month is the month number
+    #                 due_date = fields.Date.to_string(fields.Date.from_string(due_date).replace(month=int(fee.fee_type_id.due_month)))
+    #         self.env['student.fees.line'].create(
+    #             {
+    #              'student_fees_id': self.id,
+    #              'fee_type_id': fee.fee_type_id.id,
+    #              'is_registraion_fees': fee.is_registraion_fees,
+    #              'fee_description': "fee.fee_description",
+    #              'due_amount': fee.due_amount,
+    #                 'due_date': due_date,
+    #             })
+    #         due_date = fields.Date.to_string(fields.Date.from_string(due_date) + relativedelta(months=1))
+    #     self.is_fees_created = True
+
     def action_create_fees_line(self):
-        if self.search_count([('student_id', '=', self.student_id.id), ('fee_structure_id', '=', self.fee_structure_id.id), ('state', '=', 'done')]) == 1:
+        if self.search_count(
+                [('student_id', '=', self.student_id.id), ('fee_structure_id', '=', self.fee_structure_id.id),
+                 ('state', '=', 'done')]) == 1:
             raise ValidationError(
-                _('Fees for this student on this fee structure already exists.'))
+                _('Fees for this student on this fee structure already exist.'))
         if len(self.fee_structure_id.structure_line_ids) < 1:
             raise UserError(_('There are no fees in this Fee Structure'))
+
         due_date = self.date
-        for fee in self.fee_structure_id.structure_line_ids:
-            if not fee.fee_type_id.is_registraion_fees:
-                # make the due date the 28 day of the month
+        sequence_number = 1  # Start numbering from 1 for non-registration fees
+
+        for index, fee in enumerate(self.fee_structure_id.structure_line_ids):
+            if fee.fee_type_id.is_registraion_fees:
+                # First line description should always be "Registration Fees"
+                description = "Registration Fees"
+            else:
+                # Other lines should follow the sequence 1, 2, 3, ...
+                description = str(sequence_number)
+                sequence_number += 1
+
+                # Adjust due date for non-registration fees
                 due_date = fields.Date.to_string(fields.Date.from_string(due_date).replace(day=28))
                 if fee.fee_type_id.due_month:
-                    # make the month of the due date the same as the due month, the value of the due month is the month number
-                    due_date = fields.Date.to_string(fields.Date.from_string(due_date).replace(month=int(fee.fee_type_id.due_month)))
-            self.env['student.fees.line'].create(
-                {
-                 'student_fees_id': self.id,
-                 'fee_type_id': fee.fee_type_id.id,
-                 'is_registraion_fees': fee.is_registraion_fees,
-                 'fee_description': fee.fee_description,
-                 'due_amount': fee.due_amount,
-                    'due_date': due_date,
-                })
+                    due_date = fields.Date.to_string(
+                        fields.Date.from_string(due_date).replace(month=int(fee.fee_type_id.due_month)))
+
+            # Create the student fee line
+            self.env['student.fees.line'].create({
+                'student_fees_id': self.id,
+                'fee_type_id': fee.fee_type_id.id,
+                'is_registraion_fees': fee.is_registraion_fees,
+                'fee_description': description,  # Use the dynamically set description
+                'due_amount': fee.due_amount,
+                'due_date': due_date,
+            })
+
+            # Increment the due date for the next fee line
             due_date = fields.Date.to_string(fields.Date.from_string(due_date) + relativedelta(months=1))
+
         self.is_fees_created = True
 
     def action_delete_fees_line(self):
