@@ -17,7 +17,7 @@ class AccountMove(models.Model):
                 ("payment_state", "!=", "paid"),
                 ("move_type", "in", ["out_invoice"]),
                 ("partner_id.unsubscribe_send_unpaid_invoice_mail", "=", False),
-                ("invoice_date_due", "=", today),
+                ("invoice_date_due", "<=", today),
             ])
             for invoice_id in invoice_ids:
                 access_token = invoice_id._portal_ensure_token()

@@ -1,0 +1,101 @@
+<odoo>
+    <data>
+        <!-- Report Action for Student Marks -->
+        <record id="action_student_marks_report" model="ir.actions.report">
+            <field name="name">Student Marks Report</field>
+            <field name="model">student.marks</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">education_university_management.student_marks_report_template</field>
+            <field name="binding_model_id" ref="model_student_marks"/>
+        </record>
+
+        <!-- Report Template for Student Marks -->
+        <template id="student_marks_report_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <h4>Student Marks Report</h4>
+                            <p><strong>Student Name:</strong> <t t-esc="o.student_id.last_name"/></p>
+                            <p><strong>Student ID:</strong> <t t-esc="o.student_id.id"/></p>
+<!--                            <p><strong>Program:</strong> <t t-esc="o.student_id.program_id.name"/></p>-->
+                            <p><strong>Program:</strong> test </p>
+                            <br/>
+                            <h5>Marks Details:</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Marks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+<!--                                    <t t-foreach="o.student_id.marks_ids" t-as="mark">-->
+<!--                                        <tr>-->
+<!--                                            <td><t t-esc="mark.subject_id.name"/></td>-->
+<!--                                            <td><t t-esc="mark.mark"/></td>-->
+<!--                                        </tr>-->
+<!--                                    </t>-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+         <!-- Report Action for Study Letter -->
+        <record id="action_study_letter_report" model="ir.actions.report">
+            <field name="name">Study Letter Report</field>
+            <field name="model">student.letter</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">education_university_management.study_letter_report_template</field>
+            <field name="binding_model_id" ref="model_student_letter"/>
+        </record>
+
+        <!-- Report Template for Study Letter -->
+        <template id="study_letter_report_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <h4>Student Letter</h4>
+                            <p><strong>Student Name:</strong> <t t-esc="o.student_id.last_name"/></p>
+                            <p><strong>Student ID:</strong> <t t-esc="o.student_id.id"/></p>
+<!--                              <p><strong>Program:</strong> <t t-esc="o.student_id.program_id.name"/></p>-->
+                            <p><strong>Program:</strong> test </p>
+                            <p>This is to certify that the above student is currently enrolled in our university.</p>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <!-- Report Action for Withdraw Form -->
+        <record id="action_withdraw_form_report" model="ir.actions.report">
+            <field name="name">Withdraw Form Report</field>
+            <field name="model">withdraw.form</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">education_university_management.withdraw_form_report_template</field>
+            <field name="binding_model_id" ref="model_withdraw_form"/>
+        </record>
+
+        <!-- Report Template for Withdraw Form -->
+        <template id="withdraw_form_report_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <h4>Withdraw Form</h4>
+                            <p><strong>Student Name:</strong> <t t-esc="o.student_id.last_name"/></p>
+                            <p><strong>Student ID:</strong> <t t-esc="o.student_id.id"/></p>
+                                                  <p><strong>Student ID:</strong> <t t-esc="o.student_id.id"/></p>
+<!--                              <p><strong>Program:</strong> <t t-esc="o.student_id.program_id.name"/></p>-->
+                            <p>This is to confirm that the above student has submitted a withdrawal form.</p>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
