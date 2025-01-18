@@ -82,7 +82,7 @@
         'views/attendance_report_wizard_views.xml',
         'views/university_exam_result_views.xml',
         'views/student_fees_views.xml',
-        'views/portal_helpdesk_ticket.xml',
+        # 'views/portal_helpdesk_ticket.xml',
         'report/ir_actions_report.xml',
         'report/ir_actions_report_templates.xml',
         'report/timetable_schedule_reports.xml',
