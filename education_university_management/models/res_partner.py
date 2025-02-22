@@ -42,11 +42,27 @@ class ResPartner(models.Model):
                 rec.student_no = False
 
     
+    # def _compute_display_name(self):
+    #     for rec in self:
+    #         rec.display_name = rec.name
+    #         if rec.student_no:
+    #             rec.display_name = rec.display_name + ' - ' + rec.student_no
+    @api.depends('name', 'student_no')
     def _compute_display_name(self):
+        """Compute display name including student full name and student number."""
         for rec in self:
-            rec.display_name = rec.name
-            if rec.student_no:
-                rec.display_name = rec.display_name + ' - ' + rec.student_no
+            student = self.env['university.student'].search([('partner_id', '=', rec.id)], limit=1)
+
+            if student:
+                full_name = student.name or ''
+                if student.middle_name:
+                    full_name += f" {student.middle_name}"
+                if student.last_name:
+                    full_name += f" {student.last_name}"
+
+                rec.display_name = f"{full_name} - {rec.student_no}" if rec.student_no else full_name
+            else:
+                rec.display_name = rec.name
 
     def get_student_name(self):
         for rec in self:

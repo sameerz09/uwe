@@ -35,6 +35,8 @@ class AccountMove(models.Model):
                                help="Student name that your going to "
                                     "make receipt", store=True,
                                related='student_id.partner_id.name')
+
+
     semester_id = fields.Many2one(related='student_id.semester_id',
                                   help="Semester of the student",
                                   string='Semester')
@@ -60,6 +62,21 @@ class AccountMove(models.Model):
     student_fees_id = fields.Many2one('student.fees',
                                       help="Student fees id",
                                       string='Student Fees')
+
+    # student_name = fields.Char(
+    #     string='Full Name',
+    #     compute='_compute_student_name',
+    #     store=True
+    # )
+    #
+    #
+    # @api.depends('student_id.partner_id.name', 'student_id.middle_name', 'student_id.last_name')
+    # def _compute_student_name(self):
+    #     for record in self:
+    #         first_name = record.student_id.partner_id.name or ''
+    #         middle_name = record.student_id.middle_name or ''
+    #         last_name = record.student_id.last_name or ''
+    #         record.student_name = f"{first_name} {middle_name} {last_name}".strip()
 
     @api.model_create_multi
     def create(self, vals):
