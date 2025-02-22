@@ -26,25 +26,30 @@
                             <field name="is_exam_result_created" invisible="1"/>
                         </group>
                     </group>
-                    <div style="padding-bottom: 10px;">
-                        <button style="padding: 1px 5px;background: #5fb18e !important;border-color: #63b892 !important;"
-                                string="Create Exam Result Table"
-                                name="action_create_exam_result_line"
-                                type="object"
-                                invisible="is_exam_result_created"
-                                class="oe_highlight"/>
-                    </div>
+<!--                    <div style="padding-bottom: 10px;">-->
+<!--                        <button style="padding: 1px 5px;background: #5fb18e !important;border-color: #63b892 !important;"-->
+<!--                                string="Create Exam Result Table"-->
+<!--                                name="action_create_exam_result_line"-->
+<!--                                type="object"-->
+<!--                                invisible="is_exam_result_created"-->
+<!--                                class="oe_highlight"/>-->
+<!--                    </div>-->
                     <div class="table_header_box"
-                         invisible="not is_exam_result_created">
+                         >
 
                         <field name="university_exam_result_line_ids"  readonly="state in ['done']">
-                            <tree editable="bottom" create="false"
-                                  delete="false">
+                            <tree editable="bottom" create="True"
+                                  delete="True">
                                 <field name="student_no"/>
-                                <field name="student_id" readonly="1"
-                                       style=" width: 500px; " string="First Name"/>
+                                <field name="student_id"/>
+                                <field name="student_first_name"
+                                        string="First Name"/>
                                 <field name="student_last_name"/>
+                                <field name="unit1"/>
+                                <field name="unit2"/>
                                 <field name="total_marks"/>
+                                <field name="percentage"/>
+                                <field name="grade"/>
                                 <field name="student_passed_state"/>
                             </tree>
                         </field>
