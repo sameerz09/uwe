@@ -87,6 +87,7 @@
         'report/timetable_schedule_reports.xml',
         'report/university_invoice.xml',
         'report/university_receipt.xml',
+        'views/university_degree_views.xml',
     ],
     'demo': ['demo/education_university_management_demo.xml'],
     'assets': {

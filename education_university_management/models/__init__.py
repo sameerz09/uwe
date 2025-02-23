@@ -62,3 +62,5 @@ from . import university_exam_result
 from . import university_exam_result_line
 from . import student_fees_line
 from . import student_fees
+from . import university_degree_result
+from . import university_degree_result_line
