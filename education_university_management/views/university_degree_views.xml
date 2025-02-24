@@ -10,7 +10,7 @@
                     <group>
                         <group>
                             <field name="student_id" required="1"/>
-                            <field name="year"/>
+                            <field name="semester_date"/>
                         </group>
                         <group>
                             <field name="gpa"/>
@@ -48,7 +48,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="student_id"/>
-                <field name="year"/>
+                <field name="semester_date"/>
                 <field name="gpa"/>
                 <field name="cumulative_gpa"/>
             </tree>

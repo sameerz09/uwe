@@ -21,19 +21,19 @@
                             <field name="batch_id"/>
                         </group>
                         <group>
-                            <field name="date"/>
+                            <field name="semester_date"/>
                             <field name="subject_id"/>
-                            <field name="is_exam_result_created" invisible="1"/>
+                            <field name="is_degree_result_created" invisible="1"/>
                         </group>
                     </group>
-<!--                    <div style="padding-bottom: 10px;">-->
-<!--                        <button style="padding: 1px 5px;background: #5fb18e !important;border-color: #63b892 !important;"-->
-<!--                                string="Create Exam Result Table"-->
-<!--                                name="action_create_exam_result_line"-->
-<!--                                type="object"-->
-<!--                                invisible="is_exam_result_created"-->
-<!--                                class="oe_highlight"/>-->
-<!--                    </div>-->
+                    <div style="padding-bottom: 10px;">
+                        <button style="padding: 1px 5px;background: #5fb18e !important;border-color: #63b892 !important;"
+                                string="Create Degree line in Table"
+                                name="action_create_degree_result_line"
+                                type="object"
+                                invisible="is_degree_result_created"
+                                class="oe_highlight"/>
+                    </div>
                     <div class="table_header_box"
                          >
 
@@ -72,7 +72,7 @@
             <tree>
                 <field name="name"/>
                 <field name="batch_id"/>
-                <field name="date"/>
+                <field name="semester_date"/>
                 <field name="subject_id"/>
                 <field name="state"/>
             </tree>

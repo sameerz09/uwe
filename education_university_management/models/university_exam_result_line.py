@@ -75,7 +75,7 @@ class UniversityExamResultLine(models.Model):
 
     student_no = fields.Char(
         string='Student Number',
-        help="Student number"
+        help="Student number", required=True
     )
 
     student_first_name = fields.Char(

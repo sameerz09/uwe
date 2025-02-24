@@ -10,10 +10,11 @@ class UniversityDegreeResult(models.Model):
     student_id = fields.Many2one(
         'university.student',
         string='Student',
-        help="Student associated with the degree result"
+        help="Student associated with the degree result",
+        required=True
     )
 
-    year = fields.Date(string="Semester Date",  required=True,
+    semester_date = fields.Date(string="Semester Date",  required=True,
                        help="Select date of semester")
 
     gpa = fields.Float(String="GPA")
