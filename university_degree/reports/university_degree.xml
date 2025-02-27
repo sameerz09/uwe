@@ -39,10 +39,10 @@
 <!--.output_styles_p{-->
 <!--    padding-left: 70px;-->
 <!--}-->
-<!--.edit_gpa_p{-->
-<!--    margin-left: 40px;-->
-<!--    font-weight: 600;-->
-<!--}-->
+.edit_gpa_p{
+    margin-left: 40px;
+    font-weight: 600;
+}
 .colectoer{
     width: 100% !important;
     height: 30px;
@@ -75,11 +75,15 @@
             <h5 class="fs-5 fw-border">Student Number</h5>
             <p class="tYPE_FIELDS"><t t-esc="o.student_id.student_no"/></p>
            </div>
-           <div >
-            <h3 class="fs-5 fw-border">Bachelor of Computer Engineering</h3>
-            <h3  style="display: inline-block;text-align:right; ">ACADEMIC TRANSCRIPT</h3>
-            <h3 class="fs-6 fw-border">UWA Computer Engineering Transfer Program Provided By  UWE</h3>
-           </div>
+           <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+               <h3 style="text-align: right; font-size: 16px;">ACADEMIC TRANSCRIPT</h3>
+    <div>
+        <h3 class="fs-5 fw-border">Bachelor of Computer Engineering</h3>
+        <h3 class="fs-6 fw-border">UWA Computer Engineering Transfer Program Provided By UWE</h3>
+    </div>
+
+</div>
+
      </div>
      <br/>
      <div class="d-flex justify-content-around align-items-center text-center">
@@ -93,18 +97,25 @@
                 <th >Course Code</th>
                 <th >Course Title</th>
                 <th >Unit</th>
+                <th >Unit</th>
+                  <th >Total Mark</th>
                 <th >Percentage</th>
                 <th >Grade</th>
               </tr>
             </thead>
             <tbody>
+                    <t t-foreach="o.courses_results" t-as="line">
               <tr>
-                <th scope="row">1</th>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
+
+                <th><t t-esc="line.course_code"/></th>
+                <td><t t-esc="line.course_title"/></td>
+                <td><t t-esc="line.unit1"/></td>
+                <td><t t-esc="line.unit2"/></td>
+                  <td><t t-esc="line.total_marks"/></td>
+                  <td><t t-esc="line.percentage"/></td>
+                <td><t t-esc="line.grade"/></td>
               </tr>
+                 </t>
             </tbody>
           </table>
      </div>
