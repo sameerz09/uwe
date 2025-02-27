@@ -18,31 +18,31 @@
     width: 150px;
     border-radius: 20px;
 }
-.tYPE_FIELDS{
-    padding-left: 100px;
-}
+<!--.tYPE_FIELDS{-->
+<!--    padding-left: 100px;-->
+<!--}-->
 
-.edit_filed{
-    margin-bottom: -10px !important;
-}
-.Bachelor{
-    padding-top: 20px !important;
-    font-weight: 900 !important;
-}
-thead{
-    font-weight: 900;
-}
+<!--.edit_filed{-->
+<!--    margin-bottom: -10px !important;-->
+<!--}-->
+<!--.Bachelor{-->
+<!--    padding-top: 20px !important;-->
+<!--    font-weight: 900 !important;-->
+<!--}-->
+<!--thead{-->
+<!--    font-weight: 900;-->
+<!--}-->
 
-.output_data{
-    margin-left: 300px;
-}
-.output_styles_p{
-    padding-left: 70px;
-}
-.edit_gpa_p{
-    margin-left: 40px;
-    font-weight: 600;
-}
+<!--.output_data{-->
+<!--    margin-left: 300px;-->
+<!--}-->
+<!--.output_styles_p{-->
+<!--    padding-left: 70px;-->
+<!--}-->
+<!--.edit_gpa_p{-->
+<!--    margin-left: 40px;-->
+<!--    font-weight: 600;-->
+<!--}-->
 .colectoer{
     width: 100% !important;
     height: 30px;
@@ -51,31 +51,33 @@ thead{
 }
 
 
-     th{
-         font-weight: 900;
-      }
-   td{
-         font-size: 15px;
-      }
+<!--     th{-->
+<!--         font-weight: 900;-->
+<!--      }-->
+<!--   td{-->
+<!--         font-size: 15px;-->
+<!--      }-->
 
  </style>
+                <t t-foreach="docs" t-as="o">
     <div class="container">
         <nav class="nav_item d-flex align-items-center justify-content-between">
             <img  class="image_head"  src="/university_degree/static/description/Pasted image.png"/>
-            <h3 class="fs-3 fw-bold">ACADEMIC TRANSCRIPT</h3>
+
      </nav>
      <div class="infermation_student">
            <div class="edit_filed d-flex align-items-center">
             <p class="fs-5 fw-border">Student Name</p>
-            <p class="tYPE_FIELDS">Nada Ahmed Moustafa</p>
+            <p class="tYPE_FIELDS"><t t-esc="o.student_id.name"/> <t t-esc="o.student_id.middle_name"/> <t t-esc="o.student_id.last_name"/> </p>
            </div>
 
            <div class="edit_filed d-flex align-items-center">
             <h5 class="fs-5 fw-border">Student Number</h5>
-            <p class="tYPE_FIELDS">11111</p>
+            <p class="tYPE_FIELDS"><t t-esc="o.student_id.student_no"/></p>
            </div>
-           <div class="Bachelor">
+           <div >
             <h3 class="fs-5 fw-border">Bachelor of Computer Engineering</h3>
+            <h3  style="display: inline-block;text-align:right; ">ACADEMIC TRANSCRIPT</h3>
             <h3 class="fs-6 fw-border">UWA Computer Engineering Transfer Program Provided By  UWE</h3>
            </div>
      </div>
@@ -83,16 +85,16 @@ thead{
      <div class="d-flex justify-content-around align-items-center text-center">
          <div style="padding-bottom:40ox;">
             <h6 class="fs-5 fw-bold">year</h6>
-             <p class="fs-5 fw-border">2024/3/1</p>
+             <p class="fs-5 fw-border"><t t-esc="o.semester_date"/></p>
          </div>
-        <table class="table table-borderless">
+        <table class="table table-borderless" style="width:80%">
             <thead>
-              <tr class="fs-6 fw-bold ">
-                <th scope="col">Course Code</th>
-                <th scope="col">Course Title</th>
-                <th scope="col">Unit</th>
-                <th scope="col">Percentage</th>
-                <th scope="col">Grade</th>
+              <tr style="width:80%">
+                <th >Course Code</th>
+                <th >Course Title</th>
+                <th >Unit</th>
+                <th >Percentage</th>
+                <th >Grade</th>
               </tr>
             </thead>
             <tbody>
@@ -106,56 +108,12 @@ thead{
             </tbody>
           </table>
      </div>
-     <div class="output " style="">
-        <h3 class="fw-border  fs-4">Credit Transfer Granted</h3>
-        <br/>
-
-         <table style="width:70%; border-collapse: collapse;margin:auto; position: relative; left: 100px;">
-    <tr>
-        <td style="text-align: left; width: 10%; white-space: nowrap;">COMPUTER NETWORKS</td>
-        <td style="text-align: center; width: 15%;">3</td>
-        <td style="text-align: right; width: 15%;">EX</td>
-    </tr>
-    <tr>
-        <td style="text-align: left;width: 10%; white-space: nowrap;">COMPUTER SYSTEMS</td>
-        <td style="text-align: center;">3</td>
-        <td style="text-align: right;">EX</td>
-    </tr>
-    <tr>
-        <td style="text-align: left;width: 10%; white-space: nowrap;">DESIGNING AND DEVELOPING A WEBSITE</td>
-        <td style="text-align: center;">3</td>
-        <td style="text-align: right;">EX</td>
-    </tr>
-    <tr>
-        <td style="text-align: left;width: 5%; white-space: nowrap;">DESIGNING AND DEVELOPING OBJECT-ORIENTED COMPUTER PROGRAMS</td>
-        <td style="text-align: center;">3</td>
-        <td style="text-align: right;">EX</td>
-    </tr>
-    <tr>
-        <td style="text-align: left;width: 10%; white-space: nowrap;">OFFICE SOLUTIONS DEVELOPMENT</td>
-        <td style="text-align: center;">3</td>
-        <td style="text-align: right;">EX</td>
-    </tr>
-    <tr>
-        <td style="text-align: left;width: 10%; white-space: nowrap;">SKILLS FOR COMPUTING</td>
-        <td style="text-align: center;">3</td>
-        <td style="text-align: right;">EX</td>
-    </tr>
-    <tr>
-        <td style="text-align: left; white-space: nowrap;">SOFTWARE DEVELOPMENT TECHNIQUES</td>
-        <td style="text-align: center;">3</td>
-        <td style="text-align: right;">EX</td>
-    </tr>
-</table>
-<br/>
-
-     </div>
      <div class="gpa">
           <div class="d-flex align-items-center">
             <p class="fs-5">Semester GPA:</p>
             <p class="edit_gpa_p">2.33</p>
           </div>
-          <p class="colectoer"></p>
+
           <div class="d-flex align-items-center">
             <p class="fs-5">Cumulative GPA :</p>
             <p class="edit_gpa_p">5050</p>
@@ -164,46 +122,7 @@ thead{
 
      <p class="colectoer"></p>
 
-     <div class="d-flex justify-content-around align-items-center text-center">
-         <div style="padding-bottom:40ox;">
-            <h6 class="fs-5 fw-bold">Year</h6>
-             <p class="fs-5 fw-border">2024/3/1</p>
-         </div>
-        <table class="table table-borderless">
-            <thead>
-              <tr class="fs-6 fw-bold ">
-                <th scope="col">Course Code</th>
-                <th scope="col">Course Title</th>
-                <th scope="col">Unit</th>
-                <th scope="col">Percentage</th>
-                <th scope="col">Grade</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-              </tr>
-            </tbody>
-          </table>
-     </div>
-     <br/>
-     <div class="gpa">
-        <div class="d-flex align-items-center">
-          <p class="fs-5">Semester GPA:</p>
-          <p class="edit_gpa_p">2.33</p>
-        </div>
 
-        <p class="colectoer"></p>
-
-        <div class="d-flex align-items-center">
-          <p class="fs-5">Cumulative GPA :</p>
-          <p class="edit_gpa_p">5050</p>
-        </div>
-   </div>
 
         <h2 class="fst-italic fs-3 fw-border">Amer Ahmad</h2>
         <div class="d-flex justify-content-between align-items-center" style="margin-left:40px;">
@@ -212,6 +131,7 @@ thead{
             <p class="fw-border fs-6 text-danger">Page 1 of 1</p>
         </div>
     </div>
+                    </t>
             </t>
         </t>
     </template>
