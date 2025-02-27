@@ -10,157 +10,135 @@
     </record>
 
     <template id="university_degree_report_template">
-
-             <t t-call="web.html_container">
+        <t t-call="web.html_container">
             <t t-call="web.basic_layout">
                 <style>
-.image_head{
-    width: 150px;
-    border-radius: 20px;
-}
-<!--.tYPE_FIELDS{-->
-<!--    padding-left: 100px;-->
-<!--}-->
+                    .image_head {
+                        width: 150px;
+                        border-radius: 20px;
+                    }
 
-<!--.edit_filed{-->
-<!--    margin-bottom: -10px !important;-->
-<!--}-->
-<!--.Bachelor{-->
-<!--    padding-top: 20px !important;-->
-<!--    font-weight: 900 !important;-->
-<!--}-->
-<!--thead{-->
-<!--    font-weight: 900;-->
-<!--}-->
+                    .edit_gpa_p {
+                        margin-left: 40px;
+                        font-weight: 600;
+                    }
 
-<!--.output_data{-->
-<!--    margin-left: 300px;-->
-<!--}-->
-<!--.output_styles_p{-->
-<!--    padding-left: 70px;-->
-<!--}-->
-.edit_gpa_p{
-    margin-left: 40px;
-    font-weight: 600;
-}
-.colectoer{
-    width: 100% !important;
-    height: 30px;
-    background-color: rgb(209, 209, 209);
-    margin-top: -10px;
-}
+                    .colectoer {
+                        width: 100% !important;
+                        height: 30px;
+                        background-color: rgb(209, 209, 209);
+                        margin-top: -10px;
+                    }
 
+                    .footer {
+                        position: fixed;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        text-align: center;
+                        padding: 10px;
+                        background-color: white;
+                        border-top: 1px solid #ccc;
+                    }
 
-<!--     th{-->
-<!--         font-weight: 900;-->
-<!--      }-->
-<!--   td{-->
-<!--         font-size: 15px;-->
-<!--      }-->
-
- </style>
+                    .footer p {
+                        display: inline-block;
+                        margin: 0 20px;
+                        font-size: 14px;
+                        font-weight: bold;
+                    }
+                </style>
                 <t t-foreach="docs" t-as="o">
-    <div class="container">
-        <nav class="nav_item d-flex align-items-center justify-content-between">
-            <img  class="image_head"  src="/university_degree/static/description/Pasted image.png"/>
-
-     </nav>
-     <div class="infermation_student">
-           <div class="edit_filed d-flex align-items-center">
-            <p class="fs-5 fw-border">Student Name</p>
-            <p class="tYPE_FIELDS"><t t-esc="o.student_id.name"/> <t t-esc="o.student_id.middle_name"/> <t t-esc="o.student_id.last_name"/> </p>
-           </div>
-
-           <div class="edit_filed d-flex align-items-center">
-            <h5 class="fs-5 fw-border">Student Number</h5>
-            <p class="tYPE_FIELDS"><t t-esc="o.student_id.student_no"/></p>
-           </div>
-           <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-               <h3 style="text-align: right; font-size: 16px;">ACADEMIC TRANSCRIPT</h3>
-    <div>
-        <h3 class="fs-5 fw-border">Bachelor of Computer Engineering</h3>
-        <h3 class="fs-6 fw-border">UWA Computer Engineering Transfer Program Provided By UWE</h3>
-    </div>
-
-</div>
-
-     </div>
-     <br/>
-     <div class="d-flex justify-content-around align-items-center text-center">
-         <div style="padding-bottom:40ox;">
-            <h6 class="fs-5 fw-bold">year</h6>
-             <p class="fs-5 fw-border"><t t-esc="o.semester_date"/></p>
-         </div>
-        <table class="table table-borderless" style="width:80%">
-            <thead>
-              <tr style="width:80%">
-                <th >Course Code</th>
-                <th >Course Title</th>
-                <th >Unit</th>
-                <th >Unit</th>
-                  <th >Total Mark</th>
-                <th >Percentage</th>
-                <th >Grade</th>
-              </tr>
-            </thead>
-            <tbody>
-                    <t t-foreach="o.courses_results" t-as="line">
-              <tr>
-
-                <th><t t-esc="line.course_code"/></th>
-                <td><t t-esc="line.course_title"/></td>
-                <td><t t-esc="line.unit1"/></td>
-                <td><t t-esc="line.unit2"/></td>
-                  <td><t t-esc="line.total_marks"/></td>
-                  <td><t t-esc="line.percentage"/></td>
-                <td><t t-esc="line.grade"/></td>
-              </tr>
-                 </t>
-            </tbody>
-          </table>
-     </div>
-     <div class="gpa">
-          <div class="d-flex align-items-center">
-            <p class="fs-5">Semester GPA:</p>
-            <p class="edit_gpa_p">2.33</p>
-          </div>
-
-          <div class="d-flex align-items-center">
-            <p class="fs-5">Cumulative GPA :</p>
-            <p class="edit_gpa_p">5050</p>
-          </div>
-     </div>
-
-     <p class="colectoer"></p>
-
-
-
-        <h2 class="fst-italic fs-3 fw-border">Amer Ahmad</h2>
-        <div class="d-flex justify-content-between align-items-center" style="margin-left:40px;">
-            <p  class="fw-border fs-6">Academic Officer:Dr. Amer Ahmad</p>
-            <p class="fw-border fs-6">Date of Issue:16 September 2024</p>
-            <p class="fw-border fs-6 text-danger">Page 1 of 1</p>
-        </div>
-    </div>
-                    </t>
+                    <div class="container">
+                        <nav class="nav_item d-flex align-items-center justify-content-between">
+                            <img class="image_head" src="/university_degree/static/description/Pasted image.png"/>
+                        </nav>
+                        <div class="infermation_student">
+                            <div class="edit_filed d-flex align-items-center">
+                                <p class="fs-5 fw-border">Student Name</p>
+                                <p class="tYPE_FIELDS"><t t-esc="o.student_id.name"/> <t t-esc="o.student_id.middle_name"/> <t t-esc="o.student_id.last_name"/></p>
+                            </div>
+                            <div class="edit_filed d-flex align-items-center">
+                                <h5 class="fs-5 fw-border">Student Number</h5>
+                                <p class="tYPE_FIELDS"><t t-esc="o.student_id.student_no"/></p>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <h3 style="text-align: right; font-size: 16px;">ACADEMIC TRANSCRIPT</h3>
+                                <div>
+                                    <h3 class="fs-5 fw-border">Bachelor of Computer Engineering</h3>
+                                    <h3 class="fs-6 fw-border">UWA Computer Engineering Transfer Program Provided By UWE</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="d-flex justify-content-around align-items-center text-center">
+                            <div style="padding-bottom:40px;">
+                                <h6 class="fs-5 fw-bold">Year</h6>
+                                <p class="fs-5 fw-border"><t t-esc="o.semester_date"/></p>
+                            </div>
+                            <table class="table table-borderless" style="width:80%">
+                                <thead>
+                                    <tr style="width:80%">
+                                        <th>Course Code</th>
+                                        <th>Course Title</th>
+                                        <th>Unit</th>
+                                        <th>Unit</th>
+                                        <th>Total Mark</th>
+                                        <th>Percentage</th>
+                                        <th>Grade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.courses_results" t-as="line">
+                                        <tr>
+                                            <th><t t-esc="line.course_code"/></th>
+                                            <td><t t-esc="line.course_title"/></td>
+                                            <td><t t-esc="line.unit1"/></td>
+                                            <td><t t-esc="line.unit2"/></td>
+                                            <td><t t-esc="line.total_marks"/></td>
+                                            <td><t t-esc="line.percentage"/></td>
+                                            <td><t t-esc="line.grade"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="gpa">
+                            <div class="d-flex align-items-center">
+                                <p class="fs-5">Semester GPA:</p>
+                                <p class="edit_gpa_p">2.33</p>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <p class="fs-5">Cumulative GPA:</p>
+                                <p class="edit_gpa_p">5050</p>
+                            </div>
+                        </div>
+                        <p class="colectoer"></p>
+                    </div>
+                </t>
             </t>
         </t>
+        <!-- Footer Section -->
+        <div class="footer">
+            <p > <span>Academic Officer:Dr. S.Alhabashneh</span> <span style="margin-left:40%">Date of Issue: 5 February 2025</span> </p>
+
+        </div>
     </template>
 
     <record id="university_degree" model="report.paperformat">
-            <field name="name">Invoice Report</field>
-			<field name="default" eval="True" />
-			<field name="format">custom</field>
-			<field name="page_height">0</field>
-			<field name="page_width">0</field>
-			<field name="orientation">Portrait</field>
-			<field name="margin_top">10</field>
-			<field name="margin_bottom">5</field>
-			<field name="margin_left">10</field>
-			<field name="margin_right">10</field>
-			<field name="header_line" eval="False" />
-			<field name="header_spacing">40</field>
-			<field name="dpi">90</field>
-            <field name="report_ids" eval="[(6,0,[ ref('university_degree.University_result')])]"/>
-        </record>
+        <field name="name">University Degree Report</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">40</field>
+        <field name="dpi">90</field>
+        <field name="report_ids" eval="[(6,0,[ref('university_degree.University_result')])]"/>
+    </record>
 </odoo>
