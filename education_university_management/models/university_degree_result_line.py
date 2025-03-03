@@ -23,7 +23,7 @@ class UniversityDegreeResultLine(models.Model):
         string='Course Title',
         help="Course Title"
     )
-    total_marks = fields.Float(string='Total Marks')
+    total_marks = fields.Char(string='Total Marks')
     unit1 = fields.Float(string='Unit 1', default=0)
     unit2 = fields.Float(string='Unit 2', default=0)
     percentage = fields.Char(string="Percentage", default="")
