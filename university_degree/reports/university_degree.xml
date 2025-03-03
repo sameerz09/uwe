@@ -48,19 +48,18 @@
                         font-weight: bold;
                     }
                 </style>
-                <t t-foreach="docs" t-as="o">
-                    <div class="container">
-                        <nav class="nav_item d-flex align-items-center justify-content-between">
+                <div class="container">
+                <nav class="nav_item d-flex align-items-center justify-content-between">
                             <img class="image_head" src="/university_degree/static/description/Pasted image.png"/>
                         </nav>
                         <div class="infermation_student">
                             <div class="edit_filed d-flex align-items-center">
-                                <p class="fs-5 fw-border">Student Name</p>
-                                <p class="tYPE_FIELDS"><t t-esc="o.student_id.name"/> <t t-esc="o.student_id.middle_name"/> <t t-esc="o.student_id.last_name"/></p>
+                                <p class="fs-5 fw-border">Student Name:</p>
+                                <p class="tYPE_FIELDS" style="margin-left:5px;"> <t t-esc="docs[0].student_id.name"/> <t t-esc="docs[0].student_id.middle_name"/> <t t-esc="docs[0].student_id.last_name"/></p>
                             </div>
                             <div class="edit_filed d-flex align-items-center">
-                                <h5 class="fs-5 fw-border">Student Number</h5>
-                                <p class="tYPE_FIELDS"><t t-esc="o.student_id.student_no"/></p>
+                                <h5 class="fs-5 fw-border">Student Number:</h5>
+                                <p class="tYPE_FIELDS" style="margin-left:5px;"> <t t-esc="docs[0].student_id.student_no"/></p>
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                                 <h3 style="text-align: right; font-size: 16px;">ACADEMIC TRANSCRIPT</h3>
@@ -71,6 +70,10 @@
                             </div>
                         </div>
                         <br/>
+                    <br/>
+                </div>
+                <t t-foreach="docs" t-as="o">
+                    <div class="container">
                         <div class="d-flex justify-content-around align-items-center text-center">
                             <div style="padding-bottom:40px;">
                                 <h6 class="fs-5 fw-bold">Year</h6>
@@ -108,14 +111,16 @@
                                 <p class="fs-5">Semester GPA:</p>
                                 <p class="edit_gpa_p">2.33</p>
                             </div>
-                            <div class="d-flex align-items-center">
-                                <p class="fs-5">Cumulative GPA:</p>
-                                <p class="edit_gpa_p">5050</p>
-                            </div>
                         </div>
                         <p class="colectoer"></p>
                     </div>
                 </t>
+                <div class="gpa" >
+                            <div class="d-flex align-items-center" style="margin-left:12px;">
+                                <p class="fs-5">Cumulative GPA:</p>
+                                <p class="edit_gpa_p">5050</p>
+                            </div>
+                        </div>
             </t>
         </t>
         <!-- Footer Section -->

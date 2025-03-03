@@ -24,3 +24,13 @@ class UniversityDegreeResult(models.Model):
         string='Degree Results Lines',
         help="Degree Results Lines associated with the degree result"
     )
+
+
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        docs = self.env['university.degree.result'].browse(docids)
+        return {
+            'doc_ids': docids,
+            'doc_model': 'university.degree.result',
+            'docs': docs,
+        }
