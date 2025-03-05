@@ -41,6 +41,7 @@
         'data/mail_template_data.xml',
         'data/mail_template_data_custom.xml',
         'data/data.xml',
+        'data/sever_actions.xml',
         'wizard/application_reject_views.xml',
         'wizard/student_reports_wizard.xml',
         'views/education_university_management_menus.xml',

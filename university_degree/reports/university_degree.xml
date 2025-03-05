@@ -123,7 +123,7 @@
                         </div>
                  <!-- Table before Footer Section -->
         <div class="container">
-        <table class="table table-bordered text-center">
+        <table class="table table-bordered text-center" style="width: 50%; ">
             <thead>
                 <tr>
                     <th>aaa</th>

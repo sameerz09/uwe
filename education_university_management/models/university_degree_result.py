@@ -1,6 +1,6 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-
+import base64
 
 class UniversityDegreeResult(models.Model):
     _name = 'university.degree.result'
@@ -84,3 +84,48 @@ class UniversityDegreeResult(models.Model):
             'doc_model': 'university.degree.result',
             'docs': docs,
         }
+
+    def action_send_degree(self):
+        """
+        Generate a single report for multiple records and send an email to the student.
+        """
+        # Ensure there are records selected
+        if not self:
+            raise UserError("No records selected!")
+
+        # Get the first student (assuming all selected records belong to the same student)
+        student = self[0].student_id
+        if not student.email:
+            raise UserError(f"Student {student.name} does not have an email address!")
+
+        # Get the report reference
+        report_ref = 'university_degree.University_result'
+        report = self.env['ir.actions.report']._get_report(report_ref)
+        if not report:
+            raise UserError(f"Report '{report_ref}' not found!")
+
+        # Generate the report for all selected records
+        report_data = self.env['ir.actions.report']._render_qweb_pdf(report_ref, res_ids=self.ids)
+
+        # Prepare email values
+        email_values = {
+            'subject': f"Degree Report for {student.name}",
+            'body_html': f"""
+                <p>Dear {student.name} {student.last_name},</p>
+                <p>Please find attached your degree.</p>
+                <p>Best regards,<br/>University Administration</p>
+            """,
+            'email_to': student.email,
+            'attachment_ids': [(0, 0, {
+                'name': f"Degree_Report_{student.name}.pdf",
+                'type': 'binary',
+                'datas': base64.b64encode(report_data[0]).decode(),
+            })],
+        }
+
+        # Send the email
+        self.env['mail.mail'].create(email_values).send()
+
+        # Log the action
+        message = f"Degree report sent to {student.name} ({student.email})."
+        self[0].message_post(body=message)
