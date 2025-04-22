@@ -25,7 +25,7 @@ class AccountPayment(models.Model):
 class AccountMove(models.Model):
     _inherit = ['account.move']
 
-    def _cron_fetch_unpaid_student(self,limit):
+    def _cron_fetch_unpaid_student(self, limit=None):
         date_now = fields.Date.today()
         print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',date_now)
         paid_invoices = self.search(

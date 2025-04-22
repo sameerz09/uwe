@@ -19,6 +19,6 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from . import education_online_application
-from . import education_university_management
+# from . import education_online_application
+# from . import education_university_management
 # from . import helpdesk_form_inherit
