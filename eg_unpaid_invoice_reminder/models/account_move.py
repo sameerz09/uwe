@@ -22,7 +22,6 @@ class AccountMove(models.Model):
         batch_size = 5
         total_sent = 0
 
-        # Fetch invoices that are posted, unpaid, and customer type
         invoices = self.search([
             ("state", "=", "posted"),
             ("payment_state", "!=", "paid"),
@@ -78,24 +77,25 @@ class AccountMove(models.Model):
                             url=invoice_url
                         )
                     else:
-                        continue  # Not yet due or not the right day
+                        continue
 
-                    mail_values = {
+                    mail = self.env["mail.mail"].sudo().create({
                         "model": invoice._name,
                         "res_id": invoice.id,
                         "subject": subject,
-                        "body": body,
                         "body_html": body,
                         "email_to": partner.email,
                         "email_from": "Finance Department <notifications@uwuni.com>",
-                    }
-                    self.env["mail.mail"].sudo().create(mail_values).send()
+                        "state": "outgoing",  # Ensures retry if fails
+                    })
+
+                    mail.send()
                     total_sent += 1
                     _logger.info("✅ Sent '%s' to %s", subject, partner.email)
 
                 except Exception as e:
-                    _logger.exception("❌ Failed to send for invoice %s: %s", invoice.name, str(e))
+                    _logger.exception("❌ Failed to queue/send for invoice %s: %s", invoice.name, str(e))
 
-            time.sleep(2)  # Wait between batches
+            time.sleep(2)
 
-        _logger.info("📬 Total emails sent: %d", total_sent)
+        _logger.info("📬 Total emails queued or sent: %d", total_sent)
