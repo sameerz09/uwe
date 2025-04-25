@@ -124,6 +124,7 @@ class UniversityExamResultLine(models.Model):
         for rec in self:
             if rec.exam_result_id and rec.exam_result_id.subject_id:
                 pass_mark = rec.exam_result_id.subject_id.pass_mark
-                rec.student_passed_state = 'passed' if rec.total_marks >= pass_mark else 'not_passed'
+                if rec.total_marks != 'Eq':
+                   rec.student_passed_state = 'passed' if float(rec.total_marks) >= pass_mark else 'not_passed'
             else:
                 rec.student_passed_state = 'not_passed'
