@@ -121,10 +121,35 @@ class UniversityExamResultLine(models.Model):
 
     @api.onchange('total_marks')
     def onchange_total_marks(self):
+        """Validates total_marks input and updates student pass status.
+        Only accepts numeric values or 'Eq' as valid input.
+        Raises:
+            ValueError: If input is invalid with clear instructions.
+        """
         for rec in self:
-            if rec.exam_result_id and rec.exam_result_id.subject_id:
+            try:
+                if not rec.exam_result_id or not rec.exam_result_id.subject_id:
+                    rec.student_passed_state = 'not_passed'
+                    continue
+
                 pass_mark = rec.exam_result_id.subject_id.pass_mark
-                if rec.total_marks != 'Eq':
-                   rec.student_passed_state = 'passed' if float(rec.total_marks) >= pass_mark else 'not_passed'
-            else:
-                rec.student_passed_state = 'not_passed'
+
+                if rec.total_marks == 'Eq':
+                    continue  # Handle 'Eq' case if needed
+
+                try:
+                    marks = float(rec.total_marks)
+                    rec.student_passed_state = 'passed' if marks >= pass_mark else 'not_passed'
+                except (ValueError, TypeError):
+                    raise UserError(
+                        "Invalid input! Please enter either:\n"
+                        "- A numerical value (e.g., 85.5)\n"
+                        "- Or 'Eq' for special cases"
+                    )
+
+            except Exception as e:
+                raise UserError(
+                    "An error occurred while processing your input. "
+                    "Please ensure you've entered either a number or 'Eq'."
+                )
+
