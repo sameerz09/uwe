@@ -71,7 +71,7 @@ class UniversityExamResultLine(models.Model):
         help="Student associated with the exam result"
     )
 
-    total_marks = fields.Float(string='Total Marks')
+    total_marks = fields.Char(string='Total Marks')
 
     student_no = fields.Char(
         string='Student Number',
