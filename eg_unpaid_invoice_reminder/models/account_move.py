@@ -84,6 +84,7 @@ class AccountMove(models.Model):
                     "email_to": partner.email,
                     "email_from": "Finance Department <notifications@uwuni.com>",
                     "state": "outgoing",
+                    'auto_delete': False,
                 })
 
                 mail.send()
