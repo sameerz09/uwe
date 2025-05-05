@@ -1,4 +1,5 @@
 from odoo import models, fields, api, _
+import time
 from datetime import date, timedelta
 import logging
 
@@ -38,6 +39,7 @@ class AccountMove(models.Model):
         _logger.info("🔍 Found %s invoices needing reminders.", len(invoices))
 
         for invoice in invoices:
+            time.sleep(30)
             partner = invoice.partner_id
 
             if not partner.email:
