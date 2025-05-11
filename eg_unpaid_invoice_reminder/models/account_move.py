@@ -91,7 +91,7 @@ class AccountMove(models.Model):
                     "res_id": invoice.id,
                     "subject": subject,
                     "body_html": body_html,
-                    "email_to": partner.email,
+                    "email_to": ", ".join(filter(None, [partner.email, partner.university_mail])),
                     "email_from": "Finance Department <notifications@uwuni.com>",
                     "auto_delete": False,
                 }).send()
