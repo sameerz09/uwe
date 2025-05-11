@@ -100,7 +100,7 @@ class ResPartner(models.Model):
         for partner in partners:
             if partner.email or partner.university_mail:
                 # Backup original email
-                partner.personal_email = partner.email
+                partner.email = partner.university_mail
 
 
     # @api.model
