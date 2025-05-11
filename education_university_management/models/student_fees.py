@@ -1,6 +1,9 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 from dateutil.relativedelta import relativedelta
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class StudentFees(models.Model):
@@ -63,47 +66,134 @@ class StudentFees(models.Model):
     #         due_date = fields.Date.to_string(fields.Date.from_string(due_date) + relativedelta(months=1))
     #     self.is_fees_created = True
 
+    # def action_create_fees_line(self):
+    #     if self.search_count(
+    #             [('student_id', '=', self.student_id.id), ('fee_structure_id', '=', self.fee_structure_id.id),
+    #              ('state', '=', 'done')]) == 1:
+    #         raise ValidationError(
+    #             _('Fees for this student on this fee structure already exist.'))
+    #     if len(self.fee_structure_id.structure_line_ids) < 1:
+    #         raise UserError(_('There are no fees in this Fee Structure'))
+    #
+    #     due_date = self.date
+    #     sequence_number = 1  # Start numbering from 1 for non-registration fees
+    #
+    #     for index, fee in enumerate(self.fee_structure_id.structure_line_ids):
+    #         if fee.fee_type_id.is_registraion_fees:
+    #             # First line description should always be "Registration Fees"
+    #             description = "Registration Fees"
+    #         else:
+    #             # Other lines should follow the sequence 1, 2, 3, ...
+    #             description = str(sequence_number)
+    #             sequence_number += 1
+    #
+    #             # Adjust due date for non-registration fees
+    #             due_date = fields.Date.to_string(fields.Date.from_string(due_date).replace(day=28))
+    #             if fee.fee_type_id.due_month:
+    #                 due_date = fields.Date.to_string(
+    #                     fields.Date.from_string(due_date).replace(month=int(fee.fee_type_id.due_month)))
+    #
+    #         # Create the student fee line
+    #         self.env['student.fees.line'].create({
+    #             'student_fees_id': self.id,
+    #             'fee_type_id': fee.fee_type_id.id,
+    #             'is_registraion_fees': fee.is_registraion_fees,
+    #             'fee_description': description,  # Use the dynamically set description
+    #             'due_amount': fee.due_amount,
+    #             'due_date': due_date,
+    #         })
+    #
+    #         # Increment the due date for the next fee line
+    #         due_date = fields.Date.to_string(fields.Date.from_string(due_date) + relativedelta(months=1))
+    #
+    #     self.is_fees_created = True
+
     def action_create_fees_line(self):
-        if self.search_count(
-                [('student_id', '=', self.student_id.id), ('fee_structure_id', '=', self.fee_structure_id.id),
-                 ('state', '=', 'done')]) == 1:
-            raise ValidationError(
-                _('Fees for this student on this fee structure already exist.'))
+        if self.search_count([
+            ('student_id', '=', self.student_id.id),
+            ('fee_structure_id', '=', self.fee_structure_id.id),
+            ('state', '=', 'done')
+        ]) == 1:
+            raise ValidationError(_('Fees for this student on this fee structure already exist.'))
+
         if len(self.fee_structure_id.structure_line_ids) < 1:
             raise UserError(_('There are no fees in this Fee Structure'))
 
-        due_date = self.date
-        sequence_number = 1  # Start numbering from 1 for non-registration fees
+        installment_labels = [
+            "First installment", "Second installment", "Third installment", "Fourth installment",
+            "Fifth installment", "Sixth installment", "Seventh installment", "Eighth installment",
+            "Ninth installment", "Tenth installment", "Eleventh installment", "Twelfth installment"
+        ]
 
-        for index, fee in enumerate(self.fee_structure_id.structure_line_ids):
+        due_date = self.date
+        installment_index = 0  # Tracks index for installment labels
+
+        for fee in self.fee_structure_id.structure_line_ids:
             if fee.fee_type_id.is_registraion_fees:
-                # First line description should always be "Registration Fees"
                 description = "Registration Fees"
             else:
-                # Other lines should follow the sequence 1, 2, 3, ...
-                description = str(sequence_number)
-                sequence_number += 1
+                if installment_index < len(installment_labels):
+                    description = installment_labels[installment_index]
+                else:
+                    description = f"Extra installment {installment_index + 1}"
+                installment_index += 1
 
-                # Adjust due date for non-registration fees
-                due_date = fields.Date.to_string(fields.Date.from_string(due_date).replace(day=28))
+                # Adjust due date based on fee's due_month if specified
+                base_date = fields.Date.from_string(due_date)
                 if fee.fee_type_id.due_month:
-                    due_date = fields.Date.to_string(
-                        fields.Date.from_string(due_date).replace(month=int(fee.fee_type_id.due_month)))
+                    base_date = base_date.replace(month=int(fee.fee_type_id.due_month), day=28)
+                due_date = fields.Date.to_string(base_date)
 
             # Create the student fee line
             self.env['student.fees.line'].create({
                 'student_fees_id': self.id,
                 'fee_type_id': fee.fee_type_id.id,
                 'is_registraion_fees': fee.is_registraion_fees,
-                'fee_description': description,  # Use the dynamically set description
+                'fee_description': description,
                 'due_amount': fee.due_amount,
                 'due_date': due_date,
             })
 
-            # Increment the due date for the next fee line
+            # Increment due date for the next fee
             due_date = fields.Date.to_string(fields.Date.from_string(due_date) + relativedelta(months=1))
 
         self.is_fees_created = True
+
+    @api.model
+    def update_all_fee_descriptions(self):
+        _logger.info("🔁 Scheduled Action: Updating all fee descriptions...")
+
+        installment_labels = [
+            "First installment", "Second installment", "Third installment", "Fourth installment",
+            "Fifth installment", "Sixth installment", "Seventh installment", "Eighth installment",
+            "Ninth installment", "Tenth installment", "Eleventh installment", "Twelfth installment"
+        ]
+
+        records = self.search([])
+
+        for record in records:
+            fee_lines = record.student_fees_line_ids.sorted('id')
+            installment_index = 0
+            due_date = record.date or fields.Date.today()
+
+            for line in fee_lines:
+                if line.is_registraion_fees:
+                    line.fee_description = "Registration Fees"
+                else:
+                    if installment_index < len(installment_labels):
+                        line.fee_description = installment_labels[installment_index]
+                    else:
+                        line.fee_description = f"Extra installment {installment_index + 1}"
+                    installment_index += 1
+
+                    # Adjust due date for existing lines based on due_month if needed
+                    base_date = fields.Date.from_string(due_date)
+                    if line.fee_type_id.due_month:
+                        base_date = base_date.replace(month=int(line.fee_type_id.due_month), day=28)
+                    line.due_date = fields.Date.to_string(base_date)
+                    due_date = base_date + relativedelta(months=1)
+
+        _logger.info("✅ Fee descriptions updated for all records.")
 
     def action_delete_fees_line(self):
         self.student_fees_line_ids.unlink()
