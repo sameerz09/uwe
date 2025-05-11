@@ -13,7 +13,6 @@ class AccountMove(models.Model):
     def action_unpaid_invoice_reminder(self):
         _logger.info("📧 Starting daily unpaid invoice reminder process...")
 
-        # Check if reminder feature is enabled
         config_key = "eg_unpaid_invoice_reminder.unpaid_invoice_reminder"
         reminder_enabled = self.env["ir.config_parameter"].sudo().get_param(config_key)
         if reminder_enabled != "True":
@@ -24,13 +23,12 @@ class AccountMove(models.Model):
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         total_sent = 0
 
-        # Search only for invoices that are overdue and not reminded today
         invoices = self.search([
             ("state", "=", "posted"),
             ("payment_state", "!=", "paid"),
             ("move_type", "=", "out_invoice"),
             ("partner_id.unsubscribe_send_unpaid_invoice_mail", "=", False),
-            "|",  # Either last_reminder_date is not today OR it's null
+            "|",
             ("last_reminder_date", "!=", today),
             ("last_reminder_date", "=", False),
         ])
@@ -42,8 +40,9 @@ class AccountMove(models.Model):
             time.sleep(30)
             partner = invoice.partner_id
 
-            if not partner.email:
-                _logger.warning("❌ Skipping %s: Partner %s has no email.", invoice.name, partner.name)
+            emails = list(filter(None, [partner.university_mail, partner.email]))
+            if not emails:
+                _logger.warning("❌ Skipping %s: Partner %s has no email addresses.", invoice.name, partner.name)
                 continue
 
             access_token = invoice._portal_ensure_token()
@@ -91,15 +90,14 @@ class AccountMove(models.Model):
                     "res_id": invoice.id,
                     "subject": subject,
                     "body_html": body_html,
-                    "email_to": ", ".join(filter(None, [partner.email, partner.university_mail])),
+                    "email_to": ", ".join(emails),
                     "email_from": "Finance Department <notifications@uwuni.com>",
                     "auto_delete": False,
                 }).send()
 
-                # Update the last reminder date
                 invoice.sudo().write({'last_reminder_date': today})
                 total_sent += 1
-                _logger.info("✅ Sent reminder for invoice %s to %s", invoice.name, partner.email)
+                _logger.info("✅ Sent reminder for invoice %s to %s", invoice.name, ", ".join(emails))
 
             except Exception as e:
                 _logger.exception("❌ Failed to send reminder for invoice %s: %s", invoice.name, str(e))
