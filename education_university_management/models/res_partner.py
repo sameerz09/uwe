@@ -33,6 +33,7 @@ class ResPartner(models.Model):
                                help="Enable if the partner is a parent")
     student_no = fields.Char(string="Student Number", help="Student Number", compute='_compute_student_no', readonly=True)
     university_mail = fields.Char(string="University Email", compute="_compute_university_mail", store=True)
+    personal_email = fields.Char(string="Personal Email", help="Alternative email used for personal communication")
 
     # @api.depends('email')
     def _compute_university_mail(self):
@@ -98,10 +99,8 @@ class ResPartner(models.Model):
         partners = self.search([])
         for partner in partners:
             if partner.email or partner.university_mail:
-                email = partner.email
-                university_email = partner.university_mail
-                partner.email = university_email
-                partner.university_mail = email
+                # Backup original email
+                partner.personal_email = partner.email
 
 
     # @api.model

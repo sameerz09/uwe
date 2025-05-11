@@ -24,6 +24,7 @@
             <xpath expr="//field[@name='vat']" position="after">
                 <field name="student_no"/>
                 <field name="university_mail"/>
+                <field name="personal_email"/>
             </xpath>
         </field>
     </record>
