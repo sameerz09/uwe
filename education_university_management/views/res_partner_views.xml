@@ -10,7 +10,7 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='internal_notes']" position="before">
-                <page name='education' string="Education">
+                <page name="education" string="Education">
                     <group name="container_education">
                         <group string="Student" name="student">
                             <field name="is_student"/>
@@ -23,6 +23,7 @@
             </xpath>
             <xpath expr="//field[@name='vat']" position="after">
                 <field name="student_no"/>
+                <field name="university_mail"/>
             </xpath>
         </field>
     </record>

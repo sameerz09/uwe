@@ -10,5 +10,17 @@
 <!--            <field name="numbercall">-1</field> &lt;!&ndash; Ensure it runs indefinitely &ndash;&gt;-->
             <field name="active">True</field> <!-- Set to True to activate -->
         </record>
+
+        <record id="ir_cron_update_university_emails" model="ir.cron">
+            <field name="name">Update University Emails</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">model.action_update_university_emails()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+        </record>
     </data>
 </odoo>

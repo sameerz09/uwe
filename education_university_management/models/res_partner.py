@@ -32,6 +32,14 @@ class ResPartner(models.Model):
     is_parent = fields.Boolean(string="Is a Parent",
                                help="Enable if the partner is a parent")
     student_no = fields.Char(string="Student Number", help="Student Number", compute='_compute_student_no', readonly=True)
+    university_mail = fields.Char(string="University Email", compute="_compute_university_mail", store=True)
+
+    # @api.depends('email')
+    def _compute_university_mail(self):
+        Student = self.env['university.student']
+        for partner in self:
+            student = Student.search([('email', '=', partner.email)], limit=1)
+            partner.university_mail = student.university_email if student else False
 
     def _compute_student_no(self):
         for rec in self:
@@ -76,6 +84,14 @@ class ResPartner(models.Model):
                 return studen_name
             else:
                 return False
+
+    @api.model
+    def action_update_university_emails(self):
+        partners = self.search([])
+        Student = self.env['university.student']
+        for partner in partners:
+            student = Student.search([('email', '=', partner.email)], limit=1)
+            partner.university_mail = student.university_email if student else False
 
 
     # @api.model
