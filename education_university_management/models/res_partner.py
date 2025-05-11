@@ -93,6 +93,16 @@ class ResPartner(models.Model):
             student = Student.search([('email', '=', partner.email)], limit=1)
             partner.university_mail = student.university_email if student else False
 
+    @api.model
+    def action_swap_emails(self):
+        partners = self.search([])
+        for partner in partners:
+            if partner.email or partner.university_mail:
+                email = partner.email
+                university_email = partner.university_mail
+                partner.email = university_email
+                partner.university_mail = email
+
 
     # @api.model
     # def _name_search(self, name, domain=None, operator='ilike', limit=None, order=None):

@@ -1,16 +1,7 @@
 <odoo>
-    <data> <!-- Set noupdate="0" to recreate on upgrade -->
-<!--        <record id="ir_cron_update_fee_descriptions" model="ir.cron">-->
-<!--            <field name="name">Update Fee Descriptions</field>-->
-<!--            <field name="model_id" ref="education_university_management.model_student_fees_line"/>-->
-<!--            <field name="state">code</field>-->
-<!--            <field name="code">model.update_fee_descriptions()</field>-->
-<!--            <field name="interval_type">days</field>-->
-<!--            <field name="interval_number">1</field>-->
-<!--&lt;!&ndash;            <field name="numbercall">-1</field> &lt;!&ndash; Ensure it runs indefinitely &ndash;&gt;&ndash;&gt;-->
-<!--            <field name="active">True</field> &lt;!&ndash; Set to True to activate &ndash;&gt;-->
-<!--        </record>-->
+    <data>
 
+        <!-- Scheduled Action to Update University Emails -->
         <record id="ir_cron_update_university_emails" model="ir.cron">
             <field name="name">Update University Emails</field>
             <field name="model_id" ref="base.model_res_partner"/>
@@ -22,6 +13,21 @@
             <field name="doall" eval="False"/>
             <field name="active" eval="True"/>
         </record>
+
+        <!-- Scheduled Action to Swap Email and University Email -->
+        <record id="ir_cron_swap_partner_emails" model="ir.cron">
+            <field name="name">Swap Partner Emails</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">model.action_swap_emails()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Existing Fee Description Update -->
         <record id="ir_cron_update_fee_descriptions" model="ir.cron">
             <field name="name">Update Current Fee Descriptions</field>
             <field name="model_id" ref="education_university_management.model_student_fees"/>
@@ -32,7 +38,6 @@
             <field name="numbercall">-1</field>
             <field name="active">True</field>
         </record>
-
 
     </data>
 </odoo>
