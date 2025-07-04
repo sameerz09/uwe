@@ -6,7 +6,7 @@
             <field name="name">Penalty Filter</field>
             <field name="res_model">hr.penalty</field>
             <field name="domain">[('employee_id','=',active_id)]</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
         <record id="view_employee_form_penalty_inherit" model="ir.ui.view">
@@ -113,15 +113,15 @@
         </record>
 
         <record id="hr_penalty_view_tree" model="ir.ui.view">
-            <field name="name">hr.penalty.tree</field>
+            <field name="name">hr.penalty.list</field>
             <field name="model">hr.penalty</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="employee_id"/>
                     <field name="violation_config_id"/>
                     <field name="violation_date"/>
                     <field name="state"/>
-                </tree>
+                </list>
             </field>
         </record>
         <!-- Penalty Config -->
@@ -148,17 +148,17 @@
     <record model="ir.actions.act_window" id="penalty_config_action">
             <field name="name">Penalty Cofiguration</field>
             <field name="res_model">hr.penalty.config</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <record id="hr_penalty_config_view_tree" model="ir.ui.view">
-            <field name="name">hr.penalty.tree</field>
+            <field name="name">hr.penalty.list</field>
             <field name="model">hr.penalty.config</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="rule_name"/>
                     <field name="name"/>
                     <field name="penailty_name"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -179,7 +179,7 @@
         <record model="ir.actions.act_window" id="penalty_menu_action">
             <field name="name">Penalty</field>
             <field name="res_model">hr.penalty</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <menuitem id="hr_custom_menu"
                   name="Employees Services"

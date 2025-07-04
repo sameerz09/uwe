@@ -19,15 +19,16 @@
     'depends' : ['hr','hr_contract','sale','account','hr_recruitment'],
 
     'data' : [
-        'security/security_view.xml',
-        'security/ir.model.access.csv',
-        'views/hr_penalty_view.xml',
-        'views/hr_tacher_attendance_view.xml',
-        'report/report.xml',
-        'report/penalty_template.xml',
+        # 'security/security_view.xml',
+        # 'security/ir.model.access.csv',
+        # 'views/hr_penalty_view.xml',
+        # 'views/hr_tacher_attendance_view.xml',
+        # 'report/report.xml',
+        # 'report/penalty_template.xml',
         'data/ir_sequence_data.xml',
-        'data/hr_salary_rule_data.xml',
-        'data/hr_payroll_structure_data.xml',
+        # 'data/hr_salary_rule_data.xml',
+        # 'data/hr_payroll_structure_data.xml',
+        'views/hr_contract_inherit_view.xml',
 
     ],
 
