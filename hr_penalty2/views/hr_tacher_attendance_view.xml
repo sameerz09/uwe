@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_teacher_attendance_view_form" model="ir.ui.view">
+            <field name="name">hr.teacher.attendance</field>
+            <field name="model">hr.teacher.attendance</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar"
+                           statusbar_visible="draft,approve"/>
+                        <button name="action_approve" type="object" string="Approved"
+                            invisible="state in ('approve')"
+                            class="btn-primary"/>
+                    </header>
+                    <sheet>
+                            <group>
+                                <field name="date"  required =  "1"  readonly = "state != 'draft'"/>
+                                <field name="employee_id"  required =  "1"  readonly = "state != 'draft'"/>
+                                <field name="contract_id"  required =  "1"  readonly = "state != 'draft'"/>
+                                <field name="struct_id"  required =  "1"  readonly = "state != 'draft'"/>
+                                <field name="course_id"  required =  "1"  readonly = "state != 'draft'"/>
+                                <field name="no_hours"  required =  "1"  readonly = "state != 'draft'"/>
+                                <field name="amount"  required =  "1"  readonly = "state != 'draft'"/>
+                            </group>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="hr_teacher_view_tree" model="ir.ui.view">
+            <field name="name">hr.teacher.attendance.list</field>
+            <field name="model">hr.teacher.attendance</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="employee_id"/>
+                    <field name="course_id"/>
+                    <field name="no_hours"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+        <menuitem id="hr_attendance_menu" name="Attendance" groups="base.group_user"
+                     parent="hr_penalty.hr_custom_menu"/>
+
+
+
+
+    <record model="ir.actions.act_window" id="teacher_attendance_menu_action">
+            <field name="name">Teacher Attendance</field>
+            <field name="res_model">hr.teacher.attendance</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    <menuitem id="teacher_attendance_action" name="Teacher Attendance" groups="base.group_user"
+                   action="teacher_attendance_menu_action" sequence="5" parent="hr_attendance_menu"/>
+
+    <record id="hr_contract_inherit_view_form" model="ir.ui.view">
+            <field name="name">hr.contract.inherit</field>
+            <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='wage']" position="after">
+                        <field name="amount_hour"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+
+</odoo>
