@@ -1,6 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hr_penalty_1,hr_penalty_name,model_hr_penalty,base.group_user,1,1,1,1
-access_hr_penalty_3,hr_penalty_config_name,model_hr_penalty_config,base.group_user,1,1,1,1
-access_hr_penalty_4,hr_violation_name,model_hr_violation,base.group_user,1,1,1,1
-access_hr_penalty_5,hr_teacher_attendance_name,model_hr_teacher_attendance,base.group_user,1,1,1,1
-

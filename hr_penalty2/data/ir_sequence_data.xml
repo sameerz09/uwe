@@ -9,13 +9,23 @@
 <!--        <field name="company_id" eval="False"/>-->
 <!--    </record>-->
 <!--    -->
-    <record id="ir_cron_update_month_days" model="ir.cron">
-        <field name="name">Update Number of Month Days</field>
-        <field name="model_id" ref="hr_contract.model_hr_contract"/>
+<!--    <record id="ir_cron_update_month_days" model="ir.cron">-->
+<!--        <field name="name">Update Number of Month Days</field>-->
+<!--        <field name="model_id" ref="hr_contract.model_hr_contract"/>-->
+<!--        <field name="state">code</field>-->
+<!--        <field name="code">model.update_number_of_month_days()</field>-->
+<!--        <field name="interval_number">1</field>-->
+<!--        <field name="interval_type">days</field>-->
+<!--        <field name="active">True</field>-->
+<!--    </record>-->
+
+    <record id="ir_cron_auto_grant_portal_access" model="ir.cron">
+        <field name="name">Auto Grant Portal Access</field>
+        <field name="model_id" ref="base.model_res_partner"/>
         <field name="state">code</field>
-        <field name="code">model.update_number_of_month_days()</field>
+        <field name="code">model.cron_auto_grant_portal_access()</field>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="active">True</field>
+        <field name="active">False</field>
     </record>
 </odoo>
