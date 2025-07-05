@@ -11,3 +11,5 @@ from . import hr_teacher_attendance
 # from . import hr_payslip
 from . import hr_contract_inherit
 from . import portal_access_grant
+from . import x_spend_income_report
+from . import overdue_report

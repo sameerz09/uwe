@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+        id="action_spend_income_report"
+        model="x_spend.income.report"
+        string="Spend Income Report"
+        report_type="qweb-pdf"
+        name="hr_penalty2.spend_income_report_template"
+        file="hr_penalty2.spend_income_report_template"
+        paperformat="hr_penalty2.paperformat_spend_income"
+    />
+</odoo>

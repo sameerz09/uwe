@@ -3,4 +3,5 @@ access_hr_penalty_1,hr_penalty_name,model_hr_penalty,base.group_user,1,1,1,1
 access_hr_penalty_3,hr_penalty_config_name,model_hr_penalty_config,base.group_user,1,1,1,1
 access_hr_penalty_4,hr_violation_name,model_hr_violation,base.group_user,1,1,1,1
 access_hr_penalty_5,hr_teacher_attendance_name,model_hr_teacher_attendance,base.group_user,1,1,1,1
-
+access_x_spend_income_report,x_spend_income_report,model_x_spend_income_report,,1,1,1,1
+access_overdue_debts_bills_report,overdue_debts_bills_report,model_overdue_debts_bills_report,,1,1,1,1

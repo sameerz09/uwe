@@ -1,105 +1,65 @@
-from odoo import models, fields, api, _
-import time
+from odoo import models, fields, api
 from datetime import date, timedelta
-import logging
+import base64
 
-_logger = logging.getLogger(__name__)
+class SpendIncomeReport(models.Model):
+    _name = 'x_spend.income.report'
+    _description = 'Monthly Spend and Income Report'
 
-class AccountMove(models.Model):
-    _inherit = "account.move"
+    @api.model
+    def compute_and_send_monthly_report(self):
+        today = fields.Date.today()
+        month_start = today.replace(day=1)
+        month_end = today
 
-    last_reminder_date = fields.Date(string="Last Reminder Date")  # Track the last sent date
-
-    def action_unpaid_invoice_reminder(self):
-        _logger.info("📧 Starting daily unpaid invoice reminder process...")
-
-        config_key = "eg_unpaid_invoice_reminder.unpaid_invoice_reminder"
-        reminder_enabled = self.env["ir.config_parameter"].sudo().get_param(config_key)
-        if reminder_enabled != "True":
-            _logger.warning("⚠️ Invoice reminder is disabled in settings. Exiting.")
-            return
-
-        today = date.today()
-        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-        total_sent = 0
-
-        invoices = self.search([
-            ("state", "=", "posted"),
-            ("payment_state", "!=", "paid"),
-            ("move_type", "=", "out_invoice"),
-            ("partner_id.unsubscribe_send_unpaid_invoice_mail", "=", False),
-            "|",
-            ("last_reminder_date", "!=", today),
-            ("last_reminder_date", "=", False),
+        # Income
+        invoices = self.env['account.move'].search([
+            ('move_type', '=', 'out_invoice'),
+            ('state', '=', 'posted'),
+            ('invoice_date', '>=', month_start),
+            ('invoice_date', '<=', month_end),
         ])
+        total_income = sum(inv.amount_total for inv in invoices)
 
-        pre_due_notice_date = today + timedelta(days=7)
-        _logger.info("🔍 Found %s invoices needing reminders.", len(invoices))
+        # Bills
+        bills = self.env['account.move'].search([
+            ('move_type', '=', 'in_invoice'),
+            ('state', '=', 'posted'),
+            ('invoice_date', '>=', month_start),
+            ('invoice_date', '<=', month_end),
+        ])
+        total_bills = sum(bill.amount_total for bill in bills)
 
-        for invoice in invoices:
-            time.sleep(30)
-            partner = invoice.partner_id
+        # Payroll
+        payslips = self.env['hr.payslip'].search([
+            ('state', '=', 'done'),
+            ('date_from', '>=', month_start),
+            ('date_to', '<=', month_end),
+        ])
+        total_payroll = sum(p.amount for p in payslips)
 
-            emails = list(filter(None, [partner.university_mail, partner.email]))
-            if not emails:
-                _logger.warning("❌ Skipping %s: Partner %s has no email addresses.", invoice.name, partner.name)
-                continue
+        total_outcome = total_bills + total_payroll
+        net_income = total_income - total_outcome
 
-            access_token = invoice._portal_ensure_token()
-            invoice_url = f"{base_url}/my/invoices/{invoice.id}?access_token={access_token}"
+        # 🟢 Build HTML body
+        body_html = f"""
+            <h2>Spend / Income Report – {today.strftime('%B %Y')}</h2>
+            <ul>
+                <li><strong>Total Income:</strong> {total_income:.2f}</li>
+                <li><strong>Total Bills:</strong> {total_bills:.2f}</li>
+                <li><strong>Total Payroll:</strong> {total_payroll:.2f}</li>
+                <li><strong>Total Outcome:</strong> {total_outcome:.2f}</li>
+                <li><strong>Net Income:</strong> {net_income:.2f}</li>
+            </ul>
+        """
 
-            if invoice.invoice_date_due == pre_due_notice_date:
-                subject = f"Upcoming Invoice Notification – {invoice.name}"
-                body_html = _(
-                    "<p>Hello <strong>{name}</strong>,</p>"
-                    "<p>This is a friendly reminder that your invoice <strong>{ref}</strong> "
-                    "is due in 7 days with an amount of <strong>{amount}</strong>.</p>"
-                    "<p>You can view it below:</p>"
-                    "<p><a href='{url}' style='background:#2196F3;color:white;padding:10px 20px;"
-                    "text-decoration:none;border-radius:5px;'>View Invoice</a></p>"
-                    "<p>Best regards,<br/>Finance Department</p>"
-                ).format(
-                    name=partner.name or "",
-                    ref=invoice.name or "",
-                    amount=invoice.amount_residual,
-                    url=invoice_url,
-                )
-            elif invoice.invoice_date_due < today:
-                subject = f"Overdue Invoice Reminder – {invoice.name}"
-                body_html = _(
-                    "<p>Hello <strong>{name}</strong>,</p>"
-                    "<p>This is a daily reminder that your invoice <strong>{ref}</strong> "
-                    "is overdue with an amount of <strong>{amount}</strong>.</p>"
-                    "<p>Please take action to avoid penalties:</p>"
-                    "<p><a href='{url}' style='background:#F44336;color:white;padding:10px 20px;"
-                    "text-decoration:none;border-radius:5px;'>Pay Invoice</a></p>"
-                    "<p>Best regards,<br/>Finance Department</p>"
-                ).format(
-                    name=partner.name or "",
-                    ref=invoice.name or "",
-                    amount=invoice.amount_residual,
-                    url=invoice_url,
-                )
-            else:
-                _logger.info("ℹ️ Skipping invoice %s: Not due soon or overdue.", invoice.name)
-                continue
+        # 🟢 Send the email — you can adjust recipients as needed
+        self.env['mail.mail'].sudo().create({
+            'subject': f'Spend & Income Report – {today.strftime("%B %Y")}',
+            'body_html': body_html,
+            'email_from': 'Finance Department <finance@yourcompany.com>',
+            'email_to': 'manager@yourcompany.com',  # 👈 adjust this!
+            'auto_delete': False,
+        }).send()
 
-            try:
-                self.env["mail.mail"].sudo().create({
-                    "model": invoice._name,
-                    "res_id": invoice.id,
-                    "subject": subject,
-                    "body_html": body_html,
-                    "email_to": ", ".join(emails),
-                    "email_from": "Finance Department <notifications@uwuni.com>",
-                    "auto_delete": False,
-                }).send()
-
-                invoice.sudo().write({'last_reminder_date': today})
-                total_sent += 1
-                _logger.info("✅ Sent reminder for invoice %s to %s", invoice.name, ", ".join(emails))
-
-            except Exception as e:
-                _logger.exception("❌ Failed to send reminder for invoice %s: %s", invoice.name, str(e))
-
-        _logger.info("📬 Total reminders sent today: %s", total_sent)
+        return True

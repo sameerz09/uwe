@@ -1,0 +1,27 @@
+<odoo>
+    <!-- 1️⃣ QWeb Template -->
+    <template id="spend_income_report_template">
+        <t t-name="hr_penalty2.spend_income_report_template">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Spend and Income Report - <t t-esc="docs['month']"/></h2>
+                    <p>Total Income: <t t-esc="docs['total_income']"/></p>
+                    <p>Total Bills: <t t-esc="docs['total_bills']"/></p>
+                    <p>Total Payroll: <t t-esc="docs['total_payroll']"/></p>
+                    <p>Total Outcome: <t t-esc="docs['total_outcome']"/></p>
+                    <p>Net Income: <t t-esc="docs['net_income']"/></p>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- 2️⃣ ir.actions.report definition -->
+    <report
+        id="action_spend_income_report"
+        model="x_spend.income.report"
+        string="Spend and Income Report"
+        report_type="qweb-pdf"
+        name="hr_penalty2.spend_income_report_template"
+        file="hr_penalty2.spend_income_report_template"
+    />
+</odoo>
