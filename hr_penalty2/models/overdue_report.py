@@ -153,7 +153,7 @@ class OverdueDebtsBillsReport(models.Model):
             'subject': f"Overdue Customer Invoices Report - {today.strftime('%B %Y')}",
             'body_html': html_content,
             'email_from': self.env.company.email or 'no-reply@example.com',
-            'email_to': 'sameerzuheeri@gmail.com',
+            'email_to': 'sameerzuheeri@gmail.com, sahel_alhabashneh@yahoo.com, Manager@uwuni.com',
         }).send()
 
         return True
