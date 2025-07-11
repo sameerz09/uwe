@@ -54,7 +54,7 @@ class FeeStructureLines(models.Model):
                                   related='fee_type_id.description_sale')
     first_scholarship_id = fields.Many2one('scholarship.type', string='First Scholarship')
     second_scholarship_id = fields.Many2one('scholarship.type', string='Second Scholarship')
-    due_amount = fields.Float('Due Amount', help="Due amount of the fee type", readonly=True, compute='_compute_due_amount')
+    due_amount = fields.Float('Due Amount', help="Due amount of the fee type", readonly=False, compute='_compute_due_amount')
     is_paid = fields.Boolean('Is Paid', help="To determine whether the fee type is paid or not", readonly=True)
 
 
@@ -69,9 +69,15 @@ class FeeStructureLines(models.Model):
     #     first_scholarship_percent = self.first_scholarship_id.percentage / 100
     #     second_scholarship_percent = self.second_scholarship_id.percentage / 100
     #     self.due_amount = self.fee_type_id.lst_price - (self.fee_type_id.lst_price * (first_scholarship_percent + second_scholarship_percent))
-        
+
     def _compute_due_amount(self):
         for rec in self:
-            first_scholarship_percent = rec.first_scholarship_id.percentage / 100
-            second_scholarship_percent = rec.second_scholarship_id.percentage / 100
-            rec.due_amount = rec.fee_type_id.lst_price - (rec.fee_type_id.lst_price * (first_scholarship_percent + second_scholarship_percent))
+            if rec.is_registraion_fees:
+                # إذا كانت رسوم تسجيل، خليه ياخذ المبلغ كامل بدون خصم
+                rec.due_amount = rec.fee_type_id.lst_price
+            else:
+                first_scholarship_percent = rec.first_scholarship_id.percentage / 100
+                second_scholarship_percent = rec.second_scholarship_id.percentage / 100
+                rec.due_amount = rec.fee_type_id.lst_price - (
+                        rec.fee_type_id.lst_price * (first_scholarship_percent + second_scholarship_percent)
+                )

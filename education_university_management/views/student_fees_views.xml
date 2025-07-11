@@ -36,6 +36,7 @@
                             <field name="is_fees_created" invisible="1"/>
                             <field name="academic_year_id"/>
                             <field name="date"/>
+<!--                            <field name="first_installment_date"/>-->
                         </group>
                     </group>
                     <div style="padding-bottom: 10px;">
