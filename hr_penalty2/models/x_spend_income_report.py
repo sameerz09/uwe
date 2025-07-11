@@ -26,8 +26,8 @@ class SpendIncomeReport(models.Model):
             customer_payments = self.env['account.payment'].search([
                 ('payment_type', '=', 'inbound'),
                 ('partner_type', '=', 'customer'),
-                ('create_date', '>=', month_start),
-                ('create_date', '<=', month_end),
+                ('date', '>=', month_start),
+                ('date', '<=', month_end),
                 ('state', '=', 'posted')
             ])
 
@@ -46,8 +46,8 @@ class SpendIncomeReport(models.Model):
             vendor_payments = self.env['account.payment'].search([
                 ('payment_type', '=', 'outbound'),
                 ('partner_type', '=', 'supplier'),
-                ('create_date', '>=', month_start),
-                ('create_date', '<=', month_end),
+                ('date', '>=', month_start),
+                ('date', '<=', month_end),
                 ('state', '=', 'posted')
             ])
 
