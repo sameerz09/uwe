@@ -79,7 +79,7 @@ class StudentFees(models.Model):
                 # Adjust due date based on fee's due_month if specified
                 base_date = fields.Date.from_string(due_date)
                 if fee.fee_type_id.due_month:
-                    base_date = base_date.replace(month=int(fee.fee_type_id.due_month), day=28)
+                    base_date = base_date.replace(month=int(fee.fee_type_id.due_month), day=1)
                 due_date = fields.Date.to_string(base_date)
 
             # Create the student fee line
@@ -127,7 +127,7 @@ class StudentFees(models.Model):
                     # Adjust due date for existing lines based on due_month if needed
                     base_date = fields.Date.from_string(due_date)
                     if line.fee_type_id.due_month:
-                        base_date = base_date.replace(month=int(line.fee_type_id.due_month), day=28)
+                        base_date = base_date.replace(month=int(line.fee_type_id.due_month), day=1)
                     line.due_date = fields.Date.to_string(base_date)
                     due_date = base_date + relativedelta(months=1)
 

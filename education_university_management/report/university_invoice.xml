@@ -6,13 +6,14 @@
                 <t t-call="web.basic_layout">
                     <div class="page">
                         <div class="row">
+                            <div class="col-6 text-right">
+                                <img class="logo" src="/web/image/res.company/1/logo" style="width:200px; height:200px;"/>
+                            </div>
                             <div class="col-6">
                                 <h2 style="color: #C0242D;">UWA</h2>
                                 <p>Dubai , United Arab Emirates</p>
                             </div>
-                            <div class="col-6 text-right">
-                                <img class="logo" src="/web/image/res.company/1/logo" style="width:200px; height:200px;"/>
-                            </div>
+
                         </div>
                         <!-- add line with color #C0242D-->
                         <div class="row">
