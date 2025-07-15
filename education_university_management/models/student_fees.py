@@ -49,7 +49,7 @@ class StudentFees(models.Model):
     def action_create_fees_line(self):
         if self.search_count([
             ('student_id', '=', self.student_id.id),
-            ('fee_structure_id', '=', self.fee_structure_id.id),
+            ('academic_year_id', '=', self.academic_year_id.id),
             ('state', '=', 'done')
         ]) == 1:
             raise ValidationError(_('Fees for this student on this fee structure already exist.'))
