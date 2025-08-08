@@ -15,7 +15,8 @@
 
     ],
     'data': [
-        'reports/university_degree.xml',  # Ensure the XML file exists and is valid
+        'reports/university_degree.xml',
+        'reports/university_degree_template.xml',
     ],
     'license': 'AGPL-3',
     'installable': True,
