@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="university_degree_report_template">
+    <t t-call="web.html_container">
+      <t t-foreach="docs" t-as="o">
+
+        <style>
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #e3e2d8;
+    font-size: 13px; /* reduced font size */
+  }
+
+  main {
+    margin: 0;
+    padding: 0;
+  }
+
+  .certificate-wrapper {
+    width: 100%;
+    background-color: #e3e2d8;
+    padding: 20px; /* reduced padding */
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  .separator {
+    text-align: center;
+    margin-top: -50px;
+    margin-bottom: 0px;
+  }
+
+  .certificate-header {
+    margin-top: -60px; /* slightly reduced */
+    margin-bottom: 10px;
+    margin-left: 80px; /* slightly tighter */
+  }
+
+  .company-logo {
+    width: 90px; /* smaller logo */
+    height: auto;
+    display: block;
+          padding: 10px 340px;
+  }
+
+  .subtitle {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .info-table, .grades-table, .gpa-summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background-color: #e3e2d8;
+    margin-top: 20px; /* reduced spacing */
+  }
+
+  .info-table td, .info-table th,
+  .grades-table td, .grades-table th,
+  .gpa-summary-table td, .gpa-summary-table th {
+    border: 1px solid #000;
+    padding: 4px 6px; /* tighter padding */
+    text-align: left;
+  }
+
+  .info-table th {
+    font-weight: bold;
+  }
+
+  .grades-table th {
+    background-color: #a02020;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .grades-table td {
+    text-align: center;
+  }
+
+  .semester-title {
+    font-weight: bold;
+    text-align: center;
+    font-size: 15px;
+    padding: 8px;
+    background-color: #e3e2d8;
+  }
+
+.gpa-summary-table {
+  width: 50%;
+  margin-top: 20px;
+  margin-left: 0;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-family: Arial, sans-serif;
+}
+
+.gpa-summary-table th,
+.gpa-summary-table td {
+  border: 1px solid #000;
+  padding: 4px;
+  text-align: center;
+  font-weight: normal;
+}
+
+.gpa-summary-table th {
+  background-color: #f2f2f2; /* Match grade-range-table */
+}
+
+
+
+  .grade-range-table {
+    width: 50%;
+    margin-top: 20px;
+    margin-left: 0;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+  }
+
+  .grade-range-table th,
+  .grade-range-table td {
+    border: 1px solid #000;
+    padding: 4px;
+    text-align: center;
+  }
+
+  .grade-range-table th {
+<!--    background-color: #f2f2f2;-->
+    font-weight: normal;
+    background-color: #f2f2f2;
+  }
+          .separator-bottom {
+  text-align: center;
+  margin-top: -200px; /* adjust spacing from content above */
+}
+
+.separator-bottom img {
+  width: 900px;
+  height: 180px;
+}
+
+</style>
+
+
+        <main>
+          <div class="certificate-wrapper">
+
+            <!-- Decorative Separator -->
+            <div class="separator">
+              <img
+                src="http://127.0.0.1:1717/university_degree/static/description/separator.png"
+                style="width: 900px; height: 180px;"
+                alt="Separator"
+              />
+            </div>
+            <!-- Header with text above logo -->
+            <div class="certificate-header" style="text-align: center;">
+              <div style="font-size: 24px; font-weight: 400; margin-bottom: 4px; margin-left: -60px;">
+  United World Education Academy
+</div>
+<div style="font-size: 28px; font-weight: bold; margin-bottom: 10px; margin-left: -60px;">
+  ACADEMIC CERTIFICATE
+</div>
+
+              <img
+                src="http://127.0.0.1:1717/university_degree/static/description/logo7.png"
+                class="company-logo"
+                alt="UW Academy Logo"
+              />
+            </div>
+
+
+            <!-- Logo -->
+<!--            <div class="certificate-header">-->
+<!--              <img-->
+<!--                src="http://127.0.0.1:1717/university_degree/static/description/logo7.png"-->
+<!--                class="company-logo"-->
+<!--                alt="UW Academy Logo"-->
+<!--              />-->
+<!--            </div>-->
+
+            <!-- Certificate Subtitle -->
+            <div class="subtitle">
+              Prepared for the UWA Business Administration
+              Transfer Program Provided by UWE
+            </div>
+<!--            <div class="subtitle">-->
+<!--              Prepared for the UWA <span style="background-color: #f6e58d;">Business Administration</span>-->
+<!--              Transfer Program Provided by UWE-->
+<!--            </div>-->
+
+            <!-- Student Information Table -->
+            <table class="info-table">
+              <tr>
+                <th>Student Name</th>
+                <td>Abdulla Arif Abdalla Mohamed Alzarooni</td>
+                <th>Student ID</th>
+                <td>BBAA25008</td>
+                <th>Date of Issue:</th>
+                <td>1 June 2025</td>
+              </tr>
+            </table>
+
+            <!-- Semester 1 -->
+            <div class="semester-title">Freshman 1<sup>st</sup> Semester</div>
+            <table class="grades-table">
+              <tr>
+                <th>Course Code</th>
+                <th>Course Title</th>
+                <th>Credit Hour</th>
+                <th>Mark</th>
+                <th>Grade (4.00)</th>
+                <th>Percentage</th>
+                <th>Grade</th>
+              </tr>
+              <tr>
+                <td>UWIT1</td><td>IT Skills 101</td><td>3</td><td>95</td><td>4</td><td>90-100%</td><td>A</td>
+              </tr>
+              <tr>
+                <td>UWE1</td><td>English 101</td><td>3</td><td>76</td><td>2</td><td>70-79%</td><td>C</td>
+              </tr>
+              <tr>
+                <td>WOBA002</td><td>Business Operations</td><td>3</td><td>74</td><td>2</td><td>70-79%</td><td>C</td>
+              </tr>
+              <tr>
+                <td>WOBA003</td><td>Business Communication Skills</td><td>3</td><td>85</td><td>3</td><td>80-89%</td><td>B</td>
+              </tr>
+              <tr>
+                <td>WOBA005</td><td>Leading And Managing Teams</td><td>3</td><td>88</td><td>3</td><td>80-89%</td><td>B</td>
+              </tr>
+            </table>
+
+            <!-- Semester 2 -->
+            <div class="semester-title">Freshman 2<sup>nd</sup> Semester</div>
+            <table class="grades-table">
+              <tr>
+                <th>Course Code</th>
+                <th>Course Title</th>
+                <th>Credit Hour</th>
+                <th>Mark</th>
+                <th>Grade (4.00)</th>
+                <th>Percentage</th>
+                <th>Grade</th>
+              </tr>
+<tr>
+  <td>UWIT2</td><td>IT Skills 102</td><td>3</td><td>81</td><td>3</td><td>80-89%</td><td>B</td>
+</tr>
+<tr>
+  <td>UWC S001</td><td>Social Media</td><td>3</td><td>87</td><td>3</td><td>80-89%</td><td>B</td>
+</tr>
+<tr>
+  <td>WOBA004</td><td>Introduction to Marketing</td><td>3</td><td>73</td><td>2</td><td>70-79%</td><td>C</td>
+</tr>
+<tr>
+  <td>WOBA006</td><td>Operating in a Global Context</td><td>3</td><td>78</td><td>2</td><td>70-79%</td><td>C</td>
+</tr>
+<tr>
+  <td>WOBA020</td><td>Introduction to Accounting</td><td>3</td><td>91</td><td>4</td><td>90-100%</td><td>A</td>
+</tr>
+
+
+
+            </table>
+
+            <!-- GPA Summary Table -->
+            <table class="gpa-summary-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>GPA Range (4.00)</th>
+                  <th>Letter Grade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Semester 1 GPA</td>
+                  <td>2.8</td>
+                  <td>C</td>
+                </tr>
+                <tr>
+                  <td>Semester 2 GPA</td>
+                  <td>2.8</td>
+                  <td>C</td>
+                </tr>
+                <tr>
+                  <td>Year 1 GPA</td>
+                  <td>2.8</td>
+                  <td>C</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Grading Explanation Table -->
+            <table class="grade-range-table">
+              <thead>
+                <tr>
+                  <th>Grade (%) Range</th>
+                  <th>GPA Range (4.00)</th>
+                  <th>Letter Grade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>90 - 100</td><td>4.00</td><td>A</td></tr>
+                <tr><td>80 - 89</td><td>3.00</td><td>B</td></tr>
+                <tr><td>70 - 79</td><td>2.00</td><td>C</td></tr>
+                <tr><td>60 - 69</td><td>1.00</td><td>D</td></tr>
+                <tr><td>0 - 59</td><td>0.00</td><td>F</td></tr>
+              </tbody>
+            </table>
+
+<table style="width: 100%; margin-top: 50px; text-align: center; font-family: Arial, sans-serif; border-collapse: collapse;">
+  <tr>
+    <!-- Registrar -->
+    <td style="background: none; border: none;">
+      <strong>Registrar</strong><br/>
+      <img src="http://127.0.0.1:1717/university_degree/static/description/mUstafa.png"
+           style="height: 50px; margin: 5px 0; border: none; background: none;"
+           alt="Registrar Signature"/><br/>
+      <hr style="width: 60%; border: 1px solid #000;"/>
+      Dr. Mostafa Eltemamy
+    </td>
+
+    <!-- Academic Coordinator -->
+    <td style="background: none; border: none;">
+      <strong>Academic Coordinator</strong><br/>
+      <img src="http://127.0.0.1:1717/university_degree/static/description/signature_george2.png"
+           style="height: 50px; margin: 5px 0; border: none; background: none;"
+           alt="Academic Coordinator Signature"/><br/>
+      <hr style="width: 60%; border: 1px solid #000;"/>
+      Dr. George Alkhouri
+    </td>
+
+    <!-- University Dean -->
+    <td style="background: none; border: none; position: relative; text-align: center;">
+  <strong>University Dean</strong><br/>
+
+  <!-- Seal above the signature -->
+  <img src="http://127.0.0.1:1717/university_degree/static/description/seal3.png"
+       style="position: absolute; top: 35px; left: 50%; transform: translateX(-50%);
+              height: 180px; opacity: 0.35; mix-blend-mode: multiply; z-index: 2;"
+       alt="University Seal"/>
+
+  <!-- Signature -->
+  <img src="http://127.0.0.1:1717/university_degree/static/description/mustafa.png"
+       style="height: 50px; margin: 5px 0; border: none; background: none; position: relative; z-index: 1;"
+       alt="University Dean Signature"/><br/>
+
+  <hr style="width: 60%; border: 1px solid #000;"/>
+  Dr. Sahel Alhabashneh
+</td>
+
+  </tr>
+</table>
+
+            <!-- Bottom Decorative Separator -->
+<div class="separator-bottom">
+  <img
+    src="http://127.0.0.1:1717/university_degree/static/description/separator.png"
+    alt="Bottom Separator"
+  />
+</div>
+
+
+
+
+
+          </div>
+
+
+        </main>
+
+      </t>
+    </t>
+  </template>
+</odoo>

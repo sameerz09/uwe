@@ -1,384 +1,221 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <template id="university_degree_report_template">
-    <t t-call="web.html_container">
-      <t t-foreach="docs" t-as="o">
+    <record id="University_result" model="ir.actions.report">
+        <field name="name">University Degree</field>
+        <field name="model">university.degree.result</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="binding_model_id" ref="education_university_management.model_university_degree_result"/>
+        <field name="binding_type">report</field>
+        <field name="report_name">university_degree.university_degree_report_template</field>
+    </record>
 
-        <style>
-  html, body {
-    margin: 0 !important;
-    padding: 0 !important;
-    background-color: #e3e2d8;
-    font-size: 13px; /* reduced font size */
-  }
+    <template id="university_degree_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <style>
+                    .image_head {
+                        width: 150px;
+                        border-radius: 20px;
+                    }
 
-  main {
-    margin: 0;
-    padding: 0;
-  }
+                    .edit_gpa_p {
+                        margin-left: 40px;
+                        font-weight: 600;
+                    }
 
-  .certificate-wrapper {
-    width: 100%;
-    background-color: #e3e2d8;
-    padding: 20px; /* reduced padding */
-    box-sizing: border-box;
-    position: relative;
-  }
+                    .colectoer {
+                        width: 100% !important;
+                        height: 30px;
+                        background-color: rgb(209, 209, 209);
+                        margin-top: -10px;
+                    }
 
-  .separator {
-    text-align: center;
-    margin-top: -20px;
-    margin-bottom: 5px;
-  }
+                    .footer {
+                        position: fixed;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        text-align: center;
+                        padding: 10px;
+                        background-color: white;
+                        border-top: 1px solid #ccc;
+                    }
 
-  .certificate-header {
-    margin-top: -40px; /* slightly reduced */
-    margin-bottom: 10px;
-    margin-left: 80px; /* slightly tighter */
-  }
-
-  .company-logo {
-    width: 90px; /* smaller logo */
-    height: auto;
-    display: block;
-          padding: 10px 340px;
-  }
-
-  .subtitle {
-    text-align: center;
-    font-size: 14px;
-    margin-bottom: 20px;
-  }
-
-  .info-table, .grades-table, .gpa-summary-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    background-color: #e3e2d8;
-    margin-top: 20px; /* reduced spacing */
-  }
-
-  .info-table td, .info-table th,
-  .grades-table td, .grades-table th,
-  .gpa-summary-table td, .gpa-summary-table th {
-    border: 1px solid #000;
-    padding: 4px 6px; /* tighter padding */
-    text-align: left;
-  }
-
-  .info-table th {
-    font-weight: bold;
-  }
-
-  .grades-table th {
-    background-color: #a02020;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-  }
-
-  .grades-table td {
-    text-align: center;
-  }
-
-  .semester-title {
-    font-weight: bold;
-    text-align: center;
-    font-size: 15px;
-    padding: 8px;
-    background-color: #e3e2d8;
-  }
-
-.gpa-summary-table {
-  width: 50%;
-  margin-top: 20px;
-  margin-left: 0;
-  border-collapse: collapse;
-  font-size: 13px;
-  font-family: Arial, sans-serif;
-}
-
-.gpa-summary-table th,
-.gpa-summary-table td {
-  border: 1px solid #000;
-  padding: 4px;
-  text-align: center;
-  font-weight: normal;
-}
-
-.gpa-summary-table th {
-  background-color: #f2f2f2; /* Match grade-range-table */
-}
-
-
-
-  .grade-range-table {
-    width: 50%;
-    margin-top: 20px;
-    margin-left: 0;
-    border-collapse: collapse;
-    font-family: Arial, sans-serif;
-    font-size: 13px;
-  }
-
-  .grade-range-table th,
-  .grade-range-table td {
-    border: 1px solid #000;
-    padding: 4px;
-    text-align: center;
-  }
-
-  .grade-range-table th {
-<!--    background-color: #f2f2f2;-->
-    font-weight: normal;
-    background-color: #f2f2f2;
-  }
-</style>
-
-
-        <main>
-          <div class="certificate-wrapper">
-
-            <!-- Decorative Separator -->
-            <div class="separator">
-              <img
-                src="http://127.0.0.1:1717/university_degree/static/description/separator.png"
-                style="width: 900px; height: 180px;"
-                alt="Separator"
-              />
-            </div>
-
-            <!-- Logo -->
-            <div class="certificate-header">
-              <img
-                src="http://127.0.0.1:1717/university_degree/static/description/logo7.png"
-                class="company-logo"
-                alt="UW Academy Logo"
-              />
-            </div>
-
-            <!-- Certificate Subtitle -->
-            <div class="subtitle">
-              Prepared for the UWA <span style="background-color: #f6e58d;">Business Administration</span>
-              Transfer Program Provided by UWE
-            </div>
-
-            <!-- Student Information Table -->
-            <table class="info-table">
-              <tr>
-                <th>Student Name</th>
-                <td>Abdulla Arif Abdalla Mohamed Alzarooni</td>
-                <th>Student ID</th>
-                <td>BBAA25008</td>
-                <th>Date of Issue:</th>
-                <td>1 June 2025</td>
-              </tr>
-            </table>
-
-            <!-- Semester 1 -->
-            <div class="semester-title">Freshman 1<sup>st</sup> Semester</div>
-            <table class="grades-table">
-              <tr>
-                <th>Course Code</th>
-                <th>Course Title</th>
-                <th>Credit Hour</th>
-                <th>Mark</th>
-                <th>Grade (4.00)</th>
-                <th>Percentage</th>
-                <th>Grade</th>
-              </tr>
-              <tr>
-                <td>UWIT1</td><td>IT Skills 101</td><td>3</td><td>95</td><td>4</td><td>90–100%</td><td>A</td>
-              </tr>
-              <tr>
-                <td>UWE1</td><td>English 101</td><td>3</td><td>76</td><td>2</td><td>70–79%</td><td>C</td>
-              </tr>
-              <tr>
-                <td>WOBA002</td><td>Business Operations</td><td>3</td><td>74</td><td>2</td><td>70–79%</td><td>C</td>
-              </tr>
-              <tr>
-                <td>WOBA003</td><td>Business Communication Skills</td><td>3</td><td>85</td><td>3</td><td>80–89%</td><td>B</td>
-              </tr>
-              <tr>
-                <td>WOBA005</td><td>Leading And Managing Teams</td><td>3</td><td>88</td><td>3</td><td>80–89%</td><td>B</td>
-              </tr>
-            </table>
-
-            <!-- Semester 2 -->
-            <div class="semester-title">Freshman 2<sup>nd</sup> Semester</div>
-            <table class="grades-table">
-              <tr>
-                <th>Course Code</th>
-                <th>Course Title</th>
-                <th>Credit Hour</th>
-                <th>Mark</th>
-                <th>Grade (4.00)</th>
-                <th>Percentage</th>
-                <th>Grade</th>
-              </tr>
-              <tr>
-                <td>UWIT2</td><td>IT Skills 102</td><td>3</td><td>81</td><td>3</td><td>80–89%</td><td>B</td>
-              </tr>
-              <tr>
-                <td>UWC S001</td><td>Social Media</td><td>3</td><td>87</td><td>3</td><td>80–89%</td><td>B</td>
-              </tr>
-              <tr>
-                <td>WOBA004</td><td>Introduction to Marketing</td><td>3</td><td>73</td><td>2</td><td>70–79%</td><td>C</td>
-              </tr>
-              <tr>
-                <td>WOBA006</td><td>Operating in a Global Context</td><td>3</td><td>78</td><td>2</td><td>70–79%</td><td>C</td>
-              </tr>
-              <tr>
-                <td>WOBA020</td><td>Introduction to Accounting</td><td>3</td><td>91</td><td>4</td><td>90–100%</td><td>A</td>
-              </tr>
-            </table>
-
-            <!-- GPA Summary Table -->
-            <table class="gpa-summary-table">
-              <thead>
+                    .footer p {
+                        display: inline-block;
+                        margin: 0 20px;
+                        font-size: 14px;
+                        font-weight: bold;
+                    }
+                </style>
+                <div class="container">
+                <nav class="nav_item d-flex align-items-center justify-content-between">
+                            <img class="image_head" src="/university_degree/static/description/Pasted image.png"/>
+                        </nav>
+                        <div class="infermation_student">
+                            <div class="edit_filed d-flex align-items-center">
+                                <p class="fs-5 fw-border">Student Name:</p>
+                                <p class="tYPE_FIELDS" style="margin-left:5px;"> <t t-esc="docs[0].student_id.name"/> <t t-esc="docs[0].student_id.middle_name"/> <t t-esc="docs[0].student_id.last_name"/></p>
+                            </div>
+                            <div class="edit_filed d-flex align-items-center">
+                                <h5 class="fs-5 fw-border">Student Number:</h5>
+                                <p class="tYPE_FIELDS" style="margin-left:5px;"> <t t-esc="docs[0].student_id.student_no"/></p>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <h3 style="text-align: right; font-size: 16px;">ACADEMIC TRANSCRIPT</h3>
+                                <div>
+                                    <h3 class="fs-5 fw-border">Bachelor of Computer Engineering</h3>
+                                    <h3 class="fs-6 fw-border">UWA Computer Engineering Transfer Program Provided By UWE</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    <br/>
+                </div>
+                <t t-foreach="docs" t-as="o">
+                    <div class="container">
+                        <div class="d-flex justify-content-around align-items-center text-center">
+                            <div style="padding-bottom:40px;">
+                                <h6 class="fs-5 fw-bold">Year</h6>
+                                <p class="fs-5 fw-border"><t t-esc="o.semester_date"/></p>
+                            </div>
+                            <table class="table table-borderless" style="width:80%">
+                                <thead>
+                                    <tr style="width:80%">
+                                        <th>Course Code</th>
+                                        <th>Course Title</th>
+                                        <th>Unit</th>
+                                        <th>Unit</th>
+                                        <th>Total Mark</th>
+                                        <th>Percentage</th>
+                                        <th>Grade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.courses_results" t-as="line">
+                                        <tr>
+                                            <td><t t-esc="line.course_code"/></td>
+                                            <td><t t-esc="line.course_title"/></td>
+                                            <td><t t-esc="line.unit1"/></td>
+                                            <td><t t-esc="line.unit2"/></td>
+                                            <td><t t-esc="line.total_marks"/></td>
+                                            <td><t t-esc="line.percentage"/></td>
+                                            <td><t t-esc="line.grade"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="gpa">
+                            <div class="d-flex align-items-center">
+                                <p class="fs-5">Semester GPA:</p>
+                                <p class="edit_gpa_p"><t t-esc="o.gpa"/></p>
+                            </div>
+                        </div>
+                        <p class="colectoer"></p>
+                    </div>
+                </t>
+                <div class="gpa" >
+                            <div class="d-flex align-items-center" style="margin-left:12px;">
+                                <p class="fs-5">Cumulative GPA:</p>
+                                <p class="edit_gpa_p"><t t-esc="docs[0].cumulative_gpa"/></p>
+                            </div>
+                        </div>
+                 <!-- Table before Footer Section -->
+        <div class="container">
+        <table class="table table-bordered text-center" style="width: 50%; ">
+            <thead>
                 <tr>
-                  <th></th>
-                  <th>GPA Range (4.00)</th>
-                  <th>Letter Grade</th>
+                    <th>aaa</th>
+                    <th>Percentage</th>
+                    <th>Percentage2</th>
+                    <th>Grade </th>
+                    <th>GPA</th>
                 </tr>
-              </thead>
-              <tbody>
+            </thead>
+            <tbody>
                 <tr>
-                  <td>Semester 1 GPA</td>
-                  <td>2.8</td>
-                  <td>C</td>
+                    <td>A</td>
+                    <td>92–100%</td>
+                    <td>92</td>
+                    <td>A</td>
+                    <td>4</td>
                 </tr>
                 <tr>
-                  <td>Semester 2 GPA</td>
-                  <td>2.8</td>
-                  <td>C</td>
+                    <td>A-</td>
+                    <td>84–91%</td>
+                    <td>84</td>
+                    <td>A-</td>
+                    <td>3.5</td>
                 </tr>
                 <tr>
-                  <td>Year 1 GPA</td>
-                  <td>2.8</td>
-                  <td>C</td>
+                    <td>B</td>
+                    <td>76–83%</td>
+                    <td>76</td>
+                    <td>B</td>
+                    <td>3</td>
                 </tr>
-              </tbody>
-            </table>
-
-            <!-- Grading Explanation Table -->
-            <table class="grade-range-table">
-              <thead>
                 <tr>
-                  <th>Grade (%) Range</th>
-                  <th>GPA Range (4.00)</th>
-                  <th>Letter Grade</th>
+                    <td>B-</td>
+                    <td>68–75%</td>
+                    <td>68</td>
+                    <td>B-</td>
+                    <td>2.5</td>
                 </tr>
-              </thead>
-              <tbody>
-                <tr><td>90 - 100</td><td>4.00</td><td>A</td></tr>
-                <tr><td>80 - 89</td><td>3.00</td><td>B</td></tr>
-                <tr><td>70 - 79</td><td>2.00</td><td>C</td></tr>
-                <tr><td>60 - 69</td><td>1.00</td><td>D</td></tr>
-                <tr><td>0 - 59</td><td>0.00</td><td>F</td></tr>
-              </tbody>
-            </table>
-                        <!-- Academic Signatures -->
-            <!-- Academic Signatures -->
-<!--            <table style="width: 100%; margin-top: 50px; text-align: center; font-family: Arial, sans-serif; border-collapse: collapse;">-->
-<!--              <tr>-->
-<!--                <td style="background: none; border: none;">-->
-<!--                  <strong>Registrar</strong><br/>-->
-<!--                  <img src="http://127.0.0.1:1717/university_degree/static/description/signature_mostafa.png"-->
-<!--                       style="height: 50px; margin: 5px 0; border: none; background: none;" alt="Registrar Signature"/><br/>-->
-<!--                  <hr style="width: 60%; border: 1px solid #000;"/>-->
-<!--                  Dr. Mostafa Eltemamy-->
-<!--                </td>-->
-<!--                <td style="background: none; border: none;">-->
-<!--                  <strong>Academic Coordinator</strong><br/>-->
-<!--                  <img src="http://127.0.0.1:1717/university_degree/static/description/signature_george.png"-->
-<!--                       style="height: 50px; margin: 5px 0; border: none; background: none;" alt="Academic Coordinator Signature"/><br/>-->
-<!--                  <hr style="width: 60%; border: 1px solid #000;"/>-->
-<!--                  Dr. George Alkhouri-->
-<!--                </td>-->
-<!--                <td style="background: none; border: none;">-->
-<!--                  <strong>Academic Manager</strong><br/>-->
-<!--                  <img src="http://127.0.0.1:1717/university_degree/static/description/signature_sahel.png"-->
-<!--                       style="height: 50px; margin: 5px 0; border: none; background: none;" alt="Academic Manager Signature"/><br/>-->
-<!--                  <hr style="width: 60%; border: 1px solid #000;"/>-->
-<!--                  Dr. Sahel Alhabashneh-->
-<!--                </td>-->
-<!--              </tr>-->
-<!--            </table>-->
-            <!-- Academic Signatures -->
-<table style="width: 100%; margin-top: 50px; text-align: center; font-family: Arial, sans-serif; border-collapse: collapse;">
-  <tr>
-    <td style="background: none; border: none;">
-      <strong>Registrar</strong><br/>
-      <img src="http://127.0.0.1:1717/university_degree/static/description/signature_mostafa.png"
-           style="height: 50px; margin: 5px 0; border: none; background: none;" alt="Registrar Signature"/><br/>
-      <hr style="width: 60%; border: 1px solid #000;"/>
-      Dr. Mostafa Eltemamy
-    </td>
-    <td style="background: none; border: none;">
-      <strong>Academic Coordinator</strong><br/>
-      <img src="http://127.0.0.1:1717/university_degree/static/description/signature_george.png"
-           style="height: 50px; margin: 5px 0; border: none; background: none;" alt="Academic Coordinator Signature"/><br/>
-      <hr style="width: 60%; border: 1px solid #000;"/>
-      Dr. George Alkhouri
-    </td>
-    <td style="background: none; border: none; position: relative;">
-  <strong>Academic Manager</strong><br/>
+                <tr>
+                    <td>C</td>
+                    <td>60–67%</td>
+                    <td>60</td>
+                    <td>C</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>C-</td>
+                    <td>55–59%</td>
+                    <td>55</td>
+                    <td>C-</td>
+                    <td>1.5</td>
+                </tr>
+                <tr>
+                    <td>D</td>
+                    <td>50–54%</td>
+                    <td>50</td>
+                    <td>D</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>F</td>
+                    <td>0–49%</td>
+                    <td>0</td>
+                    <td>F</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+            </t>
+        </t>
+        <!-- Footer Section -->
+        <div class="footer">
+            <p > <span>Academic Officer:Dr. S.Alhabashneh</span> <span style="margin-left:40%">Date of Issue: 5 February 2025</span> </p>
 
-  <!-- Signature with seal overlay -->
-  <div style="position: relative; display: inline-block;">
-    <img src="http://127.0.0.1:1717/university_degree/static/description/signature_sahel.png"
-         style="height: 50px; margin: 5px 0; border: none; background: none;" alt="Academic Manager Signature"/>
+        </div>
+    </template>
 
-    <!-- Seal overlay -->
-    <img src="http://127.0.0.1:1717/university_degree/static/description/seal.png"
-         style="position: absolute; top: 0; left: 0; height: 50px; opacity: 0.4;" alt="Seal Overlay"/>
-  </div>
-
-  <br/>
-  <hr style="width: 60%; border: 1px solid #000;"/>
-  Dr. Sahel Alhabashneh
-</td>
-
-  </tr>
-</table>
-            <!-- Bottom Decorative Separator -->
-<!-- Bottom Decorative Separator -->
-<!--<div class="separator">-->
-<!--  <img-->
-<!--    src="http://127.0.0.1:1717/university_degree/static/description/separator.png"-->
-<!--    style="width: 900px; height: 180px;"-->
-<!--    alt="Bottom Separator"-->
-<!--  />-->
-<!--</div>-->
-
-<!--&lt;!&ndash; Accreditation Logos &ndash;&gt;-->
-<!--<div style="width: 100%; text-align: center; margin-top: 10px;">-->
-<!--  <img src="http://127.0.0.1:1717/university_degree/static/description/office.png"-->
-<!--       alt="Ofqual Logo"-->
-<!--       style="height: 60px; margin-right: 40px;" />-->
-
-<!--  <img src="http://127.0.0.1:1717/university_degree/static/description/office2.png"-->
-<!--       alt="OTHM Logo"-->
-<!--       style="height: 60px;" />-->
-<!--</div>-->
-
-
-
-
-
-
-          </div>
-<!--          &lt;!&ndash; Official Seal &ndash;&gt;-->
-<!--<div style="text-align: right; margin-top: 30px;">-->
-<!--  <img src="http://127.0.0.1:1717/university_degree/static/description/seal.png"-->
-<!--       alt="Official Seal"-->
-<!--       style="height: 100px; opacity: 0.9;" />-->
-<!--</div>-->
-
-        </main>
-
-      </t>
-    </t>
-  </template>
+    <record id="university_degree" model="report.paperformat">
+        <field name="name">University Degree Report</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">40</field>
+        <field name="dpi">90</field>
+        <field name="report_ids" eval="[(6,0,[ref('university_degree.University_result')])]"/>
+    </record>
 </odoo>
