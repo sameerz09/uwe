@@ -1,221 +1,226 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="University_result" model="ir.actions.report">
-        <field name="name">University Degree</field>
-        <field name="model">university.degree.result</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="binding_model_id" ref="education_university_management.model_university_degree_result"/>
-        <field name="binding_type">report</field>
-        <field name="report_name">university_degree.university_degree_report_template</field>
-    </record>
+  <template id="university_degree_report_template">
+    <t t-call="web.html_container">
+      <t t-foreach="docs" t-as="o">
 
-    <template id="university_degree_report_template">
-        <t t-call="web.html_container">
-            <t t-call="web.basic_layout">
-                <style>
-                    .image_head {
-                        width: 150px;
-                        border-radius: 20px;
-                    }
+<style>
+  html, body { margin: 0 !important; padding: 0 !important; background-color: #e3e2d8; font-size: 13px; }
+  main { margin: 0; padding: 0; }
+  .certificate-wrapper { width: 100%; background-color: #e3e2d8; padding: 20px; box-sizing: border-box; position: relative; }
+  .separator { text-align: center; margin-top: -50px; margin-bottom: 0px; }
+  .certificate-header { margin-top: -60px; margin-bottom: 10px; margin-left: 80px; }
+  .company-logo { width: 90px; height: auto; display: block; padding: 10px 340px; }
+  .subtitle { text-align: center; font-size: 14px; margin-bottom: 20px; }
+  .info-table, .grades-table, .gpa-summary-table { width: 100%; border-collapse: collapse; font-size: 13px; background-color: #e3e2d8; margin-top: 20px; }
+  .info-table td, .info-table th,
+  .grades-table td, .grades-table th,
+  .gpa-summary-table td, .gpa-summary-table th { border: 1px solid #000; padding: 4px 6px; text-align: left; }
+  .info-table th { font-weight: bold; }
+  .grades-table th { background-color: #a02020; color: white; font-weight: bold; text-align: center; }
+  .grades-table td { text-align: center; }
+  .semester-title { font-weight: bold; text-align: center; font-size: 15px; padding: 8px; background-color: #e3e2d8; }
+  .gpa-summary-table { width: 50%; margin-top: 20px; margin-left: 0; border-collapse: collapse; font-size: 13px; font-family: Arial, sans-serif; }
+  .gpa-summary-table th, .gpa-summary-table td { border: 1px solid #000; padding: 4px; text-align: center; font-weight: normal; }
+  .gpa-summary-table th { background-color: #f2f2f2; }
+  .grade-range-table { width: 50%; margin-top: 20px; margin-left: 0; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 13px; }
+  .grade-range-table th, .grade-range-table td { border: 1px solid #000; padding: 4px; text-align: center; }
+  .grade-range-table th { background-color: #f2f2f2; font-weight: normal; }
+  .separator-bottom { text-align: center; margin-top: -200px; }
+  .separator-bottom img { width: 900px; height: 180px; }
+</style>
 
-                    .edit_gpa_p {
-                        margin-left: 40px;
-                        font-weight: 600;
-                    }
+        <main>
+          <div class="certificate-wrapper">
 
-                    .colectoer {
-                        width: 100% !important;
-                        height: 30px;
-                        background-color: rgb(209, 209, 209);
-                        margin-top: -10px;
-                    }
+            <!-- Decorative Separator -->
+            <div class="separator">
+              <img src="http://127.0.0.1:1717/university_degree/static/description/separator.png"
+                   style="width: 900px; height: 180px;" alt="Separator"/>
+            </div>
 
-                    .footer {
-                        position: fixed;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        text-align: center;
-                        padding: 10px;
-                        background-color: white;
-                        border-top: 1px solid #ccc;
-                    }
+            <!-- Header with text above logo -->
+            <div class="certificate-header" style="text-align: center;">
+              <div style="font-size: 24px; font-weight: 400; margin-bottom: 4px; margin-left: -60px;">
+                United World Education Academy
+              </div>
+              <div style="font-size: 28px; font-weight: bold; margin-bottom: 10px; margin-left: -60px;">
+                ACADEMIC CERTIFICATE
+              </div>
+              <img src="http://127.0.0.1:1717/university_degree/static/description/logo7.png"
+                   class="company-logo" alt="UW Academy Logo"/>
+            </div>
 
-                    .footer p {
-                        display: inline-block;
-                        margin: 0 20px;
-                        font-size: 14px;
-                        font-weight: bold;
-                    }
-                </style>
-                <div class="container">
-                <nav class="nav_item d-flex align-items-center justify-content-between">
-                            <img class="image_head" src="/university_degree/static/description/Pasted image.png"/>
-                        </nav>
-                        <div class="infermation_student">
-                            <div class="edit_filed d-flex align-items-center">
-                                <p class="fs-5 fw-border">Student Name:</p>
-                                <p class="tYPE_FIELDS" style="margin-left:5px;"> <t t-esc="docs[0].student_id.name"/> <t t-esc="docs[0].student_id.middle_name"/> <t t-esc="docs[0].student_id.last_name"/></p>
-                            </div>
-                            <div class="edit_filed d-flex align-items-center">
-                                <h5 class="fs-5 fw-border">Student Number:</h5>
-                                <p class="tYPE_FIELDS" style="margin-left:5px;"> <t t-esc="docs[0].student_id.student_no"/></p>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                                <h3 style="text-align: right; font-size: 16px;">ACADEMIC TRANSCRIPT</h3>
-                                <div>
-                                    <h3 class="fs-5 fw-border">Bachelor of Computer Engineering</h3>
-                                    <h3 class="fs-6 fw-border">UWA Computer Engineering Transfer Program Provided By UWE</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <br/>
-                    <br/>
-                </div>
-                <t t-foreach="docs" t-as="o">
-                    <div class="container">
-                        <div class="d-flex justify-content-around align-items-center text-center">
-                            <div style="padding-bottom:40px;">
-                                <h6 class="fs-5 fw-bold">Year</h6>
-                                <p class="fs-5 fw-border"><t t-esc="o.semester_date"/></p>
-                            </div>
-                            <table class="table table-borderless" style="width:80%">
-                                <thead>
-                                    <tr style="width:80%">
-                                        <th>Course Code</th>
-                                        <th>Course Title</th>
-                                        <th>Unit</th>
-                                        <th>Unit</th>
-                                        <th>Total Mark</th>
-                                        <th>Percentage</th>
-                                        <th>Grade</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-foreach="o.courses_results" t-as="line">
-                                        <tr>
-                                            <td><t t-esc="line.course_code"/></td>
-                                            <td><t t-esc="line.course_title"/></td>
-                                            <td><t t-esc="line.unit1"/></td>
-                                            <td><t t-esc="line.unit2"/></td>
-                                            <td><t t-esc="line.total_marks"/></td>
-                                            <td><t t-esc="line.percentage"/></td>
-                                            <td><t t-esc="line.grade"/></td>
-                                        </tr>
-                                    </t>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="gpa">
-                            <div class="d-flex align-items-center">
-                                <p class="fs-5">Semester GPA:</p>
-                                <p class="edit_gpa_p"><t t-esc="o.gpa"/></p>
-                            </div>
-                        </div>
-                        <p class="colectoer"></p>
-                    </div>
-                </t>
-                <div class="gpa" >
-                            <div class="d-flex align-items-center" style="margin-left:12px;">
-                                <p class="fs-5">Cumulative GPA:</p>
-                                <p class="edit_gpa_p"><t t-esc="docs[0].cumulative_gpa"/></p>
-                            </div>
-                        </div>
-                 <!-- Table before Footer Section -->
-        <div class="container">
-        <table class="table table-bordered text-center" style="width: 50%; ">
-            <thead>
-                <tr>
-                    <th>aaa</th>
-                    <th>Percentage</th>
-                    <th>Percentage2</th>
-                    <th>Grade </th>
-                    <th>GPA</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>A</td>
-                    <td>92–100%</td>
-                    <td>92</td>
-                    <td>A</td>
-                    <td>4</td>
-                </tr>
-                <tr>
-                    <td>A-</td>
-                    <td>84–91%</td>
-                    <td>84</td>
-                    <td>A-</td>
-                    <td>3.5</td>
-                </tr>
-                <tr>
-                    <td>B</td>
-                    <td>76–83%</td>
-                    <td>76</td>
-                    <td>B</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>B-</td>
-                    <td>68–75%</td>
-                    <td>68</td>
-                    <td>B-</td>
-                    <td>2.5</td>
-                </tr>
-                <tr>
-                    <td>C</td>
-                    <td>60–67%</td>
-                    <td>60</td>
-                    <td>C</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                    <td>C-</td>
-                    <td>55–59%</td>
-                    <td>55</td>
-                    <td>C-</td>
-                    <td>1.5</td>
-                </tr>
-                <tr>
-                    <td>D</td>
-                    <td>50–54%</td>
-                    <td>50</td>
-                    <td>D</td>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <td>F</td>
-                    <td>0–49%</td>
-                    <td>0</td>
-                    <td>F</td>
-                    <td>0</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-            </t>
-        </t>
-        <!-- Footer Section -->
-        <div class="footer">
-            <p > <span>Academic Officer:Dr. S.Alhabashneh</span> <span style="margin-left:40%">Date of Issue: 5 February 2025</span> </p>
+            <!-- Certificate Subtitle -->
+            <div class="subtitle">
+              Prepared for the UWA Business Administration
+              Transfer Program Provided by UWE
+            </div>
 
-        </div>
-    </template>
+            <!-- Student Information Table (dynamic) -->
+            <table class="info-table">
+              <tr>
+                <th>Student Name</th>
+                <td>
+                  <t t-if="o.student_id and o.student_id.name">
+                    <t t-esc="o.student_id.name"/>
+                  </t>
+                  <t t-if="o.student_id and o.student_id.middle_name">
+                    <t> </t><t t-esc="o.student_id.middle_name"/>
+                  </t>
+                  <t t-if="o.student_id and o.student_id.last_name">
+                    <t> </t><t t-esc="o.student_id.last_name"/>
+                  </t>
+                  <t t-if="not o.student_id or not o.student_id.name">N/A</t>
+                </td>
 
-    <record id="university_degree" model="report.paperformat">
-        <field name="name">University Degree Report</field>
-        <field name="default" eval="True"/>
-        <field name="format">custom</field>
-        <field name="page_height">0</field>
-        <field name="page_width">0</field>
-        <field name="orientation">Portrait</field>
-        <field name="margin_top">10</field>
-        <field name="margin_bottom">15</field>
-        <field name="margin_left">10</field>
-        <field name="margin_right">10</field>
-        <field name="header_line" eval="False"/>
-        <field name="header_spacing">40</field>
-        <field name="dpi">90</field>
-        <field name="report_ids" eval="[(6,0,[ref('university_degree.University_result')])]"/>
-    </record>
+                <th>Student ID</th>
+                <td>
+                  <t t-if="o.student_id and o.student_id.student_no" t-esc="o.student_id.student_no"/>
+                  <t t-else="">N/A</t>
+                </td>
+
+                <th>Date of Issue:</th>
+                <td>
+                  <t t-if="'issue_date' in o._fields and o.issue_date">
+                    <span t-field="o.issue_date" t-options='{"widget": "date"}'/>
+                  </t>
+                  <t t-elif="o.create_date">
+                    <span t-field="o.create_date" t-options='{"widget": "datetime"}'/>
+                  </t>
+                  <t t-else="">N/A</t>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Semester title (dynamic, safe fallbacks) -->
+            <div class="semester-title">
+              <t t-if="'semester_title' in o._fields and o.semester_title">
+                <t t-esc="o.semester_title"/>
+              </t>
+              <t t-elif="'semester_name' in o._fields and o.semester_name">
+                <t t-esc="o.semester_name"/>
+              </t>
+              <t t-elif="'semester_no' in o._fields and o.semester_no">
+                <t t-esc="'Semester %s' % (o.semester_no)"/>
+              </t>
+              <t t-elif="'semester_date' in o._fields and o.semester_date">
+                <t t-esc="o.semester_date"/>
+              </t>
+              <t t-else="">Semester</t>
+            </div>
+
+            <!-- Grades table (fields like in your old working version) -->
+            <table class="grades-table">
+              <tr>
+                <th>Course Code</th>
+                <th>Course Title</th>
+                <th>Unit</th>
+                <th>Unit</th>
+                <th>Total Mark</th>
+                <th>Percentage</th>
+                <th>Grade</th>
+              </tr>
+
+              <t t-foreach="o.courses_results" t-as="line">
+                <tr>
+                  <td><t t-if="'course_code' in line._fields" t-esc="line.course_code"/></td>
+                  <td><t t-if="'course_title' in line._fields" t-esc="line.course_title"/></td>
+                  <td><t t-if="'unit1' in line._fields" t-esc="line.unit1"/></td>
+                  <td><t t-if="'unit2' in line._fields" t-esc="line.unit2"/></td>
+                  <td><t t-if="'total_marks' in line._fields" t-esc="line.total_marks"/></td>
+                  <td><t t-if="'percentage' in line._fields" t-esc="line.percentage"/></td>
+                  <td><t t-if="'grade' in line._fields" t-esc="line.grade"/></td>
+                </tr>
+              </t>
+
+              <t t-if="not o.courses_results">
+                <tr>
+                  <td colspan="7" style="text-align:center;">No courses found for this semester.</td>
+                </tr>
+              </t>
+            </table>
+
+            <!-- GPA Summary Table (static here; keep if needed) -->
+            <table class="gpa-summary-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>GPA Range (4.00)</th>
+                  <th>Letter Grade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Semester 1 GPA</td><td>2.8</td><td>C</td></tr>
+                <tr><td>Semester 2 GPA</td><td>2.8</td><td>C</td></tr>
+                <tr><td>Year 1 GPA</td><td>2.8</td><td>C</td></tr>
+              </tbody>
+            </table>
+
+            <!-- Grading Explanation Table (static legend) -->
+            <table class="grade-range-table">
+              <thead>
+                <tr>
+                  <th>Grade (%) Range</th>
+                  <th>GPA Range (4.00)</th>
+                  <th>Letter Grade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>90 - 100</td><td>4.00</td><td>A</td></tr>
+                <tr><td>80 - 89</td><td>3.00</td><td>B</td></tr>
+                <tr><td>70 - 79</td><td>2.00</td><td>C</td></tr>
+                <tr><td>60 - 69</td><td>1.00</td><td>D</td></tr>
+                <tr><td>0 - 59</td><td>0.00</td><td>F</td></tr>
+              </tbody>
+            </table>
+
+            <!-- Signatures + Seal -->
+            <table style="width: 100%; margin-top: 50px; text-align: center; font-family: Arial, sans-serif; border-collapse: collapse;">
+              <tr>
+                <td style="background: none; border: none;">
+                  <strong>Registrar</strong><br/>
+                  <img src="http://127.0.0.1:1717/university_degree/static/description/mUstafa.png"
+                       style="height: 50px; margin: 5px 0; border: none; background: none;"
+                       alt="Registrar Signature"/><br/>
+                  <hr style="width: 60%; border: 1px solid #000;"/>
+                  Dr. Mostafa Eltemamy
+                </td>
+
+                <td style="background: none; border: none;">
+                  <strong>Academic Coordinator</strong><br/>
+                  <img src="http://127.0.0.1:1717/university_degree/static/description/signature_george2.png"
+                       style="height: 50px; margin: 5px 0; border: none; background: none;"
+                       alt="Academic Coordinator Signature"/><br/>
+                  <hr style="width: 60%; border: 1px solid #000;"/>
+                  Dr. George Alkhouri
+                </td>
+
+                <td style="background: none; border: none; position: relative; text-align: center;">
+                  <strong>University Dean</strong><br/>
+                  <img src="http://127.0.0.1:1717/university_degree/static/description/seal3.png"
+                       style="position: absolute; top: 35px; left: 50%; transform: translateX(-50%);
+                              height: 180px; opacity: 0.35; mix-blend-mode: multiply; z-index: 2;"
+                       alt="University Seal"/>
+                  <img src="http://127.0.0.1:1717/university_degree/static/description/mustafa.png"
+                       style="height: 50px; margin: 5px 0; border: none; background: none; position: relative; z-index: 1;"
+                       alt="University Dean Signature"/><br/>
+                  <hr style="width: 60%; border: 1px solid #000;"/>
+                  Dr. Sahel Alhabashneh
+                </td>
+              </tr>
+            </table>
+
+            <!-- Bottom Decorative Separator -->
+            <div class="separator-bottom">
+              <img src="http://127.0.0.1:1717/university_degree/static/description/separator.png"
+                   alt="Bottom Separator"/>
+            </div>
+
+          </div>
+        </main>
+
+      </t>
+    </t>
+  </template>
 </odoo>
