@@ -262,7 +262,7 @@
 <t t-set="letter1" t-value="(gpa1_num is not None) and ('A' if gpa1_num >= A_MIN else ('B' if gpa1_num >= 3.0 else ('C' if gpa1_num >= 2.0 else ('D' if gpa1_num >= 1.0 else 'F')))) or ''"/>
 <t t-set="letter2" t-value="(gpa2_num is not None) and ('A' if gpa2_num >= A_MIN else ('B' if gpa2_num >= 3.0 else ('C' if gpa2_num >= 2.0 else ('D' if gpa2_num >= 1.0 else 'F')))) or ''"/>
 <t t-set="letter_cum" t-value="(cum_num  is not None) and ('A' if cum_num  >= A_MIN else ('B' if cum_num  >= 3.0 else ('C' if cum_num  >= 2.0 else ('D' if cum_num  >= 1.0 else 'F')))) or ''"/>
-
+w
 <table class="gpa-summary-table">
   <thead>
     <tr>
