@@ -74,7 +74,7 @@
                 <div class="certificate-header">
                   <div style="font-size:24px; font-weight:400; margin-bottom:4px;">United World Education Academy</div>
                   <div style="font-size:28px; font-weight:700; margin-bottom:10px;">ACADEMIC CERTIFICATE</div>
-                  <img t-att-src="ABS + '/university_degree/static/description/logo6.png'"
+                  <img t-att-src="ABS + '/university_degree/static/description/logo7.png'"
                        class="company-logo" alt="UWEA Logo"/>
                 </div>
 
