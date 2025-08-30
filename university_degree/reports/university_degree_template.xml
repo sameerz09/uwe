@@ -6,7 +6,7 @@
 
         <!-- Styles (consider moving to a report asset bundle) -->
         <style>
-          html, body { margin:0!important; padding:0!important; background:#e3e2d8; font-size:13px; }
+          html, body { margin:0 !important; padding:0 !important; background:#e3e2d8; font-size:13px; }
           main { margin:0; padding:0; }
           .certificate-wrapper { width:100%; background:#e3e2d8; padding:20px; box-sizing:border-box; position:relative; }
           .separator, .separator-bottom { text-align:center; }
@@ -35,21 +35,21 @@
           .page-break { page-break-after:always; }
         </style>
 
-        <!-- Absolute base so wkhtmltopdf can fetch assets correctly -->
+        <!-- Use absolute base URL so wkhtmltopdf resolves assets correctly -->
         <t t-set="ABS"
            t-value="o.env['ir.config_parameter'].sudo().get_param('web.external.url')
                     or o.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
 
-        <!-- Load student results -->
+        <!-- Collect results -->
         <t t-set="results"
            t-value="o.env['university.degree.result'].sudo().search(
-                     [('student_id', '=', o.student_id.id)],
+                     [('student_id','=', o.student_id.id)],
                      order='semester_date asc, id asc'
                    )"/>
 
         <t t-if="results">
 
-          <!-- Unique years -->
+          <!-- Unique year list -->
           <t t-set="years" t-value="[]"/>
           <t t-set="last_year" t-value="None"/>
           <t t-foreach="results" t-as="r">
@@ -74,16 +74,18 @@
                 <div class="certificate-header">
                   <div style="font-size:24px; font-weight:400; margin-bottom:4px;">United World Education Academy</div>
                   <div style="font-size:28px; font-weight:700; margin-bottom:10px;">ACADEMIC CERTIFICATE</div>
-                  <img t-att-src="ABS + '/university_degree/static/description/logo7.png'" class="company-logo" alt="Logo"/>
+                  <img t-att-src="ABS + '/university_degree/static/description/logo7.png'"
+                       class="company-logo" alt="UWEA Logo"/>
                 </div>
 
-                <!-- Student course -->
+                <!-- Student course (by student_no if present) -->
                 <t t-set="stu_no" t-value="(o.student_id and o.student_id.student_no) or False"/>
                 <t t-set="student"
                    t-value="stu_no and o.env['university.student'].sudo().search([('student_no','=', stu_no)], limit=1) or False"/>
                 <t t-set="course_name"
                    t-value="student and (('course_id' in student._fields and student.course_id and student.course_id.name) or
-                                         ('course_name' in student._fields and student.course_name)) or 'Business Administration'"/>
+                                         ('course_name' in student._fields and student.course_name)) or
+                            'Business Administration'"/>
 
                 <div class="subtitle">
                   Prepared for the UWA <t t-esc="course_name"/> Transfer Program provided by UWE
@@ -114,27 +116,151 @@
                   </tr>
                 </table>
 
-                <!-- (… keep your semesters, GPA tables, and grade scale unchanged …) -->
+                <!-- Academic year label -->
+                <t t-set="acad_year" t-value="'%s/%s' % (year, int(year) + 1)"/>
+                <div class="year-title">Academic Year <t t-esc="acad_year"/></div>
 
-                <!-- Signatures -->
+                <!-- ===== Pass 1: collect GPAs for the year ===== -->
+                <t t-set="gpa1" t-value="''"/>
+                <t t-set="cum1" t-value="''"/>
+                <t t-set="gpa2" t-value="''"/>
+                <t t-set="cum2" t-value="''"/>
+                <t t-set="tmp_count" t-value="0"/>
+                <t t-foreach="results" t-as="s">
+                  <t t-set="syr" t-value="(s.semester_date and str(s.semester_date.year)) or 'N/A'"/>
+                  <t t-if="syr == year and tmp_count &lt; 2">
+                    <t t-if="tmp_count == 0">
+                      <t t-if="'gpa' in s._fields and s.gpa is not None"><t t-set="gpa1" t-value="s.gpa"/></t>
+                      <t t-if="'cumulative_gpa' in s._fields and s.cumulative_gpa is not None"><t t-set="cum1" t-value="s.cumulative_gpa"/></t>
+                    </t>
+                    <t t-else="">
+                      <t t-if="'gpa' in s._fields and s.gpa is not None"><t t-set="gpa2" t-value="s.gpa"/></t>
+                      <t t-if="'cumulative_gpa' in s._fields and s.cumulative_gpa is not None"><t t-set="cum2" t-value="s.cumulative_gpa"/></t>
+                    </t>
+                    <t t-set="tmp_count" t-value="tmp_count + 1"/>
+                  </t>
+                </t>
+
+                <!-- ===== Pass 2: render up to two semesters ===== -->
+                <t t-set="count" t-value="0"/>
+                <t t-foreach="results" t-as="sem">
+                  <t t-set="sem_year" t-value="(sem.semester_date and str(sem.semester_date.year)) or 'N/A'"/>
+                  <t t-if="sem_year == year and count &lt; 2">
+
+                    <div class="semester-title">
+                      <t t-if="count == 0">Freshman 1<sup>st</sup> Semester</t>
+                      <t t-else="">Freshman 2<sup>nd</sup> Semester</t>
+                    </div>
+
+                    <table class="grades-table">
+                      <tr>
+                        <th>Course Code</th>
+                        <th>Course Title</th>
+                        <th>Unit 1</th>
+                        <th>Unit 2</th>
+                        <th>Total Mark</th>
+                        <th>Percentage</th>
+                        <th>Grade</th>
+                      </tr>
+
+                      <t t-foreach="sem.courses_results" t-as="line">
+                        <tr>
+                          <td><span t-field="line.course_code"/></td>
+                          <td><t t-esc="(line.course_title or '').replace('–','-').replace('—','-')"/></td>
+                          <td><span t-field="line.unit1"/></td>
+                          <td><span t-field="line.unit2"/></td>
+                          <td><span t-field="line.total_marks"/></td>
+                          <td><t t-esc="(str(line.percentage or '')).replace('–','-').replace('—','-')"/></td>
+                          <td><t t-esc="(line.grade or '').replace('–','-').replace('—','-')"/></td>
+                        </tr>
+                      </t>
+
+                      <t t-if="not sem.courses_results">
+                        <tr><td colspan="7" style="text-align:center;">No courses found for this semester.</td></tr>
+                      </t>
+                    </table>
+
+                    <t t-set="count" t-value="count + 1"/>
+                  </t>
+                </t>
+
+                <!-- Grade scale -->
+                <table class="grade-range-table">
+                  <thead>
+                    <tr>
+                      <th>Grade (%) Range</th>
+                      <th>GPA Scale (4.00)</th>
+                      <th>Letter Grade</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>90 - 100</td><td>4.00</td><td>A</td></tr>
+                    <tr><td>80 - 89</td><td>3.00</td><td>B</td></tr>
+                    <tr><td>70 - 79</td><td>2.00</td><td>C</td></tr>
+                    <tr><td>60 - 69</td><td>1.00</td><td>D</td></tr>
+                    <tr><td>0 - 59</td><td>0.00</td><td>F</td></tr>
+                  </tbody>
+                </table>
+
+                <!-- GPA Summary -->
+                <t t-set="A_MIN" t-value="3.70"/>
+                <t t-set="gpa1_num" t-value="(gpa1 not in ('', None)) and float(gpa1) or None"/>
+                <t t-set="gpa2_num" t-value="(gpa2 not in ('', None)) and float(gpa2) or None"/>
+                <t t-set="cum_num"
+                   t-value="(float(cum2) if cum2 not in ('', None) else
+                             (float(cum1) if cum1 not in ('', None) else
+                               (((gpa1_num + gpa2_num)/2.0) if (gpa1_num is not None and gpa2_num is not None) else
+                                 (gpa2_num if gpa2_num is not None else gpa1_num))))"/>
+                <t t-set="letter1" t-value="(gpa1_num is not None) and ('A' if gpa1_num >= A_MIN else ('B' if gpa1_num >= 3.0 else ('C' if gpa1_num >= 2.0 else ('D' if gpa1_num >= 1.0 else 'F')))) or ''"/>
+                <t t-set="letter2" t-value="(gpa2_num is not None) and ('A' if gpa2_num >= A_MIN else ('B' if gpa2_num >= 3.0 else ('C' if gpa2_num >= 2.0 else ('D' if gpa2_num >= 1.0 else 'F')))) or ''"/>
+                <t t-set="letter_cum" t-value="(cum_num is not None) and ('A' if cum_num >= A_MIN else ('B' if cum_num >= 3.0 else ('C' if cum_num >= 2.0 else ('D' if cum_num >= 1.0 else 'F')))) or ''"/>
+
+                <table class="gpa-summary-table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>GPA (4.00)</th>
+                      <th>Letter Grade</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <t t-if="gpa1_num is not None">
+                      <tr><td>First Semester GPA</td><td><t t-esc="('%.2f' % gpa1_num)"/></td><td><t t-esc="letter1"/></td></tr>
+                    </t>
+                    <t t-if="gpa2_num is not None">
+                      <tr><td>Second Semester GPA</td><td><t t-esc="('%.2f' % gpa2_num)"/></td><td><t t-esc="letter2"/></td></tr>
+                    </t>
+                    <tr>
+                      <td><strong>Cumulative GPA</strong></td>
+                      <td><strong><t t-esc="('%.2f' % cum_num) if (cum_num is not None) else ''"/></strong></td>
+                      <td><strong><t t-esc="letter_cum"/></strong></td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Signatures (filenames use exact casing) -->
                 <table class="sign-row">
                   <tr>
                     <td>
                       <strong>Registrar</strong><br/>
-                      <img t-att-src="ABS + '/university_degree/static/description/mUstafa.png'" class="sign-img" alt="Registrar Signature"/><br/>
+                      <img t-att-src="ABS + '/university_degree/static/description/mustafa.png'"
+                           class="sign-img" alt="Registrar Signature"/><br/>
                       <hr style="width:60%; border:1px solid #000;"/>
                       Dr. Mostafa Eltemamy
                     </td>
                     <td>
                       <strong>Academic Coordinator</strong><br/>
-                      <img t-att-src="ABS + '/university_degree/static/description/signature_george2.png'" class="sign-img" alt="Academic Coordinator Signature"/><br/>
+                      <img t-att-src="ABS + '/university_degree/static/description/signature_george2.png'"
+                           class="sign-img" alt="Academic Coordinator Signature"/><br/>
                       <hr style="width:60%; border:1px solid #000;"/>
                       Dr. George Alkhouri
                     </td>
                     <td class="sign-seal">
                       <strong>University Dean</strong><br/>
-                      <img t-att-src="ABS + '/university_degree/static/description/seal3.png'" class="seal-img" alt="University Seal"/>
-                      <img t-att-src="ABS + '/university_degree/static/description/mustafa.png'" class="sign-img" alt="University Dean Signature"/><br/>
+                      <img t-att-src="ABS + '/university_degree/static/description/seal3.png'"
+                           class="seal-img" alt="University Seal"/>
+                      <img t-att-src="ABS + '/university_degree/static/description/mustafa.png'"
+                           class="sign-img" alt="University Dean Signature"/><br/>
                       <hr style="width:60%; border:1px solid #000;"/>
                       Dr. Sahel Alhabashneh
                     </td>
@@ -149,12 +275,18 @@
               </div>
             </main>
 
+            <!-- Page break -->
             <t t-set="ycount" t-value="ycount + 1"/>
             <t t-if="ycount &lt; len(years)"><div class="page-break"></div></t>
           </t>
         </t>
+
         <t t-else="">
-          <main><div class="certificate-wrapper"><div class="semester-title">No degree results available for this student.</div></div></main>
+          <main>
+            <div class="certificate-wrapper">
+              <div class="semester-title">No degree results available for this student.</div>
+            </div>
+          </main>
         </t>
 
       </t>
