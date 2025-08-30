@@ -4,6 +4,14 @@
     <t t-call="web.html_container">
       <t t-foreach="docs" t-as="o">
 
+        <!-- ===== Dynamic asset base =====
+             Try custom param first, then fall back to web.base.url, then to empty (relative). -->
+        <t t-set="asset_base_url"
+           t-value="o.env['ir.config_parameter'].sudo().get_param('university_degree.asset_base_url')
+                    or o.env['ir.config_parameter'].sudo().get_param('web.base.url')
+                    or ''"/>
+        <t t-set="asset_path" t-value="'%s/university_degree/static/description' % asset_base_url"/>
+
         <!-- =================== Styles =================== -->
         <style>
           html, body { margin:0!important; padding:0!important; background:#e3e2d8; font-size:13px; }
@@ -33,27 +41,13 @@
           .seal-img { position:absolute; top:35px; left:50%; transform:translateX(-50%); height:180px; opacity:.35; mix-blend-mode:multiply; z-index:2; }
           .sign-img { height:50px; margin:5px 0; border:none; background:none; position:relative; z-index:1; }
           .page-break { page-break-after:always; }
-          /* Make a full-page background and a pinned footer for every page */
-          .page-bg{
-            position: fixed;           /* repeats on every PDF page (wkhtmltopdf) */
-            top:0; left:0; right:0; bottom:0;
-            background:#e3e2d8;
-            z-index:0;
-          }
-          .footer-fixed{
-            position: fixed;           /* also repeats each page */
-            left:0; right:0; bottom:6mm;   /* adjust to taste */
-            text-align:center;
-            z-index:2;
-          }
+          .page-bg{ position:fixed; top:0; left:0; right:0; bottom:0; background:#e3e2d8; z-index:0; }
+          .footer-fixed{ position:fixed; left:0; right:0; bottom:6mm; text-align:center; z-index:2; }
           .footer-fixed img{ width:900px; height:180px; }
-
-          /* ensure content sits above the background */
           .certificate-wrapper{ position:relative; z-index:1; }
-
         </style>
 
-        <!-- ===== Load all results for this student (oldest first) ===== -->
+        <!-- ===== Load results for this student (oldest first) ===== -->
         <t t-set="results"
            t-value="o.env['university.degree.result'].sudo().search(
                      [('student_id', '=', o.student_id.id)],
@@ -82,7 +76,7 @@
 
                 <!-- Top separator -->
                 <div class="separator">
-                  <img src="http://127.0.0.1:1717/university_degree/static/description/separator.png" alt="Separator"/>
+                  <img t-att-src="'%s/separator.png' % asset_path" alt="Separator"/>
                 </div>
 
                 <!-- Header -->
@@ -93,7 +87,7 @@
                   <div style="font-size:28px; font-weight:bold; margin-bottom:10px;">
                     ACADEMIC CERTIFICATE
                   </div>
-                  <img src="http://127.0.0.1:1717/university_degree/static/description/logo7.png" class="company-logo" alt="UW Academy Logo"/>
+                  <img t-att-src="'%s/logo7.png' % asset_path" class="company-logo" alt="UW Academy Logo"/>
                 </div>
 
                 <!-- Dynamic subtitle: course name from university.student by student_no -->
@@ -108,7 +102,6 @@
                 <div class="subtitle">
                   Prepared for the UWA <t t-esc="course_name"/> Transfer Program Provided by UWE
                 </div>
-
 
                 <!-- Student info -->
                 <table class="info-table">
@@ -169,9 +162,6 @@
                   </t>
                 </t>
 
-                <!-- ===== Combined GPA Table (First, Second, Cumulative) ===== -->
-
-
                 <!-- ===== Pass 2: render semester COURSES (max two) ===== -->
                 <t t-set="count" t-value="0"/>
                 <t t-foreach="results" t-as="sem">
@@ -186,7 +176,6 @@
                         Freshman 2<sup>nd</sup> Semester
                       </t>
                     </div>
-
 
                     <table class="grades-table">
                       <tr>
@@ -237,92 +226,71 @@
                     <tr><td>0 - 59</td><td>0.00</td><td>F</td></tr>
                   </tbody>
                 </table>
-              <!-- ===== Combined GPA Table with Letter Grade ===== -->
-<!-- === Letter grade helper + numeric GPAs (with robust cumulative) === -->
-<t t-set="A_MIN" t-value="3.70"/>  <!-- adjust if your 'A' cutoff differs -->
 
-<!-- Cast once -->
-<t t-set="gpa1_num" t-value="(gpa1 not in ('', None)) and float(gpa1) or None"/>
-<t t-set="gpa2_num" t-value="(gpa2 not in ('', None)) and float(gpa2) or None"/>
+                <!-- ===== GPA Summary (numeric + letters, robust cumulative) ===== -->
+                <t t-set="A_MIN" t-value="3.70"/>
+                <t t-set="gpa1_num" t-value="(gpa1 not in ('', None)) and float(gpa1) or None"/>
+                <t t-set="gpa2_num" t-value="(gpa2 not in ('', None)) and float(gpa2) or None"/>
+                <t t-set="cum_num"
+                   t-value="(float(cum2) if cum2 not in ('', None) else
+                             (float(cum1) if cum1 not in ('', None) else
+                              (((gpa1_num + gpa2_num) / 2.0) if (gpa1_num is not None and gpa2_num is not None) else
+                               (gpa2_num if gpa2_num is not None else gpa1_num))))"/>
 
-<!-- Robust cumulative:
-     cum2 -> cum1 -> average(gpa1,gpa2) -> single available GPA -> None -->
-<t t-set="cum_num"
-   t-value="
-     (float(cum2) if cum2 not in ('', None) else
-      (float(cum1) if cum1 not in ('', None) else
-       (((gpa1_num + gpa2_num) / 2.0) if (gpa1_num is not None and gpa2_num is not None) else
-        (gpa2_num if gpa2_num is not None else gpa1_num)
-       )
-      )
-     )
-   "/>
+                <t t-set="letter1" t-value="(gpa1_num is not None) and ('A' if gpa1_num &gt;= A_MIN else ('B' if gpa1_num &gt;= 3.0 else ('C' if gpa1_num &gt;= 2.0 else ('D' if gpa1_num &gt;= 1.0 else 'F')))) or ''"/>
+                <t t-set="letter2" t-value="(gpa2_num is not None) and ('A' if gpa2_num &gt;= A_MIN else ('B' if gpa2_num &gt;= 3.0 else ('C' if gpa2_num &gt;= 2.0 else ('D' if gpa2_num &gt;= 1.0 else 'F')))) or ''"/>
+                <t t-set="letter_cum" t-value="(cum_num is not None) and ('A' if cum_num &gt;= A_MIN else ('B' if cum_num &gt;= 3.0 else ('C' if cum_num &gt;= 2.0 else ('D' if cum_num &gt;= 1.0 else 'F')))) or ''"/>
 
-<!-- Letters using the same thresholds everywhere -->
-<t t-set="letter1" t-value="(gpa1_num is not None) and ('A' if gpa1_num >= A_MIN else ('B' if gpa1_num >= 3.0 else ('C' if gpa1_num >= 2.0 else ('D' if gpa1_num >= 1.0 else 'F')))) or ''"/>
-<t t-set="letter2" t-value="(gpa2_num is not None) and ('A' if gpa2_num >= A_MIN else ('B' if gpa2_num >= 3.0 else ('C' if gpa2_num >= 2.0 else ('D' if gpa2_num >= 1.0 else 'F')))) or ''"/>
-<t t-set="letter_cum" t-value="(cum_num  is not None) and ('A' if cum_num  >= A_MIN else ('B' if cum_num  >= 3.0 else ('C' if cum_num  >= 2.0 else ('D' if cum_num  >= 1.0 else 'F')))) or ''"/>
-w
-<table class="gpa-summary-table">
-  <thead>
-    <tr>
-      <th></th>
-      <th>GPA (4.00)</th>
-      <th>Letter Grade</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- Show only if First Semester GPA is present -->
-    <t t-if="gpa1_num is not None">
-      <tr>
-        <td>First Semester GPA</td>
-        <td><t t-esc="('%.2f' % gpa1_num)"/></td>
-        <td><t t-esc="letter1"/></td>
-      </tr>
-    </t>
-
-    <!-- Show only if Second Semester GPA is present -->
-    <t t-if="gpa2_num is not None">
-      <tr>
-        <td>Second Semester GPA</td>
-        <td><t t-esc="('%.2f' % gpa2_num)"/></td>
-        <td><t t-esc="letter2"/></td>
-      </tr>
-    </t>
-
-    <tr>
-      <td><strong>Cumulative GPA</strong></td>
-      <td><strong><t t-esc="('%.2f' % cum_num) if (cum_num is not None) else ''"/></strong></td>
-      <td><strong><t t-esc="letter_cum"/></strong></td>
-    </tr>
-  </tbody>
-</table>
-
-
-
-
-
-
+                <table class="gpa-summary-table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>GPA (4.00)</th>
+                      <th>Letter Grade</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <t t-if="gpa1_num is not None">
+                      <tr>
+                        <td>First Semester GPA</td>
+                        <td><t t-esc="('%.2f' % gpa1_num)"/></td>
+                        <td><t t-esc="letter1"/></td>
+                      </tr>
+                    </t>
+                    <t t-if="gpa2_num is not None">
+                      <tr>
+                        <td>Second Semester GPA</td>
+                        <td><t t-esc="('%.2f' % gpa2_num)"/></td>
+                        <td><t t-esc="letter2"/></td>
+                      </tr>
+                    </t>
+                    <tr>
+                      <td><strong>Cumulative GPA</strong></td>
+                      <td><strong><t t-esc="('%.2f' % cum_num) if (cum_num is not None) else ''"/></strong></td>
+                      <td><strong><t t-esc="letter_cum"/></strong></td>
+                    </tr>
+                  </tbody>
+                </table>
 
                 <!-- Footer -->
                 <table class="sign-row">
                   <tr>
                     <td>
                       <strong>Registrar</strong><br/>
-                      <img src="http://127.0.0.1:1717/university_degree/static/description/mUstafa.png" class="sign-img" alt="Registrar Signature"/><br/>
+                      <img t-att-src="'%s/mUstafa.png' % asset_path" class="sign-img" alt="Registrar Signature"/><br/>
                       <hr style="width:60%; border:1px solid #000;"/>
                       Dr. Mostafa Eltemamy
                     </td>
                     <td>
                       <strong>Academic Coordinator</strong><br/>
-                      <img src="http://127.0.0.1:1717/university_degree/static/description/signature_george2.png" class="sign-img" alt="Academic Coordinator Signature"/><br/>
+                      <img t-att-src="'%s/signature_george2.png' % asset_path" class="sign-img" alt="Academic Coordinator Signature"/><br/>
                       <hr style="width:60%; border:1px solid #000;"/>
                       Dr. George Alkhouri
                     </td>
                     <td class="sign-seal">
                       <strong>University Dean</strong><br/>
-                      <img src="http://127.0.0.1:1717/university_degree/static/description/seal3.png" class="seal-img" alt="University Seal"/>
-                      <img src="http://127.0.0.1:1717/university_degree/static/description/mustafa.png" class="sign-img" alt="University Dean Signature"/><br/>
+                      <img t-att-src="'%s/seal3.png' % asset_path" class="seal-img" alt="University Seal"/>
+                      <img t-att-src="'%s/mustafa.png' % asset_path" class="sign-img" alt="University Dean Signature"/><br/>
                       <hr style="width:60%; border:1px solid #000;"/>
                       Dr. Sahel Alhabashneh
                     </td>
@@ -330,7 +298,7 @@ w
                 </table>
 
                 <div class="separator-bottom" style="margin-top:10px;">
-                  <img src="http://127.0.0.1:1717/university_degree/static/description/separator.png" alt="Bottom Separator"/>
+                  <img t-att-src="'%s/separator.png' % asset_path" alt="Bottom Separator"/>
                 </div>
 
               </div>
