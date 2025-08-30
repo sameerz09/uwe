@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Action -->
+    <!-- Define paperformat FIRST -->
+    <record id="university_degree" model="report.paperformat">
+        <field name="name">University Degree Report</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <!-- Then reference it -->
     <record id="University_result" model="ir.actions.report">
         <field name="name">University Degree</field>
         <field name="model">university.degree.result</field>
@@ -9,26 +23,5 @@
         <field name="binding_type">report</field>
         <field name="report_name">university_degree.university_degree_report_template</field>
         <field name="paperformat_id" ref="university_degree.university_degree"/>
-    </record>
-
-    <!-- Paperformat: full-bleed page (margins handled by CSS in template) -->
-    <record id="university_degree" model="report.paperformat">
-        <field name="name">University Degree Report</field>
-        <!-- Use a real page format instead of custom zeros -->
-        <field name="format">A4</field>
-        <field name="orientation">Portrait</field>
-
-        <!-- No margins so the template can paint edge-to-edge -->
-        <field name="margin_top">0</field>
-        <field name="margin_bottom">0</field>
-        <field name="margin_left">0</field>
-        <field name="margin_right">0</field>
-
-        <!-- Disable default header/footer spacing from wkhtmltopdf -->
-        <field name="header_line" eval="False"/>
-        <field name="header_spacing">0</field>
-
-        <!-- 96 dpi works well with CSS mm/px conversions -->
-        <field name="dpi">96</field>
     </record>
 </odoo>
