@@ -155,7 +155,7 @@ class SpendIncomeReport(models.Model):
             'subject': f"Year-to-Date Spend and Income Report with 5% Tax in AED - {today.year}",
             'body_html': html_content,
             'email_from': self.env.company.email or 'no-reply@example.com',
-            'email_to': 'sameerzuheeri@gmail.com, sahel_alhabashneh@yahoo.com, Manager@uwuni.com, Account@uwuni.com',
+            'email_to': 'sameerzuheeri@gmail.com, sahel_alhabashneh@yahoo.com, Manager@uwuni.com, Account@uwuni.com, eyadaltamimi@uwuni.com',
         }).send()
 
         return True
