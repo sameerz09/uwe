@@ -11,6 +11,13 @@ class HrPayslip(models.Model):
         readonly=True
     )
     
+    employee_job = fields.Char(
+        string='Job Position',
+        related='employee_id.job_id.name',
+        store=True,
+        readonly=True
+    )
+    
     net_wage_display = fields.Float(
         string='Net Wage',
         compute='_compute_net_wage_display',

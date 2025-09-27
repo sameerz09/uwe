@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Action for UWE Payroll List -->
+        <record id="action_uwe_payroll_list" model="ir.actions.act_window">
+            <field name="name">UWE Payroll List</field>
+            <field name="res_model">hr.payslip</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_draft': 1}</field>
+        </record>
+
+        <!-- Menu Item for UWE Payroll List -->
+        <menuitem id="menu_uwe_payroll_list"
+                  name="UWE Payroll List"
+                  parent="hr_payroll.menu_hr_payroll_root"
+                  action="action_uwe_payroll_list"
+                  sequence="20"/>
+    </data>
+</odoo>

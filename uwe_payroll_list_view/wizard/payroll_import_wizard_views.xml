@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_payroll_import_wizard_form" model="ir.ui.view">
+            <field name="name">payroll.import.wizard.form</field>
+            <field name="model">payroll.import.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Import Payslips from Excel">
+                    <group>
+                        <field name="excel_file" filename="file_name"/>
+                        <field name="file_name" readonly="1"/>
+                    </group>
+                    <group string="Import Result" attrs="{'invisible': [('import_result', '=', False)]}">
+                        <field name="import_result" widget="text" readonly="1" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_import_payslips" type="object" 
+                                string="Import Payslips" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_payroll_import_wizard" model="ir.actions.act_window">
+            <field name="name">Import Payslips from Excel</field>
+            <field name="res_model">payroll.import.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

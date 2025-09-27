@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        
+        <!-- Enhanced Payslip List View for UWE -->
         <record id="view_hr_payslip_tree_uwe" model="ir.ui.view">
             <field name="name">hr.payslip.view.tree.uwe</field>
             <field name="model">hr.payslip</field>
@@ -8,11 +10,45 @@
             <field name="arch" type="xml">
                 <field name="employee_id" position="after">
                     <field name="employee_department" optional="show"/>
+                    <field name="employee_job" optional="show"/>
                 </field>
                 <field name="date_from" position="after">
                     <field name="net_wage_display" optional="show"/>
                 </field>
+                <button name="%(action_payroll_export_wizard)d" type="action" 
+                        string="Export to Excel" class="btn-primary" 
+                        icon="fa-download" groups="hr_payroll.group_hr_payroll_user"/>
+                <button name="%(action_payroll_import_wizard)d" type="action" 
+                        string="Import from Excel" class="btn-secondary" 
+                        icon="fa-upload" groups="hr_payroll.group_hr_payroll_user"/>
             </field>
         </record>
+
+        <!-- Enhanced Search View for UWE -->
+        <record id="view_hr_payslip_filter_uwe" model="ir.ui.view">
+            <field name="name">hr.payslip.view.filter.uwe</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_filter"/>
+            <field name="arch" type="xml">
+                <field name="employee_id" position="after">
+                    <field name="employee_department"/>
+                    <field name="employee_job"/>
+                </field>
+                <filter string="UWE - This Month" name="uwe_this_month" 
+                        domain="[('date_from', '&gt;=', datetime.datetime.now().replace(day=1).strftime('%Y-%m-%d')), ('date_to', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d'))]"/>
+                <filter string="UWE - Last Month" name="uwe_last_month" 
+                        domain="[('date_from', '&gt;=', (datetime.datetime.now().replace(day=1) - datetime.timedelta(days=1)).replace(day=1).strftime('%Y-%m-%d')), ('date_to', '&lt;=', (datetime.datetime.now().replace(day=1) - datetime.timedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+            </field>
+        </record>
+
+        <!-- Enhanced Action for UWE -->
+        <record id="action_hr_payslip_uwe" model="ir.actions.act_window">
+            <field name="name">Payslips (UWE)</field>
+            <field name="res_model">hr.payslip</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_type">list</field>
+            <field name="context">{'default_view_mode': 'list'}</field>
+        </record>
+
     </data>
 </odoo>

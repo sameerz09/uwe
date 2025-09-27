@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'UWE Payroll List View',
-    'version': '17.0.1.0.0',
+    'name': "UWE Payroll List View",
+    'summary': "Payroll list view for UWE",
+    'description': "Custom payroll list view for UWE",
+    'author': "University of Wisconsin",
+    'website': "https://www.uw.edu",
     'category': 'Human Resources',
-    'summary': 'Customize payroll list view for UWE',
-    'author': 'University of Wisconsin',
-    'depends': ['hr_payroll'],
+    'version': '0.1',
+    'depends': ['base', 'hr_payroll'],
     'data': [
-        'views/hr_payslip_views.xml',
+        'views/views.xml',
     ],
     'installable': True,
-    'auto_install': False,
     'application': False,
+    'auto_install': False,
     'license': 'AGPL-3',
 }
