@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- UWE Simple Payslip List View -->
+        <record id="view_hr_payslip_tree_uwe_simple" model="ir.ui.view">
+            <field name="name">hr.payslip.tree.uwe.simple</field>
+            <field name="model">hr.payslip</field>
+            <field name="arch" type="xml">
+                <tree string="Payslips" create="true" edit="true" delete="true">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="state"/>
+                    <field name="struct_id"/>
+                    <field name="gross_wage"/>
+                    <field name="net_wage"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="payslip_run_id"/>
+                    <field name="date"/>
+                    <field name="credit_note"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- UWE Simple Payslip Search View -->
+        <record id="view_hr_payslip_filter_uwe_simple" model="ir.ui.view">
+            <field name="name">hr.payslip.search.uwe.simple</field>
+            <field name="model">hr.payslip</field>
+            <field name="arch" type="xml">
+                <search string="Payslips">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="struct_id"/>
+                    <field name="gross_wage"/>
+                    <field name="net_wage"/>
+                    <field name="payslip_run_id"/>
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+                    <filter string="Paid" name="paid" domain="[('state', '=', 'paid')]"/>
+                    <filter string="Cancelled" name="cancel" domain="[('state', '=', 'cancel')]"/>
+                    <separator/>
+                    <filter string="This Month" name="this_month" domain="[('date_from', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01')), ('date_from', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter string="This Year" name="this_year" domain="[('date_from', '&gt;=', context_today().strftime('%Y-01-01')), ('date_from', '&lt;=', context_today().strftime('%Y-12-31'))]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Employee" name="group_employee" context="{'group_by': 'employee_id'}"/>
+                        <filter string="Payslip Structure" name="group_struct" context="{'group_by': 'struct_id'}"/>
+                        <filter string="Payslip Run" name="group_run" context="{'group_by': 'payslip_run_id'}"/>
+                        <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                        <filter string="Month" name="group_month" context="{'group_by': 'date_from:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- UWE Simple Payslip Action -->
+        <record id="action_hr_payslip_uwe_simple" model="ir.actions.act_window">
+            <field name="name">Payslips</field>
+            <field name="res_model">hr.payslip</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_hr_payslip_tree_uwe_simple"/>
+            <field name="search_view_id" ref="view_hr_payslip_filter_uwe_simple"/>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new payslip
+                </p>
+                <p>
+                    Payslips are used to generate payroll for employees.
+                </p>
+            </field>
+        </record>
+
+        <!-- UWE Simple Payslip Import Wizard Action -->
+        <record id="action_hr_payslip_import_wizard_uwe_simple" model="ir.actions.act_window">
+            <field name="name">Import Payslips</field>
+            <field name="res_model">payslip.import.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- UWE Simple Payslip Menu -->
+        <menuitem id="menu_hr_payslip_uwe_simple"
+                  name="Payslips List"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_payslip_uwe_simple"
+                  sequence="10"
+                  groups="hr_payroll.group_hr_payroll_user"/>
+
+        <!-- UWE Simple Payslip Import Menu -->
+        <menuitem id="menu_hr_payslip_import_uwe_simple"
+                  name="Import Payslips"
+                  parent="hr.menu_hr_root"
+                  action="action_hr_payslip_import_wizard_uwe_simple"
+                  sequence="11"
+                  groups="hr_payroll.group_hr_payroll_user"/>
+
+    </data>
+</odoo>

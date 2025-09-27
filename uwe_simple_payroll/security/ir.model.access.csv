@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_payslip_uwe_simple_user,hr.payslip.uwe.simple.user,hr_payroll.model_hr_payslip,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_hr_payslip_uwe_simple_manager,hr.payslip.uwe.simple.manager,hr_payroll.model_hr_payslip,hr_payroll.group_hr_payroll_manager,1,1,1,1
+access_payslip_import_wizard_user,payslip.import.wizard.user,uwe_simple_payroll.model_payslip_import_wizard,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_payslip_import_wizard_manager,payslip.import.wizard.manager,uwe_simple_payroll.model_payslip_import_wizard,hr_payroll.group_hr_payroll_manager,1,1,1,1
