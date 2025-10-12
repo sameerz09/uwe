@@ -6,6 +6,9 @@
     'summary': 'Simple payroll list view for UWE',
     'author': 'University of Wisconsin',
     'depends': ['hr_payroll'],
+    'external_dependencies': {
+        'python': ['pandas', 'openpyxl'],
+    },
     'data': [
         'security/ir.model.access.csv',
         'views/hr_payslip_views.xml',
