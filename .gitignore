@@ -1,0 +1,32 @@
+# Odoo specific
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Odoo server files
+sessions/
+filestore/
+*.log
+
+# Exclude everything except our specific module
+/*
+!/marshall_odoo_pos_staging/
+/marshall_odoo_pos_staging/*
+!/marshall_odoo_pos_staging/pos_access_control_price_button/
