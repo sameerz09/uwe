@@ -25,6 +25,46 @@
 <!--                        <field name="net_salary_rounded" readonly="1"/>-->
                     </group>
                 </page>
+                <page string="Foreign Currency">
+                    <header>
+                        <button name="action_compute_from_foreign_currency"
+                                string="Compute Original Values from Foreign Currency"
+                                type="object"
+                                class="btn-primary"
+                                invisible="not foreign_currency_id"
+                                help="Recalculate original field values using foreign currency values and current exchange rates"/>
+                    </header>
+                    <group>
+                        <group string="Currency Selection">
+                            <field name="foreign_currency_id" 
+                                   options="{'no_create': True}"
+                                   placeholder="Select a foreign currency to enter equivalent values"/>
+                        </group>
+                    </group>
+                    <separator string="Salary Information (Foreign Currency)" 
+                               invisible="not foreign_currency_id"/>
+                    <group string="Basic Salary &amp; Allowances"
+                           invisible="not foreign_currency_id">
+                        <group>
+                            <field name="foreign_wage"/>
+                            <field name="foreign_housing_allowance"/>
+                            <field name="foreign_transportation_allowance"/>
+                            <field name="foreign_other_allowances"/>
+                        </group>
+                    </group>
+                    <separator string="Additional Allowances &amp; Deductions (Foreign Currency)"
+                               invisible="not foreign_currency_id"/>
+                    <group invisible="not foreign_currency_id">
+                        <group>
+                            <field name="foreign_food_allowance"/>
+                            <field name="foreign_commission_allowance"/>
+                        </group>
+                        <group>
+                            <field name="foreign_off_deduction"/>
+                            <field name="foreign_penalty_deduction"/>
+                        </group>
+                    </group>
+                </page>
             </xpath>
         </field>
     </record>

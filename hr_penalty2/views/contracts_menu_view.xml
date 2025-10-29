@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+  <data>
 
-        <record model="ir.actions.act_window" id="contracts_menu_action">
-            <field name="name">Contracts</field>
-            <field name="res_model">hr.contract</field>
-            <field name="view_mode">list,form,kanban</field>
-        </record>
+    <record id="contracts_menu_action" model="ir.actions.act_window">
+      <field name="name">Contracts</field>
+      <field name="res_model">hr.contract</field>
+      <field name="view_mode">tree,form,kanban</field>
+    </record>
 
-        <menuitem id="contracts_root_menu"
-                  name="Contracts"
-                  action="contracts_menu_action"
-                  sequence="5"
-                  groups="base.group_user"/>
+    <!-- Root menu (top-level) -->
+    <record id="contracts_root_menu_record" model="ir.ui.menu">
+      <field name="name">Contracts</field>
+      <field name="action" ref="contracts_menu_action"/>
+      <field name="sequence">5</field>
+      <field name="web_icon">hr_penalty2,static/contact.png</field>
+      <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+    </record>
 
-    </data>
+  </data>
 </odoo>
-

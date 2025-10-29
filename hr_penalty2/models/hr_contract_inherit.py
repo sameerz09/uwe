@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError, ValidationError
 from datetime import datetime
 import calendar
 
@@ -22,6 +23,34 @@ class HrContract(models.Model):
     off_deduction = fields.Float(string="Off Deduction")  # Renamed
     penalty_deduction = fields.Float(string="Penalty Deduction")  # New field
     commission_allowance = fields.Float(string="Commission Allowance")  # New field
+
+    # Multi-Currency Fields
+    foreign_currency_id = fields.Many2one('res.currency', string="Foreign Currency",
+                                           help="Select a foreign currency to enter equivalent values")
+    foreign_wage = fields.Monetary(string="Wage (Foreign Currency)", 
+                                   currency_field='foreign_currency_id',
+                                   help="Wage amount in the selected foreign currency")
+    foreign_housing_allowance = fields.Monetary(string="Housing Allowance (Foreign Currency)",
+                                                currency_field='foreign_currency_id',
+                                                help="Housing allowance in the selected foreign currency")
+    foreign_transportation_allowance = fields.Monetary(string="Transportation Allowance (Foreign Currency)",
+                                                       currency_field='foreign_currency_id',
+                                                       help="Transportation allowance in the selected foreign currency")
+    foreign_other_allowances = fields.Monetary(string="Other Allowances (Foreign Currency)",
+                                              currency_field='foreign_currency_id',
+                                              help="Other allowances in the selected foreign currency")
+    foreign_commission_allowance = fields.Monetary(string="Commission Allowance (Foreign Currency)",
+                                                    currency_field='foreign_currency_id',
+                                                    help="Commission allowance in the selected foreign currency")
+    foreign_off_deduction = fields.Monetary(string="Off Deduction (Foreign Currency)",
+                                            currency_field='foreign_currency_id',
+                                            help="Off deduction in the selected foreign currency")
+    foreign_penalty_deduction = fields.Monetary(string="Penalty Deduction (Foreign Currency)",
+                                               currency_field='foreign_currency_id',
+                                               help="Penalty deduction in the selected foreign currency")
+    foreign_food_allowance = fields.Monetary(string="Food Allowance (Foreign Currency)",
+                                            currency_field='foreign_currency_id',
+                                            help="Food allowance in the selected foreign currency")
 
     def update_number_of_month_days(self):
         today = datetime.today()
@@ -69,3 +98,74 @@ class HrContract(models.Model):
     def _compute_total_variable_amount(self):
         for contract in self:
             contract.total_variable_amount = (contract.overtime_amount or 0.0) + (contract.holiday_total_amount or 0.0)
+
+    def action_compute_from_foreign_currency(self):
+        """
+        Compute original field values from foreign currency values using exchange rates.
+        Converts foreign currency amounts to company currency using current exchange rates.
+        """
+        self.ensure_one()
+        
+        if not self.foreign_currency_id:
+            raise UserError(_("Please select a foreign currency first."))
+        
+        company = self.company_id or self.env.company
+        company_currency = company.currency_id
+        
+        if not company_currency:
+            raise UserError(_("Company currency is not set. Please configure company currency first."))
+        
+        if self.foreign_currency_id == company_currency:
+            raise UserError(_("Foreign currency cannot be the same as company currency."))
+        
+        # Get today's date for exchange rate
+        conversion_date = fields.Date.today()
+        
+        # Mapping of foreign currency fields to original fields
+        field_mapping = {
+            'foreign_wage': 'wage',
+            'foreign_housing_allowance': 'housing_allowance',
+            'foreign_transportation_allowance': 'transportation_allowance',
+            'foreign_other_allowances': 'other_allowances',
+            'foreign_food_allowance': 'food_allowance',
+            'foreign_commission_allowance': 'commission_allowance',
+            'foreign_off_deduction': 'off_deduction',
+            'foreign_penalty_deduction': 'penalty_deduction',
+        }
+        
+        # Convert and update each field
+        updates = {}
+        for foreign_field, original_field in field_mapping.items():
+            foreign_value = getattr(self, foreign_field, 0.0)
+            
+            if foreign_value and foreign_value > 0:
+                try:
+                    # Convert foreign currency to company currency
+                    converted_amount = self.foreign_currency_id._convert(
+                        foreign_value,
+                        company_currency,
+                        company,
+                        conversion_date
+                    )
+                    updates[original_field] = converted_amount
+                except Exception as e:
+                    raise UserError(_("Error converting %s: %s") % (foreign_field, str(e)))
+            else:
+                # If foreign field is empty or zero, keep original value unchanged
+                pass  # Don't update if foreign value is not set
+        
+        # Update the contract with converted values
+        if updates:
+            self.write(updates)
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Conversion Complete'),
+                    'message': _('Original fields have been updated based on foreign currency values and exchange rates.'),
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
+        else:
+            raise UserError(_("No foreign currency values found to convert. Please enter foreign currency values first."))
