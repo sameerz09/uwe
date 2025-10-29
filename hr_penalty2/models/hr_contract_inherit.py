@@ -122,16 +122,28 @@ class HrContract(models.Model):
         conversion_date = fields.Date.today()
         
         # Mapping of foreign currency fields to original fields
+        # Only include fields that exist on the contract model
         field_mapping = {
             'foreign_wage': 'wage',
-            'foreign_housing_allowance': 'housing_allowance',
-            'foreign_transportation_allowance': 'transportation_allowance',
-            'foreign_other_allowances': 'other_allowances',
             'foreign_food_allowance': 'food_allowance',
             'foreign_commission_allowance': 'commission_allowance',
             'foreign_off_deduction': 'off_deduction',
             'foreign_penalty_deduction': 'penalty_deduction',
         }
+        
+        # Optional fields that may exist in other modules
+        # Check if they exist before adding to mapping
+        optional_fields = {
+            'foreign_housing_allowance': 'housing_allowance',
+            'foreign_transportation_allowance': 'transportation_allowance',
+            'foreign_other_allowances': 'other_allowances',
+        }
+        
+        # Add optional fields to mapping if they exist on the model
+        contract_fields = self._fields.keys()
+        for foreign_field, original_field in optional_fields.items():
+            if original_field in contract_fields:
+                field_mapping[foreign_field] = original_field
         
         # Convert and update each field
         updates = {}
@@ -147,7 +159,9 @@ class HrContract(models.Model):
                         company,
                         conversion_date
                     )
-                    updates[original_field] = converted_amount
+                    # Only update if field exists on the model
+                    if original_field in contract_fields:
+                        updates[original_field] = converted_amount
                 except Exception as e:
                     raise UserError(_("Error converting %s: %s") % (foreign_field, str(e)))
             else:

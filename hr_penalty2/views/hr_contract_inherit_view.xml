@@ -26,14 +26,19 @@
                     </group>
                 </page>
                 <page string="Foreign Currency">
-                    <header>
+                    <div class="alert alert-info" role="alert" invisible="not foreign_currency_id">
+                        <p class="mb-2">
+                            <i class="fa fa-info-circle"/> 
+                            <strong>Currency Conversion:</strong> Enter foreign currency values below and click the button to automatically convert them to original fields using current exchange rates.
+                        </p>
                         <button name="action_compute_from_foreign_currency"
-                                string="Compute Original Values from Foreign Currency"
+                                string="💰 Compute &amp; Convert to Original Currency"
                                 type="object"
-                                class="btn-primary"
+                                class="btn btn-success o_form_button"
+                                icon="fa-calculator"
                                 invisible="not foreign_currency_id"
-                                help="Recalculate original field values using foreign currency values and current exchange rates"/>
-                    </header>
+                                help="Click to recalculate original field values using foreign currency values and current exchange rates"/>
+                    </div>
                     <group>
                         <group string="Currency Selection">
                             <field name="foreign_currency_id" 
