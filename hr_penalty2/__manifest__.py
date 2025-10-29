@@ -30,6 +30,7 @@
         # 'data/hr_salary_rule_data.xml',
         # 'data/hr_payroll_structure_data.xml',
         'views/hr_contract_inherit_view.xml',
+        'views/contracts_menu_view.xml',
         # 'report/report_spend_income.xml',
 
 
