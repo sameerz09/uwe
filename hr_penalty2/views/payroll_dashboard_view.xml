@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_payroll_dashboard_form" model="ir.ui.view">
+            <field name="name">payroll.dashboard.form</field>
+            <field name="model">payroll.dashboard</field>
+            <field name="arch" type="xml">
+                <form string="Payroll Analytics Dashboard" create="false" delete="false" disable_autofocus="true">
+                    <header>
+                        <button name="action_refresh_dashboard" 
+                                string="🔄 Refresh Dashboard" 
+                                type="object"
+                                class="btn-primary"
+                                icon="fa-refresh"/>
+                        <field name="currency_id" widget="many2one" 
+                               options="{'no_create': True, 'no_quick_create': True}" 
+                               class="oe_inline"/>
+                        <field name="date_from" widget="date" class="oe_inline"/>
+                        <field name="date_to" widget="date" class="oe_inline"/>
+                    </header>
+                    <sheet>
+                        <!-- KPI Cards Section -->
+                        <div class="o_dashboard_view" style="padding: 20px;">
+                            <div class="row mb-3">
+                                <!-- Total Employees Card -->
+                                <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; padding: 25px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                        <div style="text-align: center;">
+                                            <i class="fa fa-users fa-3x mb-3" style="opacity: 0.9;"></i>
+                                            <h5 style="color: rgba(255,255,255,0.9); font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Total Employees</h5>
+                                            <h2 style="color: white; font-size: 36px; font-weight: bold; margin: 0;">
+                                                <field name="total_employees" readonly="1" widget="integer" style="color: white; background: transparent; border: none; font-size: 36px; font-weight: bold;"/>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Active Contracts Card -->
+                                <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                    <div style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 10px; padding: 25px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                        <div style="text-align: center;">
+                                            <i class="fa fa-file-contract fa-3x mb-3" style="opacity: 0.9;"></i>
+                                            <h5 style="color: rgba(255,255,255,0.9); font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Active Contracts</h5>
+                                            <h2 style="color: white; font-size: 36px; font-weight: bold; margin: 0;">
+                                                <field name="active_contracts" readonly="1" widget="integer" style="color: white; background: transparent; border: none; font-size: 36px; font-weight: bold;"/>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Total Payroll Card -->
+                                <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px; padding: 25px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                        <div style="text-align: center;">
+                                            <i class="fa fa-money-bill-wave fa-3x mb-3" style="opacity: 0.9;"></i>
+                                            <h5 style="color: rgba(255,255,255,0.9); font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Total Payroll</h5>
+                                            <h2 style="color: white; font-size: 28px; font-weight: bold; margin: 0;">
+                                                <field name="total_payroll_amount" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}" style="color: white; background: transparent; border: none; font-size: 28px; font-weight: bold;"/>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Average Salary Card -->
+                                <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 10px; padding: 25px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                        <div style="text-align: center;">
+                                            <i class="fa fa-chart-line fa-3x mb-3" style="opacity: 0.9;"></i>
+                                            <h5 style="color: rgba(255,255,255,0.9); font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Average Salary</h5>
+                                            <h2 style="color: white; font-size: 28px; font-weight: bold; margin: 0;">
+                                                <field name="average_salary" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}" style="color: white; background: transparent; border: none; font-size: 28px; font-weight: bold;"/>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Financial Breakdown Row -->
+                            <div class="row mt-4">
+                                <!-- Total Allowances -->
+                                <div class="col-12 col-md-4 mb-3">
+                                    <div style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 10px; padding: 30px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); min-height: 180px;">
+                                        <div style="text-align: center;">
+                                            <i class="fa fa-gift fa-3x mb-3" style="opacity: 0.9;"></i>
+                                            <h5 style="color: rgba(255,255,255,0.9); font-size: 14px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Total Allowances</h5>
+                                            <h2 style="color: white; font-size: 32px; font-weight: bold; margin: 0;">
+                                                <field name="total_allowances" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}" style="color: white; background: transparent; border: none; font-size: 32px; font-weight: bold;"/>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Total Deductions -->
+                                <div class="col-12 col-md-4 mb-3">
+                                    <div style="background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); border-radius: 10px; padding: 30px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); min-height: 180px;">
+                                        <div style="text-align: center;">
+                                            <i class="fa fa-minus-circle fa-3x mb-3" style="opacity: 0.9;"></i>
+                                            <h5 style="color: rgba(255,255,255,0.9); font-size: 14px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Total Deductions</h5>
+                                            <h2 style="color: white; font-size: 32px; font-weight: bold; margin: 0;">
+                                                <field name="total_deductions" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}" style="color: white; background: transparent; border: none; font-size: 32px; font-weight: bold;"/>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Net Payroll -->
+                                <div class="col-12 col-md-4 mb-3">
+                                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; padding: 30px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); min-height: 180px;">
+                                        <div style="text-align: center;">
+                                            <i class="fa fa-calculator fa-3x mb-3" style="opacity: 0.9;"></i>
+                                            <h5 style="color: rgba(255,255,255,0.9); font-size: 14px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Net Payroll</h5>
+                                            <h2 style="color: white; font-size: 32px; font-weight: bold; margin: 0;">
+                                                <field name="net_payroll" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}" style="color: white; background: transparent; border: none; font-size: 32px; font-weight: bold;"/>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Filters Section -->
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                                        <h5 style="color: #667eea; margin-bottom: 20px; font-weight: 600;">
+                                            <i class="fa fa-filter"/> Filters &amp; Options
+                                        </h5>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div style="font-weight: 600; color: #555; margin-bottom: 8px; display: block;">
+                                                    <i class="fa fa-building"/> Departments
+                                                </div>
+                                                <field name="department_ids" widget="many2many_tags" 
+                                                       options="{'no_create': True}" 
+                                                       placeholder="Select departments to filter..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Analytics Insights Section -->
+                            <div class="row mt-4">
+                                <div class="col-12 col-md-6 mb-3">
+                                    <div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); min-height: 200px;">
+                                        <h5 style="color: #667eea; margin-bottom: 15px; font-weight: 600;">
+                                            <i class="fa fa-chart-area"/> Monthly Payroll Trends
+                                        </h5>
+                                        <p style="color: #666; line-height: 1.8;">
+                                            <field name="monthly_payroll_data" invisible="1"/>
+                                            <i class="fa fa-info-circle text-info"/> 
+                                            Track payroll expenses month-over-month within the selected date range. 
+                                            Identify seasonal trends and budget patterns.
+                                        </p>
+                                        <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
+                                            <small style="color: #888;">
+                                                <i class="fa fa-lightbulb"/> Tip: Use this to compare payroll costs across different periods.
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 col-md-6 mb-3">
+                                    <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); min-height: 200px;">
+                                        <h5 style="color: #d35400; margin-bottom: 15px; font-weight: 600;">
+                                            <i class="fa fa-building"/> Department Analysis
+                                        </h5>
+                                        <p style="color: #666; line-height: 1.8;">
+                                            <field name="department_payroll_data" invisible="1"/>
+                                            <i class="fa fa-chart-pie text-warning"/> 
+                                            Compare payroll distribution across departments. 
+                                            Identify which departments have the highest payroll costs.
+                                        </p>
+                                        <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
+                                            <small style="color: #888;">
+                                                <i class="fa fa-lightbulb"/> Tip: Use department filter above to drill down into specific departments.
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                        <h5 style="color: #667eea; margin-bottom: 15px; font-weight: 600;">
+                                            <i class="fa fa-file-contract"/> Contract Type Distribution
+                                        </h5>
+                                        <p style="color: #666; line-height: 1.8;">
+                                            <field name="contract_type_data" invisible="1"/>
+                                            <i class="fa fa-chart-bar text-info"/> 
+                                            Analyze payroll breakdown by contract types (Full-Time, Part-Time, Contract, etc.). 
+                                            Understand the composition of your workforce and associated costs.
+                                        </p>
+                                        <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
+                                            <small style="color: #888;">
+                                                <i class="fa fa-lightbulb"/> Insight: Full-time employees typically represent the largest payroll segment.
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_payroll_dashboard_tree" model="ir.ui.view">
+            <field name="name">payroll.dashboard.tree</field>
+            <field name="model">payroll.dashboard</field>
+            <field name="arch" type="xml">
+                <tree string="Payroll Dashboards" create="false" delete="false">
+                    <field name="currency_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="total_payroll_amount" widget="monetary"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_payroll_dashboard" model="ir.actions.act_window">
+            <field name="name">Payroll Analytics Dashboard</field>
+            <field name="res_model">payroll.dashboard</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+            <field name="context">{'form_view_initial_mode': 'edit'}</field>
+        </record>
+
+        <menuitem id="menu_payroll_dashboard"
+                  name="Payroll Dashboard"
+                  action="action_payroll_dashboard"
+                  sequence="5"
+                  groups="base.group_user"/>
+
+    </data>
+</odoo>
+

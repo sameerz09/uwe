@@ -31,6 +31,7 @@
         # 'data/hr_payroll_structure_data.xml',
         'views/hr_contract_inherit_view.xml',
         'views/contracts_menu_view.xml',
+        'views/payroll_dashboard_view.xml',
         # 'report/report_spend_income.xml',
 
 

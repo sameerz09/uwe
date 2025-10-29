@@ -4,6 +4,18 @@
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
         <field name="arch" type="xml">
+            <!-- Hide Wage Type from original location and move to Foreign Currency tab -->
+            <xpath expr="//field[@name='wage_type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- Hide Schedule Pay from original location and move to Foreign Currency tab -->
+            <xpath expr="//field[@name='schedule_pay']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- Ensure wage field is visible in Salary Information tab (original location) -->
+            <xpath expr="//field[@name='wage']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="Payroll Info">
                     <group>
@@ -44,6 +56,29 @@
                             <field name="foreign_currency_id" 
                                    options="{'no_create': True}"
                                    placeholder="Select a foreign currency to enter equivalent values"/>
+                        </group>
+                    </group>
+                    <separator string="Wage Type Configuration" 
+                               invisible="not foreign_currency_id"/>
+                    <group string="Wage Type &amp; Hours" invisible="not foreign_currency_id">
+                        <group>
+                            <field name="wage_type"/>
+                            <field name="schedule_pay"/>
+                            <!-- Hourly Wage field - computed as Hourly Rate × Total Working Hours, converted to main currency (AED) -->
+                            <field name="hourly_wage" 
+                                   invisible="wage_type != 'hourly'"
+                                   readonly="1"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <!-- Hourly Rate field - visible only when wage_type is 'hourly' -->
+                            <field name="hourly_rate"
+                                   invisible="wage_type != 'hourly'"
+                                   widget="monetary"
+                                   options="{'currency_field': 'foreign_currency_id'}"/>
+                            <field name="number_of_working_hours"
+                                   invisible="schedule_pay != 'hourly'"/>
+                            <field name="total_working_hours"
+                                   invisible="wage_type != 'hourly'"/>
                         </group>
                     </group>
                     <separator string="Salary Information (Foreign Currency)" 
