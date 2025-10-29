@@ -64,7 +64,7 @@
                         <group>
                             <field name="wage_type"/>
                             <field name="schedule_pay"/>
-                            <!-- Hourly Wage field - computed as Hourly Rate × Total Working Hours, converted to main currency (AED) -->
+                            <!-- Hourly Wage field - computed as Hourly Rate × Total Working Hours, converted to company currency -->
                             <field name="hourly_wage" 
                                    invisible="wage_type != 'hourly'"
                                    readonly="1"

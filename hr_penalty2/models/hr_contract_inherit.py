@@ -34,7 +34,7 @@ class HrContract(models.Model):
                                  currency_field='currency_id',
                                  compute="_compute_hourly_wage",
                                  store=True,
-                                 help="Hourly Wage calculated as Hourly Rate × Total Working Hours (visible when Wage Type is Hourly)")
+                                 help="Hourly Wage calculated as Hourly Rate × Total Working Hours, converted to company currency (visible when Wage Type is Hourly)")
 
     # Multi-Currency Fields
     foreign_currency_id = fields.Many2one('res.currency', string="Foreign Currency",
@@ -249,7 +249,7 @@ class HrContract(models.Model):
                     total_in_foreign_currency = hourly_wage_foreign * total_hours
                     
                     if total_in_foreign_currency > 0:
-                        # Convert from foreign currency to company currency (AED)
+                        # Convert from foreign currency to company currency
                         converted_wage = self.foreign_currency_id._convert(
                             total_in_foreign_currency,
                             company_currency,
