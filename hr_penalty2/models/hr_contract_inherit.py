@@ -345,6 +345,7 @@ class HrContract(models.Model):
         # Update the contract with converted values
         if updates:
             self.write(updates)
+            # Show notification and reload the form to display updated values
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
@@ -353,6 +354,10 @@ class HrContract(models.Model):
                     'message': _('Original fields have been updated based on foreign currency values and exchange rates.'),
                     'type': 'success',
                     'sticky': False,
+                    'next': {
+                        'type': 'ir.actions.client',
+                        'tag': 'reload',
+                    }
                 }
             }
         else:
