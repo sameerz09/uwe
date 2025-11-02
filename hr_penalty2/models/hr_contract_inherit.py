@@ -35,6 +35,11 @@ class HrContract(models.Model):
                                  compute="_compute_hourly_wage",
                                  store=True,
                                  help="Hourly Wage calculated as Hourly Rate × Total Working Hours, converted to company currency (visible when Wage Type is Hourly)")
+    total_amount_foreign_currency = fields.Monetary(string="Total Amount (Foreign Currency)",
+                                                     currency_field='foreign_currency_id',
+                                                     compute="_compute_total_amount_foreign_currency",
+                                                     store=True,
+                                                     help="Total amount calculated as Hourly Rate × Total Working Hours in foreign currency (visible when Wage Type is Hourly)")
 
     # Multi-Currency Fields
     foreign_currency_id = fields.Many2one('res.currency', string="Foreign Currency",
@@ -163,6 +168,21 @@ class HrContract(models.Model):
             else:
                 contract.hourly_wage = 0.0
     
+    @api.depends('hourly_rate', 'total_working_hours', 'wage_type', 'foreign_currency_id')
+    def _compute_total_amount_foreign_currency(self):
+        """
+        Compute total amount in foreign currency for hourly contracts.
+        Formula: Hourly Rate × Total Working Hours (in foreign currency)
+        Only calculated when wage_type is 'hourly' and foreign_currency_id is set
+        """
+        for contract in self:
+            if contract.wage_type == 'hourly' and contract.foreign_currency_id:
+                hourly_rate = contract.hourly_rate or 0.0
+                total_hours = contract.total_working_hours or 0.0
+                contract.total_amount_foreign_currency = hourly_rate * total_hours
+            else:
+                contract.total_amount_foreign_currency = 0.0
+    
     @api.onchange('hourly_wage', 'wage_type')
     def _onchange_hourly_wage_update_wage(self):
         """
@@ -229,24 +249,38 @@ class HrContract(models.Model):
             'foreign_penalty_deduction': 'penalty_deduction',
         }
         
+        # Get contract fields once for all checks
+        contract_fields = self._fields.keys()
+        
+        # Allowance fields - try both standard and UAE localization field names
+        # UAE localization uses l10n_ae_ prefix for these fields (e.g., l10n_ae_housing_allowance)
+        allowance_fields = {
+            'foreign_housing_allowance': ['l10n_ae_housing_allowance', 'housing_allowance'],
+            'foreign_transportation_allowance': ['l10n_ae_transportation_allowance', 'transportation_allowance'],
+            'foreign_other_allowances': ['l10n_ae_other_allowances', 'other_allowances'],
+        }
+        
+        # Add allowance fields to mapping - try UAE localization names first, then standard names
+        for foreign_field, possible_original_fields in allowance_fields.items():
+            for original_field in possible_original_fields:
+                if original_field in contract_fields:
+                    field_mapping[foreign_field] = original_field
+                    break  # Use the first matching field name found
+        
         # Handle wage field based on wage_type
-        # If hourly, use Totally Hourly Amount (calculated from hourly_wage * total_working_hours in foreign currency)
+        # If hourly, calculate from hourly_rate (in foreign currency) × total_working_hours
         # Otherwise, use foreign_wage
+        # Note: Wage conversion is optional - other fields can still be converted even if wage fields are missing
         if self.wage_type == 'hourly':
-            # For hourly contracts, calculate total from hourly_wage * total_working_hours
-            # The hourly_wage is entered in foreign currency, so we calculate the total in foreign currency
-            # Then convert to company currency and update wage
-            try:
-                # Get hourly_wage (value entered is in foreign currency as displayed in the view)
-                hourly_wage_foreign = 0.0
-                if 'hourly_wage' in self._fields:
-                    hourly_wage_foreign = self.hourly_wage or 0.0
-                
-                total_hours = self.total_working_hours or 0.0
-                
-                if hourly_wage_foreign > 0 and total_hours > 0:
-                    # Calculate total in foreign currency: hourly_wage * total_working_hours
-                    total_in_foreign_currency = hourly_wage_foreign * total_hours
+            # For hourly contracts, use hourly_rate (in foreign currency) × total_working_hours
+            # Then convert the result to company currency and update wage
+            hourly_rate_foreign = self.hourly_rate or 0.0
+            total_hours = self.total_working_hours or 0.0
+            
+            if hourly_rate_foreign > 0 and total_hours > 0:
+                try:
+                    # Calculate total in foreign currency: hourly_rate × total_working_hours
+                    total_in_foreign_currency = hourly_rate_foreign * total_hours
                     
                     if total_in_foreign_currency > 0:
                         # Convert from foreign currency to company currency
@@ -257,25 +291,31 @@ class HrContract(models.Model):
                             conversion_date
                         )
                         updates['wage'] = converted_wage
-                elif not hourly_wage_foreign or not total_hours:
-                    raise UserError(_("Please enter both Hourly Wage and Total Working Hours for hourly contracts."))
-            except UserError:
-                raise
-            except Exception as e:
-                raise UserError(_("Error converting Totally Hourly Amount to wage: %s") % str(e))
-        # Note: wage field is only updated for hourly contracts
-        # For non-hourly contracts, foreign_wage is not used to update wage
+                except Exception as e:
+                    # Log error but don't prevent other fields from converting
+                    pass  # Allow other fields to convert even if wage conversion fails
+        else:
+            # For non-hourly contracts, convert foreign_wage to company currency
+            if self.foreign_wage and self.foreign_wage > 0:
+                try:
+                    converted_wage = self.foreign_currency_id._convert(
+                        self.foreign_wage,
+                        company_currency,
+                        company,
+                        conversion_date
+                    )
+                    updates['wage'] = converted_wage
+                except Exception as e:
+                    # Log error but don't prevent other fields from converting
+                    pass  # Allow other fields to convert even if wage conversion fails
         
-        # Optional fields that may exist in other modules
+        # Additional optional fields that may exist in other modules
         # Check if they exist before adding to mapping
         optional_fields = {
-            'foreign_housing_allowance': 'housing_allowance',
-            'foreign_transportation_allowance': 'transportation_allowance',
-            'foreign_other_allowances': 'other_allowances',
+            # Add any other optional fields here if needed in the future
         }
         
         # Add optional fields to mapping if they exist on the model
-        contract_fields = self._fields.keys()
         for foreign_field, original_field in optional_fields.items():
             if original_field in contract_fields:
                 field_mapping[foreign_field] = original_field
@@ -316,4 +356,23 @@ class HrContract(models.Model):
                 }
             }
         else:
-            raise UserError(_("No foreign currency values found to convert. Please enter foreign currency values first."))
+            # Provide more specific error message based on wage_type
+            if self.wage_type == 'hourly':
+                raise UserError(_(
+                    "No foreign currency values found to convert. "
+                    "For hourly contracts, please enter:\n"
+                    "- Hourly Rate (in foreign currency)\n"
+                    "- Total Working Hours\n"
+                    "And optionally: Foreign Food Allowance, Commission Allowance, Off Deduction, Penalty Deduction, etc."
+                ))
+            else:
+                raise UserError(_(
+                    "No foreign currency values found to convert. "
+                    "Please enter at least one of the following:\n"
+                    "- Wage (Foreign Currency) for non-hourly contracts\n"
+                    "- Foreign Food Allowance\n"
+                    "- Foreign Commission Allowance\n"
+                    "- Foreign Off Deduction\n"
+                    "- Foreign Penalty Deduction\n"
+                    "Or any other foreign currency allowance/deduction fields."
+                ))

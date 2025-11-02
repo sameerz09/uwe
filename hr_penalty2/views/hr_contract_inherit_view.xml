@@ -16,6 +16,10 @@
             <xpath expr="//field[@name='wage']" position="attributes">
                 <attribute name="invisible">0</attribute>
             </xpath>
+            <!-- Note: Allowance fields (Housing, Transportation, Other Allowances) 
+                 are automatically displayed in Salary Information tab by the l10n_ae module.
+                 The conversion from foreign currency to these fields is handled by 
+                 the "Compute & Convert" button in the Foreign Currency tab. -->
             <xpath expr="//notebook" position="inside">
                 <page string="Payroll Info">
                     <group>
@@ -23,7 +27,7 @@
 <!--                        <field name="eligible_days"/>-->
 <!--                        <field name="number_of_working_holidays"/>-->
 <!--                        <field name="holiday_working_days"/>-->
-<!--                        <field name="food_allowance"/>-->
+                        <field name="food_allowance"/> <!-- Food Allowance in original currency -->
                         <field name="commission_allowance"/> <!-- Added -->
                         <field name="off_deduction"/> <!-- Renamed -->
                         <field name="penalty_deduction"/> <!-- Added -->
@@ -36,6 +40,11 @@
 <!--                        <field name="net_salary" readonly="1"/>-->
 <!--                        <field name="net_salary_rounded" readonly="1"/>-->
                     </group>
+                    <!-- Note: Allowance fields (Housing, Transportation, Other Allowances) are converted 
+                         by the "Compute & Convert" button in the Foreign Currency tab.
+                         These fields are typically defined by the UAE localization module (l10n_ae) 
+                         and will appear in the Salary Information tab if that module is installed.
+                         To display them here, ensure the l10n_ae module is installed and add field references. -->
                 </page>
                 <page string="Foreign Currency">
                     <div class="alert alert-info" role="alert" invisible="not foreign_currency_id">
@@ -65,8 +74,9 @@
                             <field name="wage_type"/>
                             <field name="schedule_pay"/>
                             <!-- Hourly Wage field - computed as Hourly Rate × Total Working Hours, converted to company currency -->
+                            <!-- Hidden from Foreign Currency tab as requested -->
                             <field name="hourly_wage" 
-                                   invisible="wage_type != 'hourly'"
+                                   invisible="1"
                                    readonly="1"
                                    widget="monetary"
                                    options="{'currency_field': 'currency_id'}"/>
@@ -79,6 +89,12 @@
                                    invisible="schedule_pay != 'hourly'"/>
                             <field name="total_working_hours"
                                    invisible="wage_type != 'hourly'"/>
+                            <!-- Total Amount in Foreign Currency - computed as Hourly Rate × Total Working Hours -->
+                            <field name="total_amount_foreign_currency"
+                                   invisible="wage_type != 'hourly'"
+                                   readonly="1"
+                                   widget="monetary"
+                                   options="{'currency_field': 'foreign_currency_id'}"/>
                         </group>
                     </group>
                     <separator string="Salary Information (Foreign Currency)" 

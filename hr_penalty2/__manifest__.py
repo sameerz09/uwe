@@ -16,7 +16,7 @@
     'author': "UWE",
     'category': 'Human Resource',
 
-    'depends' : ['hr','hr_contract','sale','account','hr_recruitment'],
+    'depends' : ['hr','hr_contract','sale','account','hr_recruitment','hr_payroll'],
 
     'data' : [
         # 'security/security_view.xml',
@@ -32,6 +32,7 @@
         'views/hr_contract_inherit_view.xml',
         'views/contracts_menu_view.xml',
         'views/payroll_dashboard_view.xml',
+        'views/hr_payslip_view.xml',
         # 'report/report_spend_income.xml',
 
 
