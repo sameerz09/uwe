@@ -30,6 +30,7 @@ filestore/
 !/marshall_odoo_pos_staging/
 /marshall_odoo_pos_staging/*
 !/marshall_odoo_pos_staging/pos_access_control_price_button/
+!/uwe/
 
 
 
