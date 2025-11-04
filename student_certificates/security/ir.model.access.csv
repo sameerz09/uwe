@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_university_student_certificate_user,university.student.certificate.user,model_university_student,base.group_user,1,1,1,0
+access_student_certificate_wizard_user,student.certificate.wizard.user,model_student_certificate_wizard,base.group_user,1,1,1,1
+

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Inherit hr.employee form view to add certificate fields and send button -->
-    <record id="view_employee_form_inherit_certificate" model="ir.ui.view">
-        <field name="name">hr.employee.form.inherit.certificate</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.view_employee_form"/>
+    <!-- Inherit university.student form view to add certificate fields and send button -->
+    <record id="view_university_student_form_inherit_certificate" model="ir.ui.view">
+        <field name="name">university.student.form.inherit.certificate</field>
+        <field name="model">university.student</field>
+        <field name="inherit_id" ref="education_university_management.university_student_view_form"/>
         <field name="arch" type="xml">
+            <!-- Add full name fields in header after student number -->
+            <xpath expr="//group[field[@name='student_no']]" position="inside">
+                <field name="full_name_english" placeholder="Enter full name in English"/>
+                <field name="full_name_arabic" placeholder="Enter full name in Arabic"/>
+            </xpath>
+
             <!-- Add certificate fields as a new page/tab -->
             <xpath expr="//notebook" position="inside">
                 <page string="Certificate Information" name="certificate_info">
-                    <group string="Full Names">
-                        <group>
-                            <field name="full_name_english" placeholder="Enter full name in English"/>
-                            <field name="full_name_arabic" placeholder="Enter full name in Arabic"/>
-                        </group>
-                    </group>
                     <group string="Certificate Details">
                         <group>
                             <field name="passport_number"/>
@@ -40,13 +40,12 @@
                     </group>
                     <group string="Document Attachments">
                         <group>
-                            <field name="passport_or_id_attachment" filename="passport_or_id_filename"/>
-                            <field name="cv_attachment" filename="cv_filename"/>
-                            <field name="photo_attachment" filename="photo_filename"/>
+                            <field name="high_school_certificate_attachment" filename="high_school_certificate_filename"/>
+                            <field name="passport_attachment" filename="passport_filename"/>
+                            <field name="visa_attachment" filename="visa_filename"/>
                         </group>
                         <group>
-                            <field name="visa_uae_attachment" filename="visa_uae_filename"/>
-                            <field name="degree_attachment" filename="degree_filename"/>
+                            <field name="english_level_exam_attachment" filename="english_level_exam_filename"/>
                         </group>
                     </group>
                     <group string="Certificate Template">
@@ -59,14 +58,14 @@
                 </page>
             </xpath>
 
-            <!-- Add Certificate button in button_box -->
+            <!-- Add Send Certificate and Print Certificate buttons in button_box -->
             <xpath expr="//div[@class='oe_button_box' and @name='button_box']" position="inside">
-                <button name="%(employee_certificates.action_employee_certificate_wizard)d" 
+                <button name="%(student_certificates.action_certificate_wizard)d" 
                         string="Certificate" 
                         type="action" 
                         class="oe_stat_button"
                         icon="fa-certificate"
-                        context="{'default_employee_id': active_id}"/>
+                        context="{'default_student_id': active_id}"/>
             </xpath>
         </field>
     </record>

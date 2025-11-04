@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Employee Certificates',
-    'summary': 'Send Employee Registration Certificate',
+    'name': 'Student Certificates',
+    'summary': 'Send Student Registration Certificate',
     'description': """
-        This module allows sending employee registration certificates via email.
+        This module allows sending student registration certificates via email.
         Features:
         - Certificate fields for passport, Emirati ID, program, and academic year
         - PDF certificate generation
         - Email sending functionality
     """,
     'author': 'UWE',
-    'category': 'Human Resource',
-    'version': '17.0.1.0.3',
-    'depends': ['hr', 'mail'],
+    'category': 'Education',
+    'version': '17.0.1.0.0',
+    'depends': ['education_university_management', 'mail'],
     'data': [
         'security/ir.model.access.csv',
-        'reports/employee_certificate_report.xml',
+        'reports/student_certificate_report.xml',
         'wizard/certificate_wizard_view.xml',
-        'views/hr_employee_view.xml',
+        'views/university_student_view.xml',
     ],
     'installable': True,
     'auto_install': False,

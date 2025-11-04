@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <!-- Define paperformat with zero margins -->
-    <record id="employee_certificate_paperformat" model="report.paperformat">
-        <field name="name">Employee Certificate Report</field>
+    <record id="student_certificate_paperformat" model="report.paperformat">
+        <field name="name">Student Certificate Report</field>
         <field name="format">A4</field>
         <field name="orientation">Portrait</field>
         <field name="margin_top">0</field>
@@ -15,19 +15,19 @@
     </record>
 
     <!-- Certificate Report Action -->
-    <record id="employee_registration_certificate_report" model="ir.actions.report">
-        <field name="name">Employee Registration Certificate</field>
-        <field name="model">hr.employee</field>
+    <record id="student_registration_certificate_report" model="ir.actions.report">
+        <field name="name">Student Registration Certificate</field>
+        <field name="model">university.student</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">employee_certificates.employee_registration_certificate_template</field>
-        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="report_name">student_certificates.student_registration_certificate_template</field>
+        <field name="binding_model_id" ref="education_university_management.model_university_student"/>
         <field name="binding_type">report</field>
-        <field name="paperformat_id" ref="employee_certificates.employee_certificate_paperformat"/>
+        <field name="paperformat_id" ref="student_certificates.student_certificate_paperformat"/>
     </record>
 
-  <template id="employee_registration_certificate_template">
+  <template id="student_registration_certificate_template">
     <t t-call="web.html_container">
-      <t t-foreach="docs" t-as="employee">
+      <t t-foreach="docs" t-as="student">
 
         <!-- Styles (consider moving to a report asset bundle) -->
         <style>
@@ -48,8 +48,12 @@
           .certificate-content { text-align:center; padding:60px 40px; font-size:16px; line-height:1.8; color:#333; }
           .certificate-title { font-size:24px; font-weight:bold; color:#8B0000; margin-bottom:30px; text-transform:uppercase; }
           .certificate-text { font-size:18px; margin:20px 0; font-style:italic; }
-          .employee-name { font-size:22px; font-weight:bold; color:#8B0000; margin:30px 0; }
+          .student-name { font-size:22px; font-weight:bold; color:#8B0000; margin:30px 0; }
           .certificate-details { font-size:16px; margin:15px 0; }
+          .certificate-info-section { margin-top:40px; padding-top:30px; border-top:1px solid #ddd; text-align:left; }
+          .certificate-info-label { font-weight:bold; font-size:14px; margin-right:10px; }
+          .certificate-info-value { font-size:14px; }
+          .certificate-info-row { margin:10px 0; }
           .certificate-letter-section { margin-top:40px; padding:20px; background-color:#f9f9f9; text-align:left; font-size:14px; line-height:1.6; }
           .certificate-letter-title { font-weight:bold; font-size:16px; margin-bottom:15px; color:#8B0000; }
           .body-seal { width:180px; height:auto; display:block; position:absolute; bottom:70px; left:150px; z-index:9; }
@@ -69,8 +73,8 @@
 
         <!-- Use absolute base URL so wkhtmltopdf resolves assets correctly -->
         <t t-set="ABS"
-           t-value="employee.env['ir.config_parameter'].sudo().get_param('web.external.url')
-                    or employee.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+           t-value="student.env['ir.config_parameter'].sudo().get_param('web.external.url')
+                    or student.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
         
         <!-- Get current date -->
         <t t-set="today" t-value="datetime.date.today()"/>
@@ -83,7 +87,7 @@
               <div class="header-top-border"></div>
 
               <!-- Logo -->
-              <img t-att-src="ABS + '/employee_certificates/static/src/img/logo7.png'" class="header-logo" alt="UWEA Logo"/>
+              <img t-att-src="ABS + '/student_certificates/static/src/img/logo7.png'" class="header-logo" alt="UWEA Logo"/>
 
               <!-- Institution Name -->
               <div class="header-title">
@@ -98,11 +102,11 @@
             <div class="certificate-body">
               <div class="certificate-content">
                 <!-- Certificate Template Content -->
-                <t t-if="employee.certificate_template == 'registration'">
+                <t t-if="student.certificate_template == 'registration'">
                   <div class="certificate-content" style="text-align:left; padding:40px 60px;">
                     <div style="margin-bottom:30px;">
                       <div style="margin-bottom:15px;"><strong>Date: <t t-esc="today.strftime('%d/%m/%Y')"/></strong></div>
-                      <div style="margin-bottom:15px;"><strong>Subject: Certificate of Employee Registration in a Study Program</strong></div>
+                      <div style="margin-bottom:15px;"><strong>Subject: Certificate of Student Registration in a Study Program</strong></div>
                     </div>
                     
                     <div style="margin-bottom:20px;">
@@ -111,35 +115,37 @@
                     
                     <div style="margin-bottom:20px; line-height:1.8;">
                       <div style="margin-bottom:15px;">
-                        We hereby certify that the employee <strong><t t-esc="employee.full_name_english"/></strong>
-                        <t t-if="employee.full_name_arabic">
-                          <span style="font-family: 'Arial', 'Tahoma', sans-serif; direction: rtl;">(<t t-esc="employee.full_name_arabic"/>)</span>
+                        We hereby certify that the student <strong><t t-esc="student.full_name_english"/></strong>
+                        <t t-if="student.full_name_arabic">
+                          <span style="font-family: 'Arial', 'Tahoma', sans-serif; direction: rtl;">(<t t-esc="student.full_name_arabic"/>)</span>
                         </t>
-                        <t t-if="employee.passport_number">
-                          , holder of passport number <strong><t t-esc="employee.passport_number"/></strong>
+                        <t t-if="student.passport_number">
+                          , holder of <t t-if="student.nationality_id and student.nationality_id.name">
+                            <t t-esc="student.nationality_id.name"/>
+                          </t> passport number <strong><t t-esc="student.passport_number"/></strong>
                         </t>
-                        <t t-if="employee.emirati_id_number">
-                          <t t-if="employee.passport_number"> and </t>
-                          <t t-if="not employee.passport_number">, holder of </t>
-                          Emirati ID number <strong><t t-esc="employee.emirati_id_number"/></strong>
+                        <t t-if="student.emirati_id_number">
+                          <t t-if="student.passport_number"> and </t>
+                          <t t-if="not student.passport_number">, holder of </t>
+                          Emirati ID number <strong><t t-esc="student.emirati_id_number"/></strong>
                         </t>
-                        , is registered to study at the United World Education Academy in the first academic year of the <strong><t t-esc="employee.program_name or 'Bachelor of Business Administration'"/></strong> program
-                        <t t-if="employee.program_name and 'University of West Alabama' in employee.program_name or 'UWA' in employee.program_name">
+                        , is registered to study at the United World Education Academy in the first academic year of the <strong><t t-esc="student.program_name or 'Bachelor of Business Administration'"/></strong> program
+                        <t t-if="student.program_name and 'University of West Alabama' in student.program_name or 'UWA' in student.program_name">
                           at the University of West Alabama (UWA)
                         </t>
-                        <t t-if="employee.academic_year">
-                          for the academic year <strong><t t-esc="employee.academic_year"/></strong>
+                        <t t-if="student.academic_year">
+                          for the academic year <strong><t t-esc="student.academic_year"/></strong>
                         </t>
-                        <t t-if="employee.license_number">
-                          , under license number <strong><t t-esc="employee.license_number"/></strong>
+                        <t t-if="student.license_number">
+                          , under license number <strong><t t-esc="student.license_number"/></strong>
                         </t>
                         .
                       </div>
                       
                       <div style="margin-top:20px; margin-bottom:15px;">
-                        This certificate has been issued upon <t t-if="employee.gender == 'male'">his</t>
-                        <t t-if="employee.gender == 'female'">her</t>
-                        <t t-if="not employee.gender">their</t> request without incurring any legal liability toward third parties.
+                        This certificate has been issued upon <t t-if="student.gender == 'male'">his</t>
+                        <t t-if="student.gender == 'female'">her</t>
+                        <t t-if="not student.gender">their</t> request without incurring any legal liability toward third parties.
                       </div>
                       
                       <div style="margin-top:30px;">
@@ -149,89 +155,89 @@
                   </div>
                   
                   <!-- Letter to Students -->
-                  <t t-if="employee.letter_to_students">
+                  <t t-if="student.letter_to_students">
                     <div class="certificate-letter-section">
                       <div class="certificate-letter-title">Letter to Students</div>
-                      <t t-out="employee.letter_to_students"/>
+                      <t t-out="student.letter_to_students"/>
                     </div>
                   </t>
                   
                   <!-- Letter to Employees -->
-                  <t t-if="employee.letter_to_employees">
+                  <t t-if="student.letter_to_employees">
                     <div class="certificate-letter-section">
                       <div class="certificate-letter-title">Letter to Employees</div>
-                      <t t-out="employee.letter_to_employees"/>
+                      <t t-out="student.letter_to_employees"/>
                     </div>
                   </t>
                 </t>
                 
-                <t t-if="employee.certificate_template == 'completion'">
+                <t t-if="student.certificate_template == 'completion'">
                   <div class="certificate-title">Certificate of Completion</div>
                   <div class="certificate-text">This is to certify that</div>
-                  <div class="employee-name"><t t-esc="employee.full_name_english"/></div>
-                  <t t-if="employee.full_name_arabic">
-                    <div class="employee-name" style="font-family: 'Arial', 'Tahoma', sans-serif; direction: rtl; margin-top:10px;"><t t-esc="employee.full_name_arabic"/></div>
+                  <div class="student-name"><t t-esc="student.full_name_english"/></div>
+                  <t t-if="student.full_name_arabic">
+                    <div class="student-name" style="font-family: 'Arial', 'Tahoma', sans-serif; direction: rtl; margin-top:10px;"><t t-esc="student.full_name_arabic"/></div>
                   </t>
                   <div class="certificate-text">has successfully completed the program</div>
-                  <div class="certificate-details"><strong><t t-esc="employee.program_name or 'Bachelor of Business Administration'"/></strong></div>
-                  <t t-if="employee.academic_year">
-                    <div class="certificate-details">Academic Year: <t t-esc="employee.academic_year"/></div>
+                  <div class="certificate-details"><strong><t t-esc="student.program_name or 'Bachelor of Business Administration'"/></strong></div>
+                  <t t-if="student.academic_year">
+                    <div class="certificate-details">Academic Year: <t t-esc="student.academic_year"/></div>
                   </t>
                   <div class="certificate-text" style="margin-top:40px;">at United World Education Academy</div>
                   
                   <!-- Letter to Students -->
-                  <t t-if="employee.letter_to_students">
+                  <t t-if="student.letter_to_students">
                     <div class="certificate-letter-section">
                       <div class="certificate-letter-title">Letter to Students</div>
-                      <t t-out="employee.letter_to_students"/>
+                      <t t-out="student.letter_to_students"/>
                     </div>
                   </t>
                   
                   <!-- Letter to Employees -->
-                  <t t-if="employee.letter_to_employees">
+                  <t t-if="student.letter_to_employees">
                     <div class="certificate-letter-section">
                       <div class="certificate-letter-title">Letter to Employees</div>
-                      <t t-out="employee.letter_to_employees"/>
+                      <t t-out="student.letter_to_employees"/>
                     </div>
                   </t>
                 </t>
                 
-                <t t-if="employee.certificate_template == 'achievement'">
+                <t t-if="student.certificate_template == 'achievement'">
                   <div class="certificate-title">Certificate of Achievement</div>
                   <div class="certificate-text">This is to certify that</div>
-                  <div class="employee-name"><t t-esc="employee.full_name_english"/></div>
-                  <t t-if="employee.full_name_arabic">
-                    <div class="employee-name" style="font-family: 'Arial', 'Tahoma', sans-serif; direction: rtl; margin-top:10px;"><t t-esc="employee.full_name_arabic"/></div>
+                  <div class="student-name"><t t-esc="student.full_name_english"/></div>
+                  <t t-if="student.full_name_arabic">
+                    <div class="student-name" style="font-family: 'Arial', 'Tahoma', sans-serif; direction: rtl; margin-top:10px;"><t t-esc="student.full_name_arabic"/></div>
                   </t>
                   <div class="certificate-text">has demonstrated outstanding achievement in</div>
-                  <div class="certificate-details"><strong><t t-esc="employee.program_name or 'Bachelor of Business Administration'"/></strong></div>
-                  <t t-if="employee.academic_year">
-                    <div class="certificate-details">Academic Year: <t t-esc="employee.academic_year"/></div>
+                  <div class="certificate-details"><strong><t t-esc="student.program_name or 'Bachelor of Business Administration'"/></strong></div>
+                  <t t-if="student.academic_year">
+                    <div class="certificate-details">Academic Year: <t t-esc="student.academic_year"/></div>
                   </t>
                   <div class="certificate-text" style="margin-top:40px;">at United World Education Academy</div>
                   
                   <!-- Letter to Students -->
-                  <t t-if="employee.letter_to_students">
+                  <t t-if="student.letter_to_students">
                     <div class="certificate-letter-section">
                       <div class="certificate-letter-title">Letter to Students</div>
-                      <t t-out="employee.letter_to_students"/>
+                      <t t-out="student.letter_to_students"/>
                     </div>
                   </t>
                   
                   <!-- Letter to Employees -->
-                  <t t-if="employee.letter_to_employees">
+                  <t t-if="student.letter_to_employees">
                     <div class="certificate-letter-section">
                       <div class="certificate-letter-title">Letter to Employees</div>
-                      <t t-out="employee.letter_to_employees"/>
+                      <t t-out="student.letter_to_employees"/>
                     </div>
                   </t>
                 </t>
                 
-                <t t-if="employee.certificate_template == 'enrollment'">
+                <t t-if="student.certificate_template == 'enrollment'">
                   <div class="certificate-content" style="text-align:left; padding:40px 60px;">
                     <div style="margin-bottom:30px;">
                       <div style="margin-bottom:15px;"><strong>Date: <t t-esc="today.strftime('%d/%m/%Y')"/></strong></div>
-                      <div style="margin-bottom:15px;"><strong>Subject: Certificate of Employee Registration in a Study Program</strong></div>
+                      <div style="margin-bottom:15px;"><strong>Subject: Certificate of Student Registration in a Study Program</strong></div>
                     </div>
                     
                     <div style="margin-bottom:20px;">
@@ -240,35 +246,37 @@
                     
                     <div style="margin-bottom:20px; line-height:1.8;">
                       <div style="margin-bottom:15px;">
-                        We hereby certify that the employee <strong><t t-esc="employee.full_name_english"/></strong>
-                        <t t-if="employee.full_name_arabic">
-                          <span style="font-family: 'Arial', 'Tahoma', sans-serif; direction: rtl;">(<t t-esc="employee.full_name_arabic"/>)</span>
+                        We hereby certify that the student <strong><t t-esc="student.full_name_english"/></strong>
+                        <t t-if="student.full_name_arabic">
+                          <span style="font-family: 'Arial', 'Tahoma', sans-serif; direction: rtl;">(<t t-esc="student.full_name_arabic"/>)</span>
                         </t>
-                        <t t-if="employee.passport_number">
-                          , holder of passport number <strong><t t-esc="employee.passport_number"/></strong>
+                        <t t-if="student.passport_number">
+                          , holder of <t t-if="student.nationality_id and student.nationality_id.name">
+                            <t t-esc="student.nationality_id.name"/>
+                          </t> passport number <strong><t t-esc="student.passport_number"/></strong>
                         </t>
-                        <t t-if="employee.emirati_id_number">
-                          <t t-if="employee.passport_number"> and </t>
-                          <t t-if="not employee.passport_number">, holder of </t>
-                          Emirati ID number <strong><t t-esc="employee.emirati_id_number"/></strong>
+                        <t t-if="student.emirati_id_number">
+                          <t t-if="student.passport_number"> and </t>
+                          <t t-if="not student.passport_number">, holder of </t>
+                          Emirati ID number <strong><t t-esc="student.emirati_id_number"/></strong>
                         </t>
-                        , is registered to study at the United World Education Academy in the first academic year of the <strong><t t-esc="employee.program_name or 'Bachelor of Business Administration'"/></strong> program
-                        <t t-if="employee.program_name and 'University of West Alabama' in employee.program_name or 'UWA' in employee.program_name">
+                        , is registered to study at the United World Education Academy in the first academic year of the <strong><t t-esc="student.program_name or 'Bachelor of Business Administration'"/></strong> program
+                        <t t-if="student.program_name and 'University of West Alabama' in student.program_name or 'UWA' in student.program_name">
                           at the University of West Alabama (UWA)
                         </t>
-                        <t t-if="employee.academic_year">
-                          for the academic year <strong><t t-esc="employee.academic_year"/></strong>
+                        <t t-if="student.academic_year">
+                          for the academic year <strong><t t-esc="student.academic_year"/></strong>
                         </t>
-                        <t t-if="employee.license_number">
-                          , under license number <strong><t t-esc="employee.license_number"/></strong>
+                        <t t-if="student.license_number">
+                          , under license number <strong><t t-esc="student.license_number"/></strong>
                         </t>
                         .
                       </div>
                       
                       <div style="margin-top:20px; margin-bottom:15px;">
-                        This certificate has been issued upon <t t-if="employee.gender == 'male'">his</t>
-                        <t t-if="employee.gender == 'female'">her</t>
-                        <t t-if="not employee.gender">their</t> request without incurring any legal liability toward third parties.
+                        This certificate has been issued upon <t t-if="student.gender == 'male'">his</t>
+                        <t t-if="student.gender == 'female'">her</t>
+                        <t t-if="not student.gender">their</t> request without incurring any legal liability toward third parties.
                       </div>
                       
                       <div style="margin-top:30px;">
@@ -278,35 +286,35 @@
                   </div>
                   
                   <!-- Letter to Students -->
-                  <t t-if="employee.letter_to_students">
+                  <t t-if="student.letter_to_students">
                     <div class="certificate-letter-section">
                       <div class="certificate-letter-title">Letter to Students</div>
-                      <t t-out="employee.letter_to_students"/>
+                      <t t-out="student.letter_to_students"/>
                     </div>
                   </t>
                   
                   <!-- Letter to Employees -->
-                  <t t-if="employee.letter_to_employees">
+                  <t t-if="student.letter_to_employees">
                     <div class="certificate-letter-section">
                       <div class="certificate-letter-title">Letter to Employees</div>
-                      <t t-out="employee.letter_to_employees"/>
+                      <t t-out="student.letter_to_employees"/>
                     </div>
                   </t>
                 </t>
                 
-                <t t-if="employee.certificate_template == 'custom'">
-                  <t t-out="employee.custom_certificate_message or ''"/>
+                <t t-if="student.certificate_template == 'custom'">
+                  <t t-out="student.custom_certificate_message or ''"/>
                 </t>
               </div>
             </div>
             
             <!-- Seal at the bottom (left side) -->
-            <img t-att-src="ABS + '/employee_certificates/static/src/img/seal3.png'" class="body-seal" alt="Seal"/>
+            <img t-att-src="ABS + '/student_certificates/static/src/img/seal3.png'" class="body-seal" alt="Seal"/>
             
             <!-- Signature Section -->
             <div class="signature-section">
               <div class="signature-title">Chief Financial Officer</div>
-              <img t-att-src="ABS + '/employee_certificates/static/src/img/ismail_signature.png'" class="signature-image" alt="Signature"/>
+              <img t-att-src="ABS + '/student_certificates/static/src/img/ismail_signature.png'" class="signature-image" alt="Signature"/>
               <div class="signature-line"></div>
               <div class="signature-name">Mr. Ismail Yahya</div>
             </div>
@@ -324,3 +332,4 @@
     </t>
   </template>
 </odoo>
+

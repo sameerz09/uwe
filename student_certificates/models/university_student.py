@@ -4,29 +4,41 @@ from odoo.exceptions import UserError
 import base64
 
 
-class HrEmployee(models.Model):
-    _inherit = 'hr.employee'
+class UniversityStudent(models.Model):
+    _inherit = 'university.student'
 
     # Certificate fields
-    passport_number = fields.Char(string='Passport Number', help="Employee passport number")
-    emirati_id_number = fields.Char(string='Emirati ID Number', help="Employee Emirati ID number")
+    passport_number = fields.Char(string='Passport Number', help="Student passport number")
+    emirati_id_number = fields.Char(string='Emirati ID Number', help="Student Emirati ID number")
     program_name = fields.Char(string='Study Program', default='Bachelor of Business Administration', 
                                help="Name of the study program")
     academic_year = fields.Char(string='Academic Year', help="Academic year (e.g., 2025/2026)")
     license_number = fields.Char(string='License Number', default='4308400.01', 
                                  help="License number for the program")
     full_name_english = fields.Char(string='Full Name (English)', 
-                                    help="Full name of the employee in English")
+                                    help="Full name of the student in English")
     full_name_arabic = fields.Char(string='Full Name (Arabic)', 
-                                   help="Full name of the employee in Arabic")
-    visa_number = fields.Char(string='Visa Number', help="Employee visa number")
+                                   help="Full name of the student in Arabic")
+    visa_number = fields.Char(string='Visa Number', help="Student visa number")
     english_level_exam = fields.Char(string='English Level Exam', 
                                      help="English proficiency exam result (e.g., IELTS 7.0, TOEFL 90, etc.)")
     letter_to_students = fields.Html(string='Letter to Students', 
                                      help="Letter content for students")
     letter_to_employees = fields.Html(string='Letter to Employees', 
                                       help="Letter content for employees")
-    # Letter attachment fields
+    # Attachment fields - one for each document type (Binary fields for direct upload)
+    high_school_certificate_attachment = fields.Binary(string='High School Certificate',
+                                                        help="Upload high school certificate file")
+    high_school_certificate_filename = fields.Char(string='High School Certificate Filename')
+    passport_attachment = fields.Binary(string='Passport Attachment',
+                                       help="Upload passport document file")
+    passport_filename = fields.Char(string='Passport Filename')
+    visa_attachment = fields.Binary(string='Visa Attachment',
+                                   help="Upload visa document file")
+    visa_filename = fields.Char(string='Visa Filename')
+    english_level_exam_attachment = fields.Binary(string='English Level Exam Attachment',
+                                                  help="Upload English level exam document file")
+    english_level_exam_filename = fields.Char(string='English Level Exam Filename')
     letter_to_students_attachment = fields.Binary(string='Letter to Students Attachment',
                                                   help="Upload letter to students file")
     letter_to_students_filename = fields.Char(string='Letter to Students Filename')
@@ -43,42 +55,26 @@ class HrEmployee(models.Model):
        help="Select the certificate template/message type")
     custom_certificate_message = fields.Html(string='Custom Certificate Message', 
                                              help="Custom message to display on certificate (only used when Custom Message is selected)")
-    # Attachment fields - one for each document type (Binary fields for direct upload)
-    passport_or_id_attachment = fields.Binary(string='Passport or ID Attachment',
-                                             help="Upload passport or ID document file")
-    passport_or_id_filename = fields.Char(string='Passport or ID Filename')
-    cv_attachment = fields.Binary(string='CV Attachment',
-                                  help="Upload CV file")
-    cv_filename = fields.Char(string='CV Filename')
-    photo_attachment = fields.Binary(string='Photo Attachment',
-                                    help="Upload photo file")
-    photo_filename = fields.Char(string='Photo Filename')
-    visa_uae_attachment = fields.Binary(string='Visa (if inside UAE) Attachment',
-                                       help="Upload visa document file if employee is inside UAE")
-    visa_uae_filename = fields.Char(string='Visa UAE Filename')
-    degree_attachment = fields.Binary(string='Degree Attachment',
-                                     help="Upload degree document file")
-    degree_filename = fields.Char(string='Degree Filename')
 
     def action_send_certificate(self):
-        """Send registration certificate to employee via email with PDF attachment"""
+        """Send registration certificate to student via email with PDF attachment"""
         self.ensure_one()
         
-        # Check if employee has email
-        if not self.work_email and not self.private_email:
-            raise UserError(_("Employee %s does not have an email address configured.") % self.name)
+        # Check if student has email
+        if not self.email and not self.personal_email:
+            raise UserError(_("Student %s does not have an email address configured.") % self.name)
         
-        # Get employee email
-        employee_email = self.work_email or self.private_email
+        # Get student email
+        student_email = self.email or self.personal_email
         
         # Get the certificate report
-        report_ref = 'employee_certificates.employee_registration_certificate_report'
+        report_ref = 'student_certificates.student_registration_certificate_report'
         try:
             report = self.env.ref(report_ref, raise_if_not_found=False)
             if not report:
                 # Fallback: search for certificate report
                 report = self.env['ir.actions.report'].search([
-                    ('model', '=', 'hr.employee'),
+                    ('model', '=', 'university.student'),
                     ('report_name', 'ilike', 'certificate'),
                     ('report_type', '=', 'qweb-pdf')
                 ], limit=1)
@@ -107,17 +103,17 @@ class HrEmployee(models.Model):
                 'enrollment': _('Certificate of Enrollment'),
                 'custom': _('Certificate'),
             }
-            employee_name = self.full_name_english or self.name
+            student_name = self.full_name_english or self.partner_id.name or self.name
             certificate_type = template_names.get(self.certificate_template, _('Certificate'))
-            certificate_name = f"{certificate_type}-{employee_name}"
-            subject = _("%s - %s") % (certificate_type, employee_name)
+            certificate_name = f"{certificate_type}-{student_name}"
+            subject = _("%s - %s") % (certificate_type, student_name)
             
             body_html = _("""
                 <p>Dear %s,</p>
                 <p>Please find attached your %s.</p>
                 <p>Best regards,<br/>%s</p>
             """) % (
-                employee_name,
+                student_name,
                 certificate_type,
                 self.env.company.name
             )
@@ -127,13 +123,13 @@ class HrEmployee(models.Model):
                 'subject': subject,
                 'body_html': body_html,
                 'email_from': self.env.company.email or self.env.user.email_formatted,
-                'email_to': employee_email,
+                'email_to': student_email,
                 'attachment_ids': [(0, 0, {
                     'name': f"{certificate_name}.pdf",
                     'type': 'binary',
                     'datas': pdf_base64,
                     'mimetype': 'application/pdf',
-                    'res_model': 'hr.employee',
+                    'res_model': 'university.student',
                     'res_id': self.id,
                 })],
             }
@@ -143,7 +139,7 @@ class HrEmployee(models.Model):
             mail.send()
             
             # Log the action
-            message = _("Certificate sent to %s (%s)") % (self.name, employee_email)
+            message = _("Certificate sent to %s (%s)") % (self.name, student_email)
             self.message_post(body=message)
             
             # Return notification
@@ -152,7 +148,7 @@ class HrEmployee(models.Model):
                 'tag': 'display_notification',
                 'params': {
                     'title': _('Certificate Sent'),
-                    'message': _('Certificate has been successfully sent to %s') % employee_email,
+                    'message': _('Certificate has been successfully sent to %s') % student_email,
                     'type': 'success',
                     'sticky': False,
                 }

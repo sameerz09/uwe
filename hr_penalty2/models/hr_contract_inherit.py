@@ -129,7 +129,7 @@ class HrContract(models.Model):
                 company = contract.company_id or self.env.company
                 company_currency = company.currency_id
                 
-                if company_currency and contract.foreign_currency_id != company_currency:
+                if company_currency:
                     # Get hourly_rate in foreign currency
                     hourly_rate_foreign = contract.hourly_rate or 0.0
                     total_hours = contract.total_working_hours or 0.0
@@ -138,28 +138,34 @@ class HrContract(models.Model):
                     total_in_foreign_currency = hourly_rate_foreign * total_hours
                     
                     if total_in_foreign_currency > 0:
-                        # Convert from foreign currency to company currency
-                        conversion_date = fields.Date.today()
-                        try:
-                            hourly_wage_company_currency = contract.foreign_currency_id._convert(
-                                total_in_foreign_currency,
-                                company_currency,
-                                company,
-                                conversion_date
-                            )
-                            contract.hourly_wage = hourly_wage_company_currency
-                            # Update wage field to equal hourly_wage
-                            contract.wage = contract.hourly_wage
-                        except Exception:
-                            # If conversion fails, use raw calculation
+                        # Check if currencies are the same for 1:1 conversion
+                        if contract.foreign_currency_id == company_currency:
+                            # 1:1 conversion when currencies are the same
                             contract.hourly_wage = total_in_foreign_currency
                             contract.wage = contract.hourly_wage
+                        else:
+                            # Convert from foreign currency to company currency
+                            conversion_date = fields.Date.today()
+                            try:
+                                hourly_wage_company_currency = contract.foreign_currency_id._convert(
+                                    total_in_foreign_currency,
+                                    company_currency,
+                                    company,
+                                    conversion_date
+                                )
+                                contract.hourly_wage = hourly_wage_company_currency
+                                # Update wage field to equal hourly_wage
+                                contract.wage = contract.hourly_wage
+                            except Exception:
+                                # If conversion fails, use raw calculation
+                                contract.hourly_wage = total_in_foreign_currency
+                                contract.wage = contract.hourly_wage
                     else:
                         contract.hourly_wage = 0.0
                         if contract.wage_type == 'hourly':
                             contract.wage = 0.0
                 else:
-                    # If same currency or no foreign currency selected, calculate directly
+                    # If no company currency, calculate directly
                     hourly_rate = contract.hourly_rate or 0.0
                     total_hours = contract.total_working_hours or 0.0
                     contract.hourly_wage = hourly_rate * total_hours
@@ -230,8 +236,8 @@ class HrContract(models.Model):
         if not company_currency:
             raise UserError(_("Company currency is not set. Please configure company currency first."))
         
-        if self.foreign_currency_id == company_currency:
-            raise UserError(_("Foreign currency cannot be the same as company currency."))
+        # Check if currencies are the same - if so, use 1:1 conversion
+        same_currency = (self.foreign_currency_id == company_currency)
         
         # Get today's date for exchange rate
         conversion_date = fields.Date.today()
@@ -284,12 +290,16 @@ class HrContract(models.Model):
                     
                     if total_in_foreign_currency > 0:
                         # Convert from foreign currency to company currency
-                        converted_wage = self.foreign_currency_id._convert(
-                            total_in_foreign_currency,
-                            company_currency,
-                            company,
-                            conversion_date
-                        )
+                        if same_currency:
+                            # 1:1 conversion when currencies are the same
+                            converted_wage = total_in_foreign_currency
+                        else:
+                            converted_wage = self.foreign_currency_id._convert(
+                                total_in_foreign_currency,
+                                company_currency,
+                                company,
+                                conversion_date
+                            )
                         updates['wage'] = converted_wage
                 except Exception as e:
                     # Log error but don't prevent other fields from converting
@@ -298,12 +308,16 @@ class HrContract(models.Model):
             # For non-hourly contracts, convert foreign_wage to company currency
             if self.foreign_wage and self.foreign_wage > 0:
                 try:
-                    converted_wage = self.foreign_currency_id._convert(
-                        self.foreign_wage,
-                        company_currency,
-                        company,
-                        conversion_date
-                    )
+                    if same_currency:
+                        # 1:1 conversion when currencies are the same
+                        converted_wage = self.foreign_wage
+                    else:
+                        converted_wage = self.foreign_currency_id._convert(
+                            self.foreign_wage,
+                            company_currency,
+                            company,
+                            conversion_date
+                        )
                     updates['wage'] = converted_wage
                 except Exception as e:
                     # Log error but don't prevent other fields from converting
@@ -327,12 +341,16 @@ class HrContract(models.Model):
             if foreign_value and foreign_value > 0:
                 try:
                     # Convert foreign currency to company currency
-                    converted_amount = self.foreign_currency_id._convert(
-                        foreign_value,
-                        company_currency,
-                        company,
-                        conversion_date
-                    )
+                    if same_currency:
+                        # 1:1 conversion when currencies are the same
+                        converted_amount = foreign_value
+                    else:
+                        converted_amount = self.foreign_currency_id._convert(
+                            foreign_value,
+                            company_currency,
+                            company,
+                            conversion_date
+                        )
                     # Only update if field exists on the model
                     if original_field in contract_fields:
                         updates[original_field] = converted_amount
