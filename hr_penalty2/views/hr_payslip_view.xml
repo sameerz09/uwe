@@ -18,6 +18,16 @@
             <xpath expr="//field[@name='worked_days_line_ids']//tree//field[@name='amount']" position="attributes">
                 <attribute name="readonly">0</attribute>
             </xpath>
+            
+            <!-- Add Send Payslip button in the header buttons area -->
+            <!-- Place after action_payslip_done button -->
+            <xpath expr="//button[@name='action_payslip_done']" position="after">
+                <button name="action_send_payslip" 
+                        string="Send Payslip" 
+                        type="object" 
+                        class="btn-primary"
+                        invisible="state == 'cancel'"/>
+            </xpath>
         </field>
     </record>
 </odoo>

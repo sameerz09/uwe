@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Define paperformat with zero margins -->
+    <record id="employee_certificate_paperformat" model="report.paperformat">
+        <field name="name">Employee Certificate Report</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <!-- Certificate Report Action -->
+    <record id="employee_registration_certificate_report" model="ir.actions.report">
+        <field name="name">Employee Registration Certificate</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">employee_certificates.employee_registration_certificate_template</field>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="employee_certificates.employee_certificate_paperformat"/>
+    </record>
+
+  <template id="employee_registration_certificate_template">
+    <t t-call="web.html_container">
+      <t t-foreach="docs" t-as="employee">
+
+        <!-- Styles (consider moving to a report asset bundle) -->
+        <style>
+          @page {
+            size: A4 portrait;
+            margin: 0;
+          }
+          html, body { margin:0 !important; padding:0 !important; background:#ffffff; font-size:13px; height:100%; }
+          * { margin:0; padding:0; box-sizing:border-box; }
+          main { margin:0; padding:0; width:100%; position:relative; height:100%; }
+          .certificate-wrapper { width:100%; background:#ffffff; padding:0; margin:0; box-sizing:border-box; position:relative; height:1250px; min-height:1250px; overflow:hidden; }
+          .header-section { background-color:#f5f5dc; position:relative; padding:60px 0; text-align:center; width:100%; margin:0; left:0; right:0; min-height:120px; }
+          .header-top-border { height:2px; background-color:#d3d3d3; width:100%; position:absolute; top:0; left:0; right:0; }
+          .header-bottom-band { height:8px; background-color:#8B0000; width:100%; position:absolute; bottom:0; left:0; right:0; }
+          .header-logo { width:180px; height:auto; display:block; margin:0 auto 15px; }
+          .header-title { font-size:28px; font-weight:bold; color:#333; margin-top:15px; text-transform:uppercase; font-family:serif; }
+          .certificate-body { position:relative; z-index:1; padding:40px 20px; padding-bottom:80px; }
+          .body-seal { width:100px; height:auto; display:block; margin:40px auto 0; }
+          .certificate-footer { background-color:#8B0000; color:#ffffff; padding:15px; display:flex; justify-content:space-between; align-items:center; font-size:12px; width:100%; position:absolute; bottom:0px; left:0; right:0; z-index:10; height:auto; white-space:nowrap; }
+          .footer-item { flex:1; white-space:nowrap; display:inline-block; }
+          .footer-item:first-child { text-align:left; padding-right:145px; }
+          .footer-item:nth-child(2) { text-align:center; padding-left:145px; padding-right:145px; }
+          .footer-item:last-child { text-align:right; padding-left:145px; }
+          .footer-label { font-weight:bold; white-space:nowrap; }
+          .footer-value { font-weight:normal; white-space:nowrap; }
+        </style>
+
+        <!-- Use absolute base URL so wkhtmltopdf resolves assets correctly -->
+        <t t-set="ABS"
+           t-value="employee.env['ir.config_parameter'].sudo().get_param('web.external.url')
+                    or employee.env['ir.config_parameter'].sudo().get_param('web.base.url')"/>
+
+        <main>
+          <div class="certificate-wrapper">
+            <!-- Header Section -->
+            <div class="header-section" style="position:relative; z-index:1;">
+              <!-- Top Border -->
+              <div class="header-top-border"></div>
+
+              <!-- Logo -->
+              <img t-att-src="ABS + '/employee_certificates/static/src/img/logo7.png'" class="header-logo" alt="UWEA Logo"/>
+
+              <!-- Institution Name -->
+              <div class="header-title">
+                UNITED WORLD EDUCATION ACADEMY
+              </div>
+
+              <!-- Bottom Red Band -->
+              <div class="header-bottom-band"></div>
+            </div>
+
+            <!-- Certificate Body -->
+            <div class="certificate-body">
+              <!-- Seal in the body -->
+              <img t-att-src="ABS + '/employee_certificates/static/src/img/seal3.png'" class="body-seal" alt="Seal"/>
+            </div>
+
+            <!-- Footer -->
+            <div class="certificate-footer">
+              <div class="footer-item"><span class="footer-label">TEL:</span> <span class="footer-value">+971-56-236-6905</span></div>
+              <div class="footer-item"><span class="footer-label">WEB:</span> <span class="footer-value">www.uwuni.com</span></div>
+              <div class="footer-item"><span class="footer-label">E-MAIL:</span> <span class="footer-value">info@uwuni.com</span></div>
+            </div>
+          </div>
+        </main>
+
+      </t>
+    </t>
+  </template>
+</odoo>

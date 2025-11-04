@@ -20,6 +20,8 @@
 #
 ###############################################################################
 from odoo import api, models, _
+from odoo.exceptions import UserError
+import base64
 
 
 class HrPayslip(models.Model):
@@ -100,3 +102,105 @@ class HrPayslip(models.Model):
         except ValueError:
             # Salary rule doesn't exist, skip penalty processing
             pass
+
+    def action_send_payslip(self):
+        """Send payslip to employee via email with PDF attachment"""
+        self.ensure_one()
+        
+        # Check if employee has email
+        if not self.employee_id.work_email and not self.employee_id.private_email:
+            raise UserError(_("Employee %s does not have an email address configured.") % self.employee_id.name)
+        
+        # Get employee email
+        employee_email = self.employee_id.work_email or self.employee_id.private_email
+        
+        # Get the payslip report - try different possible report references
+        report_ref = None
+        possible_refs = [
+            'hr_payroll.action_report_payslip',
+            'hr_payroll.report_payslip',
+            'hr_payroll.report_hr_payslip',
+        ]
+        
+        for ref in possible_refs:
+            try:
+                report = self.env.ref(ref, raise_if_not_found=False)
+                if report:
+                    report_ref = ref
+                    break
+            except:
+                continue
+        
+        if not report_ref:
+            # Fallback: search for payslip report by name
+            report = self.env['ir.actions.report'].search([
+                ('model', '=', 'hr.payslip'),
+                ('report_type', '=', 'qweb-pdf')
+            ], limit=1)
+            if not report:
+                raise UserError(_("Payslip report not found. Please configure the payslip report."))
+            report_ref = report.report_name
+        
+        try:
+            # Generate PDF for the payslip
+            pdf_data = self.env['ir.actions.report']._render_qweb_pdf(
+                report_ref, res_ids=self.ids
+            )
+            if not pdf_data or not pdf_data[0]:
+                raise UserError(_("Failed to generate payslip PDF."))
+            
+            # Encode PDF data
+            pdf_base64 = base64.b64encode(pdf_data[0]).decode()
+            
+            # Prepare email content
+            payslip_name = self.number or f"Payslip-{self.employee_id.name}-{self.date_from.strftime('%Y-%m') if self.date_from else ''}"
+            subject = _("Payslip - %s - %s") % (self.employee_id.name, payslip_name)
+            
+            body_html = _("""
+                <p>Dear %s,</p>
+                <p>Please find attached your payslip for the period %s to %s.</p>
+                <p>Best regards,<br/>%s</p>
+            """) % (
+                self.employee_id.name,
+                self.date_from.strftime('%B %d, %Y') if self.date_from else '',
+                self.date_to.strftime('%B %d, %Y') if self.date_to else '',
+                self.env.company.name
+            )
+            
+            # Create email values
+            email_values = {
+                'subject': subject,
+                'body_html': body_html,
+                'email_from': self.env.company.email or self.env.user.email_formatted,
+                'email_to': employee_email,
+                'attachment_ids': [(0, 0, {
+                    'name': f"{payslip_name}.pdf",
+                    'type': 'binary',
+                    'datas': pdf_base64,
+                    'mimetype': 'application/pdf',
+                    'res_model': 'hr.payslip',
+                    'res_id': self.id,
+                })],
+            }
+            
+            # Create and send the email
+            mail = self.env['mail.mail'].create(email_values)
+            mail.send()
+            
+            # Log the action
+            message = _("Payslip sent to %s (%s)") % (self.employee_id.name, employee_email)
+            self.message_post(body=message)
+            
+            # Return notification
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Payslip Sent'),
+                    'message': _('Payslip has been successfully sent to %s') % employee_email,
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
+        except Exception as e:
+            raise UserError(_("Error sending payslip: %s") % str(e))

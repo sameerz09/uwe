@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit hr.employee form view to add certificate fields and send button -->
+    <record id="view_employee_form_inherit_certificate" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.certificate</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <!-- Add certificate fields as a new page/tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Certificate Information" name="certificate_info">
+                    <group string="Certificate Details">
+                        <group>
+                            <field name="passport_number"/>
+                            <field name="emirati_id_number"/>
+                        </group>
+                        <group>
+                            <field name="program_name"/>
+                            <field name="academic_year"/>
+                            <field name="license_number"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- Add Send Certificate button in header -->
+            <xpath expr="//header" position="inside">
+                <button name="action_send_certificate" 
+                        string="Send Certificate" 
+                        type="object" 
+                        class="btn-primary"
+                        icon="fa-envelope"/>
+                <button name="%(employee_certificates.employee_registration_certificate_report)d" 
+                        string="Print Certificate" 
+                        type="action" 
+                        class="btn-secondary"
+                        icon="fa-print"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
