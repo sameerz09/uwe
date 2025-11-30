@@ -31,22 +31,22 @@
                     <group string="Letters">
                         <group>
                             <field name="letter_to_students" placeholder="Enter letter content for students..."/>
-                            <field name="letter_to_students_attachment" filename="letter_to_students_filename"/>
+                            <field name="letter_to_students_attachment_ids" widget="many2many_binary" class="oe_inline"/>
                         </group>
                         <group>
                             <field name="letter_to_employees" placeholder="Enter letter content for employees..."/>
-                            <field name="letter_to_employees_attachment" filename="letter_to_employees_filename"/>
+                            <field name="letter_to_employees_attachment_ids" widget="many2many_binary" class="oe_inline"/>
                         </group>
                     </group>
                     <group string="Document Attachments">
                         <group>
-                            <field name="passport_or_id_attachment" filename="passport_or_id_filename"/>
-                            <field name="cv_attachment" filename="cv_filename"/>
-                            <field name="photo_attachment" filename="photo_filename"/>
+                            <field name="passport_or_id_attachment_ids" widget="many2many_binary" class="oe_inline"/>
+                            <field name="cv_attachment_ids" widget="many2many_binary" class="oe_inline"/>
+                            <field name="photo_attachment_ids" widget="many2many_binary" class="oe_inline"/>
                         </group>
                         <group>
-                            <field name="visa_uae_attachment" filename="visa_uae_filename"/>
-                            <field name="degree_attachment" filename="degree_filename"/>
+                            <field name="visa_uae_attachment_ids" widget="many2many_binary" class="oe_inline"/>
+                            <field name="degree_attachment_ids" widget="many2many_binary" class="oe_inline"/>
                         </group>
                     </group>
                     <group string="Certificate Template">

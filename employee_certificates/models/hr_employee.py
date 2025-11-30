@@ -26,13 +26,19 @@ class HrEmployee(models.Model):
                                      help="Letter content for students")
     letter_to_employees = fields.Html(string='Letter to Employees', 
                                       help="Letter content for employees")
-    # Letter attachment fields
-    letter_to_students_attachment = fields.Binary(string='Letter to Students Attachment',
-                                                  help="Upload letter to students file")
-    letter_to_students_filename = fields.Char(string='Letter to Students Filename')
-    letter_to_employees_attachment = fields.Binary(string='Letter to Employees Attachment',
-                                                   help="Upload letter to employees file")
-    letter_to_employees_filename = fields.Char(string='Letter to Employees Filename')
+    # Letter attachment fields - Many2many for multiple attachments
+    letter_to_students_attachment_ids = fields.Many2many(
+        'ir.attachment', 'hr_employee_letter_students_attach_rel',
+        'employee_id', 'attachment_id',
+        string='Letter to Students Attachments',
+        help="Upload letter to students files",
+        copy=False)
+    letter_to_employees_attachment_ids = fields.Many2many(
+        'ir.attachment', 'hr_employee_letter_employees_attach_rel',
+        'employee_id', 'attachment_id',
+        string='Letter to Employees Attachments',
+        help="Upload letter to employees files",
+        copy=False)
     certificate_template = fields.Selection([
         ('registration', 'Registration Certificate'),
         ('completion', 'Completion Certificate'),
@@ -43,22 +49,37 @@ class HrEmployee(models.Model):
        help="Select the certificate template/message type")
     custom_certificate_message = fields.Html(string='Custom Certificate Message', 
                                              help="Custom message to display on certificate (only used when Custom Message is selected)")
-    # Attachment fields - one for each document type (Binary fields for direct upload)
-    passport_or_id_attachment = fields.Binary(string='Passport or ID Attachment',
-                                             help="Upload passport or ID document file")
-    passport_or_id_filename = fields.Char(string='Passport or ID Filename')
-    cv_attachment = fields.Binary(string='CV Attachment',
-                                  help="Upload CV file")
-    cv_filename = fields.Char(string='CV Filename')
-    photo_attachment = fields.Binary(string='Photo Attachment',
-                                    help="Upload photo file")
-    photo_filename = fields.Char(string='Photo Filename')
-    visa_uae_attachment = fields.Binary(string='Visa (if inside UAE) Attachment',
-                                       help="Upload visa document file if employee is inside UAE")
-    visa_uae_filename = fields.Char(string='Visa UAE Filename')
-    degree_attachment = fields.Binary(string='Degree Attachment',
-                                     help="Upload degree document file")
-    degree_filename = fields.Char(string='Degree Filename')
+    # Attachment fields - Many2many for multiple attachments per document type
+    passport_or_id_attachment_ids = fields.Many2many(
+        'ir.attachment', 'hr_employee_passport_id_attach_rel',
+        'employee_id', 'attachment_id',
+        string='Passport or ID Attachments',
+        help="Upload passport or ID document files",
+        copy=False)
+    cv_attachment_ids = fields.Many2many(
+        'ir.attachment', 'hr_employee_cv_attach_rel',
+        'employee_id', 'attachment_id',
+        string='CV Attachments',
+        help="Upload CV files",
+        copy=False)
+    photo_attachment_ids = fields.Many2many(
+        'ir.attachment', 'hr_employee_photo_attach_rel',
+        'employee_id', 'attachment_id',
+        string='Photo Attachments',
+        help="Upload photo files",
+        copy=False)
+    visa_uae_attachment_ids = fields.Many2many(
+        'ir.attachment', 'hr_employee_visa_uae_attach_rel',
+        'employee_id', 'attachment_id',
+        string='Visa (if inside UAE) Attachments',
+        help="Upload visa document files if employee is inside UAE",
+        copy=False)
+    degree_attachment_ids = fields.Many2many(
+        'ir.attachment', 'hr_employee_degree_attach_rel',
+        'employee_id', 'attachment_id',
+        string='Degree Attachments',
+        help="Upload degree document files",
+        copy=False)
 
     def action_send_certificate(self):
         """Send registration certificate to employee via email with PDF attachment"""

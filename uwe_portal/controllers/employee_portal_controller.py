@@ -228,26 +228,45 @@ class EmployeePortalController(CustomerPortal):
                 if work_permit_expiration_date:
                     update_vals['work_permit_expiration_date'] = work_permit_expiration_date
                 
-                # Handle file uploads for attachments
-                file_fields = {
-                    'letter_to_students_attachment': 'letter_to_students_filename',
-                    'letter_to_employees_attachment': 'letter_to_employees_filename',
-                    'passport_or_id_attachment': 'passport_or_id_filename',
-                    'cv_attachment': 'cv_filename',
-                    'photo_attachment': 'photo_filename',
-                    'visa_uae_attachment': 'visa_uae_filename',
-                    'degree_attachment': 'degree_filename',
-                    'work_permit_attachment': 'has_work_permit',  # Note: field name is 'has_work_permit' not 'work_permit_filename'
+                # Handle file uploads for Many2many attachments
+                attachment_field_mapping = {
+                    'letter_to_students_attachment': 'letter_to_students_attachment_ids',
+                    'letter_to_employees_attachment': 'letter_to_employees_attachment_ids',
+                    'passport_or_id_attachment': 'passport_or_id_attachment_ids',
+                    'cv_attachment': 'cv_attachment_ids',
+                    'photo_attachment': 'photo_attachment_ids',
+                    'visa_uae_attachment': 'visa_uae_attachment_ids',
+                    'degree_attachment': 'degree_attachment_ids',
                 }
                 
-                for field_name, filename_field in file_fields.items():
-                    file_obj = kw.get(field_name)
+                # Process each attachment field
+                for form_field_name, model_field_name in attachment_field_mapping.items():
+                    file_obj = kw.get(form_field_name)
                     if file_obj:
+                        # Create ir.attachment record
                         file_data = base64.b64encode(file_obj.read()).decode('utf-8')
-                        update_vals[field_name] = file_data
-                        # Only set filename if the field exists (not for computed fields)
-                        if filename_field != 'has_work_permit':  # work_permit_name is computed, so we skip filename
-                            update_vals[filename_field] = file_obj.filename
+                        attachment = request.env['ir.attachment'].sudo().create({
+                            'name': file_obj.filename,
+                            'type': 'binary',
+                            'datas': file_data,
+                            'res_model': 'hr.employee',
+                            'res_id': employee.id,
+                        })
+                        # Add to Many2many field
+                        if model_field_name not in update_vals:
+                            update_vals[model_field_name] = [(4, attachment.id)]
+                        else:
+                            # If already has attachments, append
+                            if isinstance(update_vals[model_field_name], list):
+                                update_vals[model_field_name].append((4, attachment.id))
+                            else:
+                                update_vals[model_field_name] = [(4, attachment.id)]
+                
+                # Handle work_permit_attachment separately (still Binary field)
+                work_permit_file = kw.get('work_permit_attachment')
+                if work_permit_file:
+                    file_data = base64.b64encode(work_permit_file.read()).decode('utf-8')
+                    update_vals['has_work_permit'] = file_data
                 
                 if update_vals:
                     employee.sudo().write(update_vals)
@@ -828,4 +847,57 @@ class EmployeePortalController(CustomerPortal):
             return request.redirect('/my/employee-portal/time-off?error=1')
         except Exception as e:
             return request.redirect('/my/employee-portal/time-off?error=1')
+
+    @http.route(['/my/employee-portal/profile/attachment/delete/<int:employee_id>/<string:field_name>/<int:attachment_id>'], type='http', auth="user", website=True, methods=['POST'], csrf=True)
+    def employee_portal_profile_attachment_delete(self, employee_id, field_name, attachment_id, **kw):
+        """Delete an attachment from a Many2many field"""
+        try:
+            # Get employee record
+            employee = request.env['hr.employee'].sudo().browse(employee_id)
+            
+            # Verify employee ownership
+            user_employee = False
+            if hasattr(request.env.user, 'employee_id') and request.env.user.employee_id:
+                user_employee = request.env.user.employee_id
+            elif hasattr(request.env.user, 'employee_ids') and request.env.user.employee_ids:
+                user_employee = request.env.user.employee_ids[0]
+            else:
+                user_employee = request.env['hr.employee'].sudo().search([
+                    ('user_id', '=', request.env.user.id)
+                ], limit=1)
+            
+            if not user_employee or user_employee.id != employee.id:
+                return request.redirect('/my/employee-portal/profile?error=unauthorized')
+            
+            # Map field names
+            field_mapping = {
+                'letter_to_students_attachment': 'letter_to_students_attachment_ids',
+                'letter_to_employees_attachment': 'letter_to_employees_attachment_ids',
+                'passport_or_id_attachment': 'passport_or_id_attachment_ids',
+                'cv_attachment': 'cv_attachment_ids',
+                'photo_attachment': 'photo_attachment_ids',
+                'visa_uae_attachment': 'visa_uae_attachment_ids',
+                'degree_attachment': 'degree_attachment_ids',
+            }
+            
+            model_field_name = field_mapping.get(field_name)
+            if not model_field_name or not hasattr(employee, model_field_name):
+                return request.redirect('/my/employee-portal/profile?error=invalid_field')
+            
+            # Get attachment and verify it belongs to the employee
+            attachment = request.env['ir.attachment'].sudo().browse(attachment_id)
+            if not attachment.exists() or attachment.res_model != 'hr.employee' or attachment.res_id != employee.id:
+                return request.redirect('/my/employee-portal/profile?error=invalid_attachment')
+            
+            # Remove attachment from Many2many field
+            employee.write({model_field_name: [(3, attachment_id)]})
+            
+            # Delete the attachment record
+            attachment.unlink()
+            
+            return request.redirect('/my/employee-portal/profile?deleted=1')
+            
+        except Exception as e:
+            _logger.error("Error deleting attachment: %s", str(e))
+            return request.redirect('/my/employee-portal/profile?error=delete_failed')
 
