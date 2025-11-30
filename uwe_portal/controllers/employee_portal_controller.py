@@ -39,9 +39,9 @@ class EmployeePortalController(CustomerPortal):
         })
         return request.render("uwe_portal.employee_portal_home", values)
 
-    @http.route(['/my/employee-portal/profile'], type='http', auth="user", website=True)
+    @http.route(['/my/employee-portal/profile'], type='http', auth="user", website=True, methods=['GET', 'POST'], csrf=True)
     def employee_portal_profile(self, **kw):
-        """Employee profile page"""
+        """Employee profile page - editable"""
         values = self._prepare_portal_layout_values()
         
         # Get employee record if exists
@@ -56,8 +56,215 @@ class EmployeePortalController(CustomerPortal):
                 ('user_id', '=', request.env.user.id)
             ], limit=1)
         
+        error = None
+        success = None
+        
+        # Handle form submission
+        if request.httprequest.method == 'POST' and employee:
+            try:
+                import base64
+                
+                # Get form values - Basic contact info
+                work_phone = kw.get('work_phone', '').strip()
+                work_email = kw.get('work_email', '').strip()
+                mobile_phone = kw.get('mobile_phone', '').strip()
+                private_email = kw.get('private_email', '').strip()
+                
+                # Handle image upload
+                image_file = kw.get('image_1920')
+                image_data = None
+                if image_file:
+                    # image_file is a FileStorage object from werkzeug
+                    image_data = base64.b64encode(image_file.read()).decode('utf-8')
+                
+                # Certificate fields - Full Names
+                full_name_english = kw.get('full_name_english', '').strip()
+                full_name_arabic = kw.get('full_name_arabic', '').strip()
+                
+                # Certificate fields - Details
+                passport_number = kw.get('passport_number', '').strip()
+                visa_number = kw.get('visa_number', '').strip()
+                emirati_id_number = kw.get('emirati_id_number', '').strip()
+                english_level_exam = kw.get('english_level_exam', '').strip()
+                program_name = kw.get('program_name', '').strip()
+                academic_year = kw.get('academic_year', '').strip()
+                license_number = kw.get('license_number', '').strip()
+                
+                # Certificate fields - Letters (HTML)
+                letter_to_students = kw.get('letter_to_students', '').strip()
+                letter_to_employees = kw.get('letter_to_employees', '').strip()
+                
+                # Certificate fields - Template
+                certificate_template = kw.get('certificate_template', '').strip()
+                custom_certificate_message = kw.get('custom_certificate_message', '').strip()
+                
+                # Update employee record
+                update_vals = {}
+                if work_phone:
+                    update_vals['work_phone'] = work_phone
+                if work_email:
+                    update_vals['work_email'] = work_email
+                if mobile_phone:
+                    update_vals['mobile_phone'] = mobile_phone
+                if private_email:
+                    update_vals['private_email'] = private_email
+                if image_data:
+                    update_vals['image_1920'] = image_data
+                
+                # Certificate fields
+                if full_name_english:
+                    update_vals['full_name_english'] = full_name_english
+                if full_name_arabic:
+                    update_vals['full_name_arabic'] = full_name_arabic
+                if passport_number:
+                    update_vals['passport_number'] = passport_number
+                if visa_number:
+                    update_vals['visa_number'] = visa_number
+                if emirati_id_number:
+                    update_vals['emirati_id_number'] = emirati_id_number
+                if english_level_exam:
+                    update_vals['english_level_exam'] = english_level_exam
+                if program_name:
+                    update_vals['program_name'] = program_name
+                if academic_year:
+                    update_vals['academic_year'] = academic_year
+                if license_number:
+                    update_vals['license_number'] = license_number
+                if letter_to_students:
+                    update_vals['letter_to_students'] = letter_to_students
+                if letter_to_employees:
+                    update_vals['letter_to_employees'] = letter_to_employees
+                if certificate_template:
+                    update_vals['certificate_template'] = certificate_template
+                if custom_certificate_message:
+                    update_vals['custom_certificate_message'] = custom_certificate_message
+                
+                # Private Information fields
+                private_street = kw.get('private_street', '').strip()
+                private_street2 = kw.get('private_street2', '').strip()
+                private_city = kw.get('private_city', '').strip()
+                private_zip = kw.get('private_zip', '').strip()
+                private_phone = kw.get('private_phone', '').strip()
+                bank_account_id = kw.get('bank_account_id', '').strip()
+                lang = kw.get('lang', '').strip()
+                km_home_work = kw.get('km_home_work', '').strip()
+                license_plate = kw.get('license_plate', '').strip()
+                marital = kw.get('marital', '').strip()
+                children = kw.get('children', '').strip()
+                emergency_contact = kw.get('emergency_contact', '').strip()
+                emergency_phone = kw.get('emergency_phone', '').strip()
+                certificate = kw.get('certificate_level', '').strip()  # Note: field name is 'certificate' not 'certificate_level'
+                study_field = kw.get('study_field', '').strip()
+                study_school = kw.get('study_school', '').strip()
+                identification_id = kw.get('identification_id', '').strip()
+                ssnid = kw.get('ssnid', '').strip()
+                passport_id = kw.get('passport_id', '').strip()
+                gender = kw.get('gender', '').strip()
+                birthday = kw.get('birthday', '').strip()
+                place_of_birth = kw.get('place_of_birth', '').strip()
+                country_of_birth = kw.get('country_of_birth', '').strip()
+                is_non_resident = kw.get('is_non_resident') == 'on'
+                visa_no = kw.get('visa_no', '').strip()
+                permit_no = kw.get('work_permit_no', '').strip()  # Note: field name is 'permit_no' not 'work_permit_no'
+                visa_expire = kw.get('visa_expire', '').strip()
+                work_permit_expiration_date = kw.get('work_permit_expiration_date', '').strip()
+                
+                # Add private information fields to update_vals
+                if private_street:
+                    update_vals['private_street'] = private_street
+                if private_street2:
+                    update_vals['private_street2'] = private_street2
+                if private_city:
+                    update_vals['private_city'] = private_city
+                if private_zip:
+                    update_vals['private_zip'] = private_zip
+                if private_phone:
+                    update_vals['private_phone'] = private_phone
+                if lang:
+                    update_vals['lang'] = lang
+                if km_home_work:
+                    try:
+                        update_vals['km_home_work'] = float(km_home_work)
+                    except:
+                        pass
+                if license_plate:
+                    update_vals['license_plate'] = license_plate
+                if marital:
+                    update_vals['marital'] = marital
+                if children:
+                    try:
+                        update_vals['children'] = int(children)
+                    except:
+                        pass
+                if emergency_contact:
+                    update_vals['emergency_contact'] = emergency_contact
+                if emergency_phone:
+                    update_vals['emergency_phone'] = emergency_phone
+                if certificate:
+                    update_vals['certificate'] = certificate
+                if study_field:
+                    update_vals['study_field'] = study_field
+                if study_school:
+                    update_vals['study_school'] = study_school
+                if identification_id:
+                    update_vals['identification_id'] = identification_id
+                if ssnid:
+                    update_vals['ssnid'] = ssnid
+                if passport_id:
+                    update_vals['passport_id'] = passport_id
+                if gender:
+                    update_vals['gender'] = gender
+                if birthday:
+                    update_vals['birthday'] = birthday
+                if place_of_birth:
+                    update_vals['place_of_birth'] = place_of_birth
+                update_vals['is_non_resident'] = is_non_resident
+                if visa_no:
+                    update_vals['visa_no'] = visa_no
+                if permit_no:
+                    update_vals['permit_no'] = permit_no
+                if visa_expire:
+                    update_vals['visa_expire'] = visa_expire
+                if work_permit_expiration_date:
+                    update_vals['work_permit_expiration_date'] = work_permit_expiration_date
+                
+                # Handle file uploads for attachments
+                file_fields = {
+                    'letter_to_students_attachment': 'letter_to_students_filename',
+                    'letter_to_employees_attachment': 'letter_to_employees_filename',
+                    'passport_or_id_attachment': 'passport_or_id_filename',
+                    'cv_attachment': 'cv_filename',
+                    'photo_attachment': 'photo_filename',
+                    'visa_uae_attachment': 'visa_uae_filename',
+                    'degree_attachment': 'degree_filename',
+                    'work_permit_attachment': 'has_work_permit',  # Note: field name is 'has_work_permit' not 'work_permit_filename'
+                }
+                
+                for field_name, filename_field in file_fields.items():
+                    file_obj = kw.get(field_name)
+                    if file_obj:
+                        file_data = base64.b64encode(file_obj.read()).decode('utf-8')
+                        update_vals[field_name] = file_data
+                        # Only set filename if the field exists (not for computed fields)
+                        if filename_field != 'has_work_permit':  # work_permit_name is computed, so we skip filename
+                            update_vals[filename_field] = file_obj.filename
+                
+                if update_vals:
+                    employee.sudo().write(update_vals)
+                    success = "Profile updated successfully!"
+                else:
+                    error = "No changes to save."
+                    
+            except Exception as e:
+                error = f"Error updating profile: {str(e)}"
+                _logger.error("Error updating employee profile: %s", str(e))
+                import traceback
+                _logger.error(traceback.format_exc())
+        
         values.update({
             'employee': employee,
+            'error': error,
+            'success': success,
             'page_name': 'employee_portal_profile',
         })
         return request.render("uwe_portal.employee_portal_profile", values)
@@ -247,13 +454,109 @@ class EmployeePortalController(CustomerPortal):
                 import traceback
                 _logger.error(traceback.format_exc())
                 payslips = []
-        else:
+        
+        # Get company currency symbol
+        try:
+            company_currency = request.env.company.currency_id
+            currency_symbol = company_currency.symbol if company_currency and company_currency.symbol else ''
+        except:
+            company_currency = False
+            currency_symbol = ''
+        
+        # Get foreign currency from employee's active contract
+        foreign_currency = False
+        foreign_currency_symbol = ''
+        if employee:
+            try:
+                # Get active contract for the employee
+                active_contract = request.env['hr.contract'].sudo().search([
+                    ('employee_id', '=', employee.id),
+                    ('state', '=', 'open')
+                ], limit=1, order='date_start desc')
+                
+                if active_contract and active_contract.foreign_currency_id:
+                    foreign_currency = active_contract.foreign_currency_id
+                    foreign_currency_symbol = foreign_currency.symbol if foreign_currency.symbol else foreign_currency.name
+                    _logger.info("Found foreign currency %s for employee %s from contract", foreign_currency.name, employee.name)
+                else:
+                    _logger.info("No foreign currency found in contract for employee %s", employee.name)
+            except Exception as e:
+                _logger.warning("Error getting foreign currency from contract: %s", str(e))
+                foreign_currency = False
+        
+        # Prepare payslips with foreign currency conversion (if foreign currency is set in contract)
+        payslips_with_foreign = []
+        for payslip in payslips:
+            payslip_data = {
+                'payslip': payslip,
+                'foreign_amounts': {}
+            }
+            
+            # Only convert if foreign currency is set in contract
+            if foreign_currency and company_currency:
+                try:
+                    # Get amounts from payslip lines
+                    basic_line = payslip.line_ids.filtered(lambda l: l.code == 'BASIC')
+                    gross_line = payslip.line_ids.filtered(lambda l: l.code == 'GROSS')
+                    net_line = payslip.line_ids.filtered(lambda l: l.code == 'NET')
+                    
+                    basic_amount = basic_line[0].total if basic_line else 0.0
+                    gross_amount = gross_line[0].total if gross_line else 0.0
+                    net_amount = net_line[0].total if net_line else 0.0
+                    deduction_amount = gross_amount - net_amount
+                    
+                    # Use _convert for accurate conversion based on payslip creation date
+                    # Convert create_date (datetime) to date for currency conversion
+                    if payslip.create_date:
+                        payslip_date = fields.Date.to_date(payslip.create_date)
+                    else:
+                        payslip_date = payslip.date_from or fields.Date.today()
+                    
+                    try:
+                        # Convert to foreign currency using payslip creation date
+                        basic_foreign = company_currency._convert(basic_amount, foreign_currency, request.env.company, payslip_date)
+                        gross_foreign = company_currency._convert(gross_amount, foreign_currency, request.env.company, payslip_date)
+                        net_foreign = company_currency._convert(net_amount, foreign_currency, request.env.company, payslip_date)
+                        deduction_foreign = company_currency._convert(deduction_amount, foreign_currency, request.env.company, payslip_date)
+                        
+                        payslip_data['foreign_amounts'] = {
+                            'basic': basic_foreign,
+                            'gross': gross_foreign,
+                            'net': net_foreign,
+                            'deduction': deduction_foreign,
+                        }
+                        
+                        # Calculate conversion rate for display
+                        test_amount = 1.0
+                        conversion_rate = company_currency._convert(
+                            test_amount,
+                            foreign_currency,
+                            request.env.company,
+                            payslip_date
+                        )
+                        payslip_data['conversion_rate'] = conversion_rate
+                        
+                    except Exception as e:
+                        _logger.warning("Error converting payslip %s to foreign currency %s: %s", payslip.id, foreign_currency.name, str(e))
+                        payslip_data['foreign_amounts'] = {}
+                except Exception as e:
+                    _logger.warning("Error processing payslip %s for foreign currency conversion: %s", payslip.id, str(e))
+                    payslip_data['foreign_amounts'] = {}
+            
+            payslips_with_foreign.append(payslip_data)
+        
+        if not employee:
             # Employee not found - log for debugging
             _logger.warning("Employee not found for user: %s (ID: %s)", request.env.user.name, request.env.user.id)
         
         values.update({
             'employee': employee,
             'payslips': payslips,
+            'payslips_with_foreign': payslips_with_foreign,
+            'currency_symbol': currency_symbol or '',
+            'foreign_currency': foreign_currency,
+            'foreign_currency_symbol': foreign_currency_symbol,
+            'foreign_currency_available': bool(foreign_currency),
             'page_name': 'employee_portal_payroll',
         })
         return request.render("uwe_portal.employee_portal_payroll", values)

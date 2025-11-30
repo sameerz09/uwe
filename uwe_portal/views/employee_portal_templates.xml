@@ -25,9 +25,6 @@
                     .navbar-brand,
                     .navbar-toggler,
                     .navbar-collapse,
-                    .nav,
-                    .nav-item,
-                    .nav-link,
                     .dropdown,
                     .dropdown-menu,
                     .dropdown-item,
@@ -41,6 +38,36 @@
                         padding: 0 !important;
                         overflow: hidden !important;
                     }
+                    /* Hide nav elements except profile tabs */
+                    .nav:not(#profileTabs):not(.card-body .nav),
+                    .nav-item:not(#profileTabs .nav-item):not(.card-body .nav-item),
+                    .nav-link:not(#profileTabs .nav-link):not(.card-body .nav-link) {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
+                    /* Show tabs in profile page - exception for profile tabs */
+                    #profileTabs,
+                    #profileTabs .nav,
+                    #profileTabs .nav-item,
+                    #profileTabs .nav-link,
+                    .card-body .nav,
+                    .card-body .nav-item,
+                    .card-body .nav-link {
+                        display: block !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        height: auto !important;
+                        width: auto !important;
+                        margin: initial !important;
+                        padding: initial !important;
+                        overflow: visible !important;
+                    }
                     /* Adjust content margin when header is hidden */
                     .o_portal_wrap .container,
                     .container {
@@ -52,8 +79,46 @@
                         padding-top: 0 !important;
                         margin-top: 0 !important;
                     }
+                    /* Hide footer and bottom sections */
+                    footer,
+                    .footer,
+                    .o_footer,
+                    .o_website_footer,
+                    .website_footer,
+                    #footer,
+                    footer#footer,
+                    .o_portal_wrap footer,
+                    .o_portal_wrap .footer,
+                    .o_portal_wrap .o_footer,
+                    .o_portal_wrap .o_website_footer,
+                    .o_portal_wrap .website_footer,
+                    .o_portal_wrap #footer,
+                    .oe_structure.oe_footer,
+                    .o_footer_copyright,
+                    .o_footer_copyright_name,
+                    .js_footer,
+                    .footer-copyright,
+                    .copyright {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
                 </style>
                 <div class="container mt-4 mb-4">
+                    <!-- Logout Button - Top Right -->
+                    <div class="row mb-3">
+                        <div class="col-12 text-end">
+                            <a href="/web/session/logout" class="btn btn-outline-danger" style="border-radius: 8px; padding: 0.5rem 1.5rem;">
+                                <i class="fa fa-sign-out me-2"></i>Logout
+                            </a>
+                        </div>
+                    </div>
+                    
                     <!-- Welcome Section -->
                     <div class="row mb-4">
                         <div class="col-12">
@@ -215,9 +280,6 @@
                     .navbar-brand,
                     .navbar-toggler,
                     .navbar-collapse,
-                    .nav,
-                    .nav-item,
-                    .nav-link,
                     .dropdown,
                     .dropdown-menu,
                     .dropdown-item,
@@ -231,6 +293,36 @@
                         padding: 0 !important;
                         overflow: hidden !important;
                     }
+                    /* Hide nav elements except profile tabs */
+                    .nav:not(#profileTabs):not(.card-body .nav),
+                    .nav-item:not(#profileTabs .nav-item):not(.card-body .nav-item),
+                    .nav-link:not(#profileTabs .nav-link):not(.card-body .nav-link) {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
+                    /* Show tabs in profile page - exception for profile tabs */
+                    #profileTabs,
+                    #profileTabs .nav,
+                    #profileTabs .nav-item,
+                    #profileTabs .nav-link,
+                    .card-body .nav,
+                    .card-body .nav-item,
+                    .card-body .nav-link {
+                        display: block !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        height: auto !important;
+                        width: auto !important;
+                        margin: initial !important;
+                        padding: initial !important;
+                        overflow: visible !important;
+                    }
                     /* Adjust content margin when header is hidden */
                     .o_portal_wrap .container,
                     .container {
@@ -241,6 +333,35 @@
                     body {
                         padding-top: 0 !important;
                         margin-top: 0 !important;
+                    }
+                    /* Hide footer and bottom sections */
+                    footer,
+                    .footer,
+                    .o_footer,
+                    .o_website_footer,
+                    .website_footer,
+                    #footer,
+                    footer#footer,
+                    .o_portal_wrap footer,
+                    .o_portal_wrap .footer,
+                    .o_portal_wrap .o_footer,
+                    .o_portal_wrap .o_website_footer,
+                    .o_portal_wrap .website_footer,
+                    .o_portal_wrap #footer,
+                    .oe_structure.oe_footer,
+                    .o_footer_copyright,
+                    .o_footer_copyright_name,
+                    .js_footer,
+                    .footer-copyright,
+                    .copyright {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
                     }
                 </style>
                 <div class="container mt-4 mb-4">
@@ -273,7 +394,15 @@
                                             </p>
                                         </div>
                                         <div class="col-md-4 text-center">
-                                            <i class="fa fa-user-circle" style="font-size: 80px; opacity: 0.3;"></i>
+                                            <t t-if="employee and employee.image_1920">
+                                                <img t-attf-src="data:image/png;base64,{{employee.image_1920}}" 
+                                                     alt="Profile Picture" 
+                                                     class="rounded-circle" 
+                                                     style="width: 120px; height: 120px; object-fit: cover; border: 4px solid rgba(255,255,255,0.3);"/>
+                                            </t>
+                                            <t t-else="">
+                                                <i class="fa fa-user-circle" style="font-size: 80px; opacity: 0.3;"></i>
+                                            </t>
                                         </div>
                                     </div>
                                 </div>
@@ -281,7 +410,7 @@
                         </div>
                     </div>
 
-                    <!-- Employee Information Card -->
+                    <!-- Employee Information Card with Tabs -->
                     <t t-if="employee">
                         <div class="row mb-4">
                             <div class="col-12">
@@ -292,80 +421,872 @@
                                         </h4>
                                     </div>
                                     <div class="card-body p-4">
+                                        <!-- Success/Error Messages -->
+                                        <t t-if="success">
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <i class="fa fa-check-circle me-2"></i><t t-esc="success"/>
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div>
+                                        </t>
+                                        <t t-if="error">
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                <i class="fa fa-exclamation-circle me-2"></i><t t-esc="error"/>
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div>
+                                        </t>
+                                        
+                                        <!-- Tabs Navigation - Horizontal Beautiful Buttons -->
+                                        <style>
+                                            /* Professional Horizontal Tabs Styling */
+                                            #profileTabs {
+                                                display: flex;
+                                                flex-direction: row;
+                                                gap: 1rem;
+                                                border: none;
+                                                background: transparent;
+                                                padding: 0;
+                                                margin-bottom: 2rem;
+                                                justify-content: flex-start;
+                                                flex-wrap: wrap;
+                                            }
+                                            #profileTabs .nav-item {
+                                                margin: 0;
+                                                flex: 0 0 auto;
+                                            }
+                                            #profileTabs .nav-link {
+                                                border: 2px solid #e9ecef;
+                                                border-radius: 12px;
+                                                padding: 1rem 2rem;
+                                                font-weight: 600;
+                                                font-size: 1rem;
+                                                color: #6c757d;
+                                                background: #ffffff;
+                                                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                                                position: relative;
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                min-width: 200px;
+                                                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                                                overflow: hidden;
+                                            }
+                                            #profileTabs .nav-link::before {
+                                                content: '';
+                                                position: absolute;
+                                                top: 0;
+                                                left: -100%;
+                                                width: 100%;
+                                                height: 100%;
+                                                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+                                                transition: left 0.5s;
+                                            }
+                                            #profileTabs .nav-link:hover::before {
+                                                left: 100%;
+                                            }
+                                            #profileTabs .nav-link:hover {
+                                                color: #667eea;
+                                                background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+                                                border-color: #667eea;
+                                                transform: translateY(-3px);
+                                                box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+                                            }
+                                            #profileTabs .nav-link.active {
+                                                color: #ffffff;
+                                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                                border-color: #667eea;
+                                                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+                                                transform: translateY(-3px);
+                                            }
+                                            #profileTabs .nav-link.active:hover {
+                                                background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+                                                transform: translateY(-4px);
+                                                box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+                                            }
+                                            #profileTabs .nav-link i {
+                                                margin-right: 0.75rem;
+                                                font-size: 1.1rem;
+                                                transition: transform 0.3s ease;
+                                            }
+                                            #profileTabs .nav-link:hover i {
+                                                transform: scale(1.1);
+                                            }
+                                            #profileTabs .nav-link.active i {
+                                                transform: scale(1.15);
+                                            }
+                                            .tab-content {
+                                                animation: fadeIn 0.4s ease-in;
+                                            }
+                                            @keyframes fadeIn {
+                                                from {
+                                                    opacity: 0;
+                                                    transform: translateY(15px);
+                                                }
+                                                to {
+                                                    opacity: 1;
+                                                    transform: translateY(0);
+                                                }
+                                            }
+                                            /* Responsive design */
+                                            @media (max-width: 768px) {
+                                                #profileTabs {
+                                                    flex-direction: column;
+                                                }
+                                                #profileTabs .nav-link {
+                                                    width: 100%;
+                                                    min-width: auto;
+                                                }
+                                            }
+                                        </style>
+                                        <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#basic" type="button" role="tab">
+                                                    <i class="fa fa-user"></i>
+                                                    <span>Basic Information</span>
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="certificate-tab" data-bs-toggle="tab" data-bs-target="#certificate" type="button" role="tab">
+                                                    <i class="fa fa-certificate"></i>
+                                                    <span>Certificate Information</span>
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="private-tab" data-bs-toggle="tab" data-bs-target="#private" type="button" role="tab">
+                                                    <i class="fa fa-lock"></i>
+                                                    <span>Private Information</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                        
+                                        <!-- Tab Content -->
+                                        <div class="tab-content" id="profileTabsContent">
+                                            <!-- Basic Information Tab -->
+                                            <div class="tab-pane fade show active" id="basic" role="tabpanel">
+                                                <form method="post" action="/my/employee-portal/profile" enctype="multipart/form-data">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            
+                                            <!-- Profile Image Upload -->
+                                            <div class="row mb-4">
+                                                <div class="col-12">
+                                                    <div class="text-center">
+                                                        <div class="mb-3">
+                                                            <t t-if="employee and employee.image_1920">
+                                                                <img t-attf-src="data:image/png;base64,{{employee.image_1920}}" 
+                                                                     alt="Profile Picture" 
+                                                                     id="profile_image_preview"
+                                                                     class="rounded-circle" 
+                                                                     style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #e9ecef; cursor: pointer;"/>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <div id="profile_image_preview" 
+                                                                     class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center" 
+                                                                     style="width: 150px; height: 150px; border: 4px solid #e9ecef; cursor: pointer;">
+                                                                    <i class="fa fa-user-circle" style="font-size: 80px; color: #ccc;"></i>
+                                                                </div>
+                                                            </t>
+                                                        </div>
+                                                        <label for="image_1920" class="btn btn-outline-primary" style="border-radius: 8px; cursor: pointer;">
+                                                            <i class="fa fa-camera me-2"></i>Change Photo
+                                                        </label>
+                                                        <input type="file" 
+                                                               id="image_1920" 
+                                                               name="image_1920" 
+                                                               accept="image/*" 
+                                                               style="display: none;"
+                                                               onchange="previewImage(this)"/>
+                                                        <p class="text-muted mt-2 mb-0" style="font-size: 0.85rem;">Click to upload a new profile picture</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-shrink-0">
+                                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                                <i class="fa fa-user text-primary"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-3">
+                                                            <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Full Name</h6>
+                                                            <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;"><t t-esc="employee.name"/></p>
+                                                            <small class="text-muted">(Read-only)</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-shrink-0">
+                                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                                <i class="fa fa-briefcase text-success"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-3">
+                                                            <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Job Title</h6>
+                                                            <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;">
+                                                                <t t-esc="employee.job_id.name if employee.job_id else 'N/A'"/>
+                                                            </p>
+                                                            <small class="text-muted">(Read-only)</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-shrink-0">
+                                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                                <i class="fa fa-building text-info"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-3">
+                                                            <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Department</h6>
+                                                            <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;">
+                                                                <t t-esc="employee.department_id.name if employee.department_id else 'N/A'"/>
+                                                            </p>
+                                                            <small class="text-muted">(Read-only)</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-shrink-0">
+                                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                                <i class="fa fa-envelope text-warning"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-3" style="width: 100%;">
+                                                            <label for="work_email" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Work Email</label>
+                                                            <input type="email" class="form-control" id="work_email" name="work_email" 
+                                                                   t-att-value="employee.work_email or ''" 
+                                                                   placeholder="Enter work email" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-shrink-0">
+                                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                                <i class="fa fa-phone text-danger"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-3" style="width: 100%;">
+                                                            <label for="work_phone" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Work Phone</label>
+                                                            <input type="tel" class="form-control" id="work_phone" name="work_phone" 
+                                                                   t-att-value="employee.work_phone or ''" 
+                                                                   placeholder="Enter work phone" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-shrink-0">
+                                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                                <i class="fa fa-mobile text-primary"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-3" style="width: 100%;">
+                                                            <label for="mobile_phone" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Mobile Phone</label>
+                                                            <input type="tel" class="form-control" id="mobile_phone" name="mobile_phone" 
+                                                                   t-att-value="employee.mobile_phone or ''" 
+                                                                   placeholder="Enter mobile phone" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="flex-shrink-0">
+                                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                                <i class="fa fa-envelope-o text-secondary"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-3" style="width: 100%;">
+                                                            <label for="private_email" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Private Email</label>
+                                                            <input type="email" class="form-control" id="private_email" name="private_email" 
+                                                                   t-att-value="employee.private_email or ''" 
+                                                                   placeholder="Enter private email" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-12 mt-3">
+                                                    <button type="submit" class="btn btn-primary" style="border-radius: 8px; padding: 0.75rem 2rem; font-weight: 600;">
+                                                        <i class="fa fa-save me-2"></i>Save Changes
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                            </div>
+                                            
+                                            <!-- Certificate Information Tab -->
+                                            <div class="tab-pane fade" id="certificate" role="tabpanel">
+                                                <form method="post" action="/my/employee-portal/profile" enctype="multipart/form-data">
+                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                    
+                                                    <div class="row">
+                                                
+                                                <!-- Full Names -->
+                                                <div class="col-12 mb-3">
+                                                    <h6 class="mb-3" style="color: #495057; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Full Names</h6>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="full_name_english" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Full Name (English) <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Enter full name in English"></i>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="full_name_english" name="full_name_english" 
+                                                           t-att-value="employee.full_name_english or ''" 
+                                                           placeholder="Enter full name in English" 
+                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="full_name_arabic" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Full Name (Arabic) <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Enter full name in Arabic"></i>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="full_name_arabic" name="full_name_arabic" 
+                                                           t-att-value="employee.full_name_arabic or ''" 
+                                                           placeholder="Enter full name in Arabic" 
+                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                </div>
+                                                
+                                                <!-- Certificate Details -->
+                                                <div class="col-12 mt-4 mb-3">
+                                                    <h6 class="mb-3" style="color: #495057; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Certificate Details</h6>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="passport_number" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Passport Number <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Employee passport number"></i>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="passport_number" name="passport_number" 
+                                                           t-att-value="employee.passport_number or ''" 
+                                                           placeholder="Enter passport number" 
+                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="visa_number" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Visa Number <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Employee visa number"></i>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="visa_number" name="visa_number" 
+                                                           t-att-value="employee.visa_number or ''" 
+                                                           placeholder="Enter visa number" 
+                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="emirati_id_number" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Emirati ID Number <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Employee Emirati ID number"></i>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="emirati_id_number" name="emirati_id_number" 
+                                                           t-att-value="employee.emirati_id_number or ''" 
+                                                           placeholder="Enter Emirati ID number" 
+                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="english_level_exam" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        English Level Exam <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="English proficiency exam result (e.g., IELTS 7.0, TOEFL 90, etc.)"></i>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="english_level_exam" name="english_level_exam" 
+                                                           t-att-value="employee.english_level_exam or ''" 
+                                                           placeholder="Enter English level exam result" 
+                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="program_name" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Study Program <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Name of the study program"></i>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="program_name" name="program_name" 
+                                                           t-att-value="employee.program_name or ''" 
+                                                           placeholder="Enter study program" 
+                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="academic_year" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Academic Year <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Academic year (e.g., 2025/2026)"></i>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="academic_year" name="academic_year" 
+                                                           t-att-value="employee.academic_year or ''" 
+                                                           placeholder="Enter academic year" 
+                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="license_number" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        License Number <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="License number for the program"></i>
+                                                    </label>
+                                                    <input type="text" class="form-control" id="license_number" name="license_number" 
+                                                           t-att-value="employee.license_number or ''" 
+                                                           placeholder="Enter license number" 
+                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                </div>
+                                                
+                                                <!-- Letters Section -->
+                                                <div class="col-12 mt-4 mb-3">
+                                                    <h6 class="mb-3" style="color: #495057; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Letters</h6>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="letter_to_students" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Letter to Students <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Letter content for students"></i>
+                                                    </label>
+                                                    <textarea class="form-control" id="letter_to_students" name="letter_to_students" 
+                                                              rows="4" 
+                                                              placeholder="Enter letter content for students..."
+                                                              style="border-radius: 8px; padding: 0.75rem;"><t t-esc="employee.letter_to_students or ''"/></textarea>
+                                                    <label for="letter_to_students_attachment" class="btn btn-outline-primary mt-2" style="border-radius: 8px; cursor: pointer;">
+                                                        <i class="fa fa-upload me-2"></i>Upload your file
+                                                    </label>
+                                                    <input type="file" id="letter_to_students_attachment" name="letter_to_students_attachment" style="display: none;"/>
+                                                    <t t-if="employee.letter_to_students_filename">
+                                                        <p class="text-muted mt-1 mb-0" style="font-size: 0.85rem;">
+                                                            <i class="fa fa-file-o me-1"></i><t t-esc="employee.letter_to_students_filename"/>
+                                                        </p>
+                                                    </t>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="letter_to_employees" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Letter to Employees <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Letter content for employees"></i>
+                                                    </label>
+                                                    <textarea class="form-control" id="letter_to_employees" name="letter_to_employees" 
+                                                              rows="4" 
+                                                              placeholder="Enter letter content for employees..."
+                                                              style="border-radius: 8px; padding: 0.75rem;"><t t-esc="employee.letter_to_employees or ''"/></textarea>
+                                                    <label for="letter_to_employees_attachment" class="btn btn-outline-primary mt-2" style="border-radius: 8px; cursor: pointer;">
+                                                        <i class="fa fa-upload me-2"></i>Upload your file
+                                                    </label>
+                                                    <input type="file" id="letter_to_employees_attachment" name="letter_to_employees_attachment" style="display: none;"/>
+                                                    <t t-if="employee.letter_to_employees_filename">
+                                                        <p class="text-muted mt-1 mb-0" style="font-size: 0.85rem;">
+                                                            <i class="fa fa-file-o me-1"></i><t t-esc="employee.letter_to_employees_filename"/>
+                                                        </p>
+                                                    </t>
+                                                </div>
+                                                
+                                                <!-- Certificate Template Section -->
+                                                <div class="col-12 mt-4 mb-3">
+                                                    <h6 class="mb-3" style="color: #495057; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Certificate Template</h6>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="certificate_template" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Certificate Template <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Select the certificate template/message type"></i>
+                                                    </label>
+                                                    <select class="form-control" id="certificate_template" name="certificate_template" style="border-radius: 8px; padding: 0.75rem;">
+                                                        <option value="">Select...</option>
+                                                        <option value="registration" t-att-selected="'selected' if employee.certificate_template == 'registration' else ''">Registration Certificate</option>
+                                                        <option value="completion" t-att-selected="'selected' if employee.certificate_template == 'completion' else ''">Completion Certificate</option>
+                                                        <option value="achievement" t-att-selected="'selected' if employee.certificate_template == 'achievement' else ''">Achievement Certificate</option>
+                                                        <option value="enrollment" t-att-selected="'selected' if employee.certificate_template == 'enrollment' else ''">Enrollment Certificate</option>
+                                                        <option value="custom" t-att-selected="'selected' if employee.certificate_template == 'custom' else ''">Custom Message</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="custom_certificate_message" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Custom Certificate Message <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Custom message to display on certificate (only used when Custom Message is selected)"></i>
+                                                    </label>
+                                                    <textarea class="form-control" id="custom_certificate_message" name="custom_certificate_message" 
+                                                              rows="4" 
+                                                              placeholder="Enter custom certificate message..."
+                                                              style="border-radius: 8px; padding: 0.75rem;"><t t-esc="employee.custom_certificate_message or ''"/></textarea>
+                                                </div>
+                                                
+                                                <!-- Document Attachments Section -->
+                                                <div class="col-12 mt-4 mb-3">
+                                                    <h6 class="mb-3" style="color: #495057; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Document Attachments</h6>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="passport_or_id_attachment" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Passport or ID Attachment <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Upload passport or ID document file"></i>
+                                                    </label>
+                                                    <div>
+                                                        <label for="passport_or_id_attachment" class="btn btn-outline-primary" style="border-radius: 8px; cursor: pointer; width: 100%;">
+                                                            <i class="fa fa-upload me-2"></i>Upload your file
+                                                        </label>
+                                                        <input type="file" id="passport_or_id_attachment" name="passport_or_id_attachment" style="display: none;"/>
+                                                        <t t-if="employee.passport_or_id_filename">
+                                                            <p class="text-muted mt-2 mb-0" style="font-size: 0.85rem;">
+                                                                <i class="fa fa-file-o me-1"></i><t t-esc="employee.passport_or_id_filename"/>
+                                                            </p>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="cv_attachment" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        CV Attachment <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Upload CV file"></i>
+                                                    </label>
+                                                    <div>
+                                                        <label for="cv_attachment" class="btn btn-outline-primary" style="border-radius: 8px; cursor: pointer; width: 100%;">
+                                                            <i class="fa fa-upload me-2"></i>Upload your file
+                                                        </label>
+                                                        <input type="file" id="cv_attachment" name="cv_attachment" style="display: none;"/>
+                                                        <t t-if="employee.cv_filename">
+                                                            <p class="text-muted mt-2 mb-0" style="font-size: 0.85rem;">
+                                                                <i class="fa fa-file-o me-1"></i><t t-esc="employee.cv_filename"/>
+                                                            </p>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="photo_attachment" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Photo Attachment <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Upload photo file"></i>
+                                                    </label>
+                                                    <div>
+                                                        <label for="photo_attachment" class="btn btn-outline-primary" style="border-radius: 8px; cursor: pointer; width: 100%;">
+                                                            <i class="fa fa-upload me-2"></i>Upload your file
+                                                        </label>
+                                                        <input type="file" id="photo_attachment" name="photo_attachment" accept="image/*" style="display: none;"/>
+                                                        <t t-if="employee.photo_filename">
+                                                            <p class="text-muted mt-2 mb-0" style="font-size: 0.85rem;">
+                                                                <i class="fa fa-file-o me-1"></i><t t-esc="employee.photo_filename"/>
+                                                            </p>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="visa_uae_attachment" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Visa (if inside UAE) Attachment <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Upload visa document file if employee is inside UAE"></i>
+                                                    </label>
+                                                    <div>
+                                                        <label for="visa_uae_attachment" class="btn btn-outline-primary" style="border-radius: 8px; cursor: pointer; width: 100%;">
+                                                            <i class="fa fa-upload me-2"></i>Upload your file
+                                                        </label>
+                                                        <input type="file" id="visa_uae_attachment" name="visa_uae_attachment" style="display: none;"/>
+                                                        <t t-if="employee.visa_uae_filename">
+                                                            <p class="text-muted mt-2 mb-0" style="font-size: 0.85rem;">
+                                                                <i class="fa fa-file-o me-1"></i><t t-esc="employee.visa_uae_filename"/>
+                                                            </p>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="degree_attachment" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                        Degree Attachment <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;" title="Upload degree document file"></i>
+                                                    </label>
+                                                    <div>
+                                                        <label for="degree_attachment" class="btn btn-outline-primary" style="border-radius: 8px; cursor: pointer; width: 100%;">
+                                                            <i class="fa fa-upload me-2"></i>Upload your file
+                                                        </label>
+                                                        <input type="file" id="degree_attachment" name="degree_attachment" style="display: none;"/>
+                                                        <t t-if="employee.degree_filename">
+                                                            <p class="text-muted mt-2 mb-0" style="font-size: 0.85rem;">
+                                                                <i class="fa fa-file-o me-1"></i><t t-esc="employee.degree_filename"/>
+                                                            </p>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-12 mt-3">
+                                                    <button type="submit" class="btn btn-primary" style="border-radius: 8px; padding: 0.75rem 2rem; font-weight: 600;">
+                                                        <i class="fa fa-save me-2"></i>Save Changes
+                                                    </button>
+                                                </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            
+                                            <!-- Private Information Tab -->
+                                            <div class="tab-pane fade" id="private" role="tabpanel">
+                                                <form method="post" action="/my/employee-portal/profile" enctype="multipart/form-data">
+                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                    
+                                                    <div class="row">
+                                                        <!-- Private Contact Section -->
+                                                        <div class="col-12 mb-3">
+                                                            <h6 class="mb-3" style="color: #495057; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Private Contact</h6>
+                                                        </div>
+                                                        <div class="col-12 mb-3">
+                                                            <label for="private_street" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Private Address</label>
+                                                            <input type="text" class="form-control mb-2" id="private_street" name="private_street" 
+                                                                   t-att-value="employee.private_street or ''" 
+                                                                   placeholder="Street..." 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                            <input type="text" class="form-control mb-2" id="private_street2" name="private_street2" 
+                                                                   t-att-value="employee.private_street2 or ''" 
+                                                                   placeholder="Street 2..." 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                            <div class="row">
+                                                                <div class="col-md-4 mb-2">
+                                                                    <input type="text" class="form-control" id="private_city" name="private_city" 
+                                                                           t-att-value="employee.private_city or ''" 
+                                                                           placeholder="City" 
+                                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                                </div>
+                                                                <div class="col-md-4 mb-2">
+                                                                    <input type="text" class="form-control" id="private_state" name="private_state" 
+                                                                           t-att-value="employee.private_state_id.name if employee.private_state_id else ''" 
+                                                                           placeholder="State" 
+                                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                                </div>
+                                                                <div class="col-md-2 mb-2">
+                                                                    <input type="text" class="form-control" id="private_zip" name="private_zip" 
+                                                                           t-att-value="employee.private_zip or ''" 
+                                                                           placeholder="ZIP" 
+                                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                                </div>
+                                                                <div class="col-md-2 mb-2">
+                                                                    <input type="text" class="form-control" id="private_country" name="private_country" 
+                                                                           t-att-value="employee.private_country_id.name if employee.private_country_id else ''" 
+                                                                           placeholder="Country" 
+                                                                           style="border-radius: 8px; padding: 0.75rem;"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="private_email_private" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Email</label>
+                                                            <input type="email" class="form-control" id="private_email_private" name="private_email" 
+                                                                   t-att-value="employee.private_email or ''" 
+                                                                   placeholder="Enter private email" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="private_phone" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Phone</label>
+                                                            <input type="tel" class="form-control" id="private_phone" name="private_phone" 
+                                                                   t-att-value="employee.private_phone or ''" 
+                                                                   placeholder="Enter private phone" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="bank_account_id" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                                Bank Account Number? <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;"></i>
+                                                            </label>
+                                                            <input type="text" class="form-control" id="bank_account_id" name="bank_account_id" 
+                                                                   t-att-value="employee.bank_account_id.acc_number if employee.bank_account_id else ''" 
+                                                                   placeholder="Enter bank account number" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="lang" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Language</label>
+                                                            <input type="text" class="form-control" id="lang" name="lang" 
+                                                                   t-att-value="employee.lang or ''" 
+                                                                   placeholder="Enter language" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="km_home_work" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Home-Work Distance</label>
+                                                            <input type="number" class="form-control" id="km_home_work" name="km_home_work" 
+                                                                   t-att-value="employee.km_home_work or 0" 
+                                                                   placeholder="0" 
+                                                                   step="0.1"
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                            <small class="text-muted">Km</small>
+                                                        </div>
+                                                        
+                                                        <!-- Family Status Section -->
+                                                        <div class="col-12 mt-4 mb-3">
+                                                            <h6 class="mb-3" style="color: #495057; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Family Status</h6>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="marital" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Marital Status</label>
+                                                            <select class="form-control" id="marital" name="marital" style="border-radius: 8px; padding: 0.75rem;">
+                                                                <option value="">Select...</option>
+                                                                <option value="single" t-att-selected="'selected' if employee.marital == 'single' else ''">Single</option>
+                                                                <option value="married" t-att-selected="'selected' if employee.marital == 'married' else ''">Married</option>
+                                                                <option value="cohabitant" t-att-selected="'selected' if employee.marital == 'cohabitant' else ''">Legal Cohabitant</option>
+                                                                <option value="widower" t-att-selected="'selected' if employee.marital == 'widower' else ''">Widower</option>
+                                                                <option value="divorced" t-att-selected="'selected' if employee.marital == 'divorced' else ''">Divorced</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="children" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Number of Dependent Children</label>
+                                                            <input type="number" class="form-control" id="children" name="children" 
+                                                                   t-att-value="employee.children or 0" 
+                                                                   placeholder="0" 
+                                                                   min="0"
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        
+                                                        <!-- Emergency Section -->
+                                                        <div class="col-12 mt-4 mb-3">
+                                                            <h6 class="mb-3" style="color: #495057; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Emergency</h6>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="emergency_contact" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Contact Name</label>
+                                                            <input type="text" class="form-control" id="emergency_contact" name="emergency_contact" 
+                                                                   t-att-value="employee.emergency_contact or ''" 
+                                                                   placeholder="Enter emergency contact name" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="emergency_phone" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Contact Phone</label>
+                                                            <input type="tel" class="form-control" id="emergency_phone" name="emergency_phone" 
+                                                                   t-att-value="employee.emergency_phone or ''" 
+                                                                   placeholder="Enter emergency contact phone" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        
+                                                        <!-- Education Section -->
+                                                        <div class="col-12 mt-4 mb-3">
+                                                            <h6 class="mb-3" style="color: #495057; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Education</h6>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="certificate_level" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Certificate Level</label>
+                                                            <select class="form-control" id="certificate_level" name="certificate_level" style="border-radius: 8px; padding: 0.75rem;">
+                                                                <option value="">Select...</option>
+                                                                <option value="graduate" t-att-selected="'selected' if employee.certificate == 'graduate' else ''">Graduate</option>
+                                                                <option value="bachelor" t-att-selected="'selected' if employee.certificate == 'bachelor' else ''">Bachelor</option>
+                                                                <option value="master" t-att-selected="'selected' if employee.certificate == 'master' else ''">Master</option>
+                                                                <option value="doctor" t-att-selected="'selected' if employee.certificate == 'doctor' else ''">Doctor</option>
+                                                                <option value="other" t-att-selected="'selected' if employee.certificate == 'other' else ''">Other</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="study_field" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Field of Study</label>
+                                                            <input type="text" class="form-control" id="study_field" name="study_field" 
+                                                                   t-att-value="employee.study_field or ''" 
+                                                                   placeholder="Enter field of study" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="study_school" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">School</label>
+                                                            <input type="text" class="form-control" id="study_school" name="study_school" 
+                                                                   t-att-value="employee.study_school or ''" 
+                                                                   placeholder="Enter school name" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        
+                                                        <!-- Citizenship Section -->
+                                                        <div class="col-12 mt-4 mb-3">
+                                                            <hr style="border-top: 1px solid #e9ecef; margin: 1rem 0;"/>
+                                                            <h6 class="mb-3" style="color: #495057; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Citizenship</h6>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="country_id" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Nationality (Country)</label>
+                                                            <input type="text" class="form-control" id="country_id" name="country_id" 
+                                                                   t-att-value="employee.country_id.name if employee.country_id else ''" 
+                                                                   placeholder="Enter nationality" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="identification_id" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Identification No</label>
+                                                            <input type="text" class="form-control" id="identification_id" name="identification_id" 
+                                                                   t-att-value="employee.identification_id or ''" 
+                                                                   placeholder="Enter identification number" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="ssnid" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                                SSN No? <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;"></i>
+                                                            </label>
+                                                            <input type="text" class="form-control" id="ssnid" name="ssnid" 
+                                                                   t-att-value="employee.ssnid or ''" 
+                                                                   placeholder="Enter SSN number" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="passport_id" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Passport No</label>
+                                                            <input type="text" class="form-control" id="passport_id" name="passport_id" 
+                                                                   t-att-value="employee.passport_id or ''" 
+                                                                   placeholder="Enter passport number" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="gender" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Gender</label>
+                                                            <select class="form-control" id="gender" name="gender" style="border-radius: 8px; padding: 0.75rem;">
+                                                                <option value="">Select...</option>
+                                                                <option value="male" t-att-selected="'selected' if employee.gender == 'male' else ''">Male</option>
+                                                                <option value="female" t-att-selected="'selected' if employee.gender == 'female' else ''">Female</option>
+                                                                <option value="other" t-att-selected="'selected' if employee.gender == 'other' else ''">Other</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="birthday" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Date of Birth</label>
+                                                            <input type="date" class="form-control" id="birthday" name="birthday" 
+                                                                   t-att-value="employee.birthday or ''" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="place_of_birth" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Place of Birth</label>
+                                                            <input type="text" class="form-control" id="place_of_birth" name="place_of_birth" 
+                                                                   t-att-value="employee.place_of_birth or ''" 
+                                                                   placeholder="Enter place of birth" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="country_of_birth" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Country of Birth</label>
+                                                            <input type="text" class="form-control" id="country_of_birth" name="country_of_birth" 
+                                                                   t-att-value="employee.country_of_birth.name if employee.country_of_birth else ''" 
+                                                                   placeholder="Enter country of birth" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">
+                                                                Non-resident? <i class="fa fa-question-circle text-primary" style="font-size: 0.75rem;"></i>
+                                                            </label>
+                                                            <div class="form-check mt-2">
+                                                                <input class="form-check-input" type="checkbox" id="is_non_resident" name="is_non_resident" 
+                                                                       t-att-checked="'checked' if employee.is_non_resident else ''"
+                                                                       style="width: 20px; height: 20px; cursor: pointer;"/>
+                                                                <label class="form-check-label" for="is_non_resident" style="margin-left: 0.5rem; cursor: pointer;">
+                                                                    Non-resident
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- Work Permit Section -->
+                                                        <div class="col-12 mt-4 mb-3">
+                                                            <hr style="border-top: 1px solid #e9ecef; margin: 1rem 0;"/>
+                                                            <h6 class="mb-3" style="color: #495057; font-weight: 600; text-transform: uppercase; font-size: 0.9rem;">Work Permit</h6>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="visa_no" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Visa No</label>
+                                                            <input type="text" class="form-control" id="visa_no" name="visa_no" 
+                                                                   t-att-value="employee.visa_no or ''" 
+                                                                   placeholder="Enter visa number" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="work_permit_no" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Work Permit No</label>
+                                                            <input type="text" class="form-control" id="work_permit_no" name="work_permit_no" 
+                                                                   t-att-value="employee.permit_no or ''" 
+                                                                   placeholder="Enter work permit number" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="visa_expire" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Visa Expiration Date</label>
+                                                            <input type="date" class="form-control" id="visa_expire" name="visa_expire" 
+                                                                   t-att-value="employee.visa_expire or ''" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="work_permit_expiration_date" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Work Permit Expiration Date</label>
+                                                            <input type="date" class="form-control" id="work_permit_expiration_date" name="work_permit_expiration_date" 
+                                                                   t-att-value="employee.work_permit_expiration_date or ''" 
+                                                                   style="border-radius: 8px; padding: 0.75rem;"/>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="work_permit_attachment" class="form-label mb-1" style="font-size: 0.85rem; text-transform: uppercase; color: #6c757d;">Work Permit</label>
+                                                            <div>
+                                                                <label for="work_permit_attachment" class="btn btn-outline-primary" style="border-radius: 8px; cursor: pointer; width: 100%;">
+                                                                    <i class="fa fa-upload me-2"></i>Upload your file
+                                                                </label>
+                                                                <input type="file" id="work_permit_attachment" name="work_permit_attachment" style="display: none;"/>
+                                                                <t t-if="employee.work_permit_name">
+                                                                    <p class="text-muted mt-2 mb-0" style="font-size: 0.85rem;">
+                                                                        <i class="fa fa-file-o me-1"></i><t t-esc="employee.work_permit_name"/>
+                                                                    </p>
+                                                                </t>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-12 mt-3">
+                                                            <button type="submit" class="btn btn-primary" style="border-radius: 8px; padding: 0.75rem 2rem; font-weight: 600;">
+                                                                <i class="fa fa-save me-2"></i>Save Changes
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    
+                    <!-- Read-only Information -->
+                    <t t-if="employee">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-body p-4">
+                                        <h5 class="mb-3" style="color: #333; font-weight: 600;">Additional Information</h5>
                                         <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <div class="d-flex align-items-start">
-                                                    <div class="flex-shrink-0">
-                                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                                            <i class="fa fa-user text-primary"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Full Name</h6>
-                                                        <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;"><t t-esc="employee.name"/></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <div class="d-flex align-items-start">
-                                                    <div class="flex-shrink-0">
-                                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                                            <i class="fa fa-briefcase text-success"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Job Title</h6>
-                                                        <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;">
-                                                            <t t-esc="employee.job_id.name if employee.job_id else 'N/A'"/>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <div class="d-flex align-items-start">
-                                                    <div class="flex-shrink-0">
-                                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                                            <i class="fa fa-building text-info"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Department</h6>
-                                                        <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;">
-                                                            <t t-esc="employee.department_id.name if employee.department_id else 'N/A'"/>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <div class="d-flex align-items-start">
-                                                    <div class="flex-shrink-0">
-                                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                                            <i class="fa fa-envelope text-warning"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Work Email</h6>
-                                                        <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;">
-                                                            <t t-esc="employee.work_email if employee.work_email else 'N/A'"/>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <div class="d-flex align-items-start">
-                                                    <div class="flex-shrink-0">
-                                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                                            <i class="fa fa-phone text-danger"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Work Phone</h6>
-                                                        <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;">
-                                                            <t t-esc="employee.work_phone if employee.work_phone else 'N/A'"/>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <t t-if="employee.contract_ids">
                                                 <t t-set="active_contract" t-value="employee.contract_ids.filtered(lambda c: c.state == 'open')[:1]"/>
                                                 <t t-if="active_contract and active_contract.date_start">
@@ -392,6 +1313,94 @@
                             </div>
                         </div>
                     </t>
+                    
+                    <script>
+                        function previewImage(input) {
+                            if (input.files &amp;&amp; input.files[0]) {
+                                var reader = new FileReader();
+                                reader.onload = function(e) {
+                                    var preview = document.getElementById('profile_image_preview');
+                                    if (preview.tagName === 'IMG') {
+                                        preview.src = e.target.result;
+                                    } else {
+                                        // Replace div with img
+                                        var img = document.createElement('img');
+                                        img.id = 'profile_image_preview';
+                                        img.className = 'rounded-circle';
+                                        img.src = e.target.result;
+                                        img.style.cssText = 'width: 150px; height: 150px; object-fit: cover; border: 4px solid #e9ecef; cursor: pointer;';
+                                        preview.parentNode.replaceChild(img, preview);
+                                    }
+                                };
+                                reader.readAsDataURL(input.files[0]);
+                            }
+                        }
+                        
+                        // Handle file input clicks for all upload buttons
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var fileInputs = ['letter_to_students_attachment', 'letter_to_employees_attachment', 
+                                            'passport_or_id_attachment', 'cv_attachment', 'photo_attachment', 
+                                            'visa_uae_attachment', 'degree_attachment', 'work_permit_attachment'];
+                            
+                            fileInputs.forEach(function(inputId) {
+                                var input = document.getElementById(inputId);
+                                if (input) {
+                                    var label = input.previousElementSibling;
+                                    if (label &amp;&amp; label.tagName === 'LABEL') {
+                                        label.addEventListener('click', function(e) {
+                                            e.preventDefault();
+                                            input.click();
+                                        });
+                                    }
+                                }
+                            });
+                            
+                            // Initialize Bootstrap tabs if available
+                            if (typeof bootstrap !== 'undefined' &amp;&amp; bootstrap.Tab) {
+                                var triggerTabList = [].slice.call(document.querySelectorAll('#profileTabs button'));
+                                triggerTabList.forEach(function (triggerEl) {
+                                    var tabTrigger = new bootstrap.Tab(triggerEl);
+                                    triggerEl.addEventListener('click', function (event) {
+                                        event.preventDefault();
+                                        tabTrigger.show();
+                                    });
+                                });
+                            } else {
+                                // Fallback: Simple tab switching without Bootstrap
+                                var tabButtons = document.querySelectorAll('#profileTabs button');
+                                var tabPanes = document.querySelectorAll('.tab-pane');
+                                
+                                tabButtons.forEach(function(button) {
+                                    button.addEventListener('click', function(e) {
+                                        e.preventDefault();
+                                        var targetId = this.getAttribute('data-bs-target') || this.getAttribute('data-target');
+                                        if (targetId) {
+                                            // Remove active class from all tabs and panes
+                                            tabButtons.forEach(function(btn) {
+                                                btn.classList.remove('active');
+                                                btn.style.borderBottom = 'none';
+                                                btn.style.color = '#6c757d';
+                                            });
+                                            tabPanes.forEach(function(pane) {
+                                                pane.classList.remove('show', 'active');
+                                            });
+                                            
+                                            // Add active class to clicked tab
+                                            this.classList.add('active');
+                                            this.style.borderBottom = '3px solid #667eea';
+                                            this.style.color = '#667eea';
+                                            
+                                            // Show corresponding pane
+                                            var targetPane = document.querySelector(targetId);
+                                            if (targetPane) {
+                                                targetPane.classList.add('show', 'active');
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    </script>
 
                     <!-- Quick Actions Section -->
                     <div class="row">
@@ -492,9 +1501,6 @@
                     .navbar-brand,
                     .navbar-toggler,
                     .navbar-collapse,
-                    .nav,
-                    .nav-item,
-                    .nav-link,
                     .dropdown,
                     .dropdown-menu,
                     .dropdown-item,
@@ -508,6 +1514,36 @@
                         padding: 0 !important;
                         overflow: hidden !important;
                     }
+                    /* Hide nav elements except profile tabs */
+                    .nav:not(#profileTabs):not(.card-body .nav),
+                    .nav-item:not(#profileTabs .nav-item):not(.card-body .nav-item),
+                    .nav-link:not(#profileTabs .nav-link):not(.card-body .nav-link) {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
+                    /* Show tabs in profile page - exception for profile tabs */
+                    #profileTabs,
+                    #profileTabs .nav,
+                    #profileTabs .nav-item,
+                    #profileTabs .nav-link,
+                    .card-body .nav,
+                    .card-body .nav-item,
+                    .card-body .nav-link {
+                        display: block !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        height: auto !important;
+                        width: auto !important;
+                        margin: initial !important;
+                        padding: initial !important;
+                        overflow: visible !important;
+                    }
                     /* Adjust content margin when header is hidden */
                     .o_portal_wrap .container,
                     .container {
@@ -518,6 +1554,35 @@
                     body {
                         padding-top: 0 !important;
                         margin-top: 0 !important;
+                    }
+                    /* Hide footer and bottom sections */
+                    footer,
+                    .footer,
+                    .o_footer,
+                    .o_website_footer,
+                    .website_footer,
+                    #footer,
+                    footer#footer,
+                    .o_portal_wrap footer,
+                    .o_portal_wrap .footer,
+                    .o_portal_wrap .o_footer,
+                    .o_portal_wrap .o_website_footer,
+                    .o_portal_wrap .website_footer,
+                    .o_portal_wrap #footer,
+                    .oe_structure.oe_footer,
+                    .o_footer_copyright,
+                    .o_footer_copyright_name,
+                    .js_footer,
+                    .footer-copyright,
+                    .copyright {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
                     }
                 </style>
                 <div class="container mt-4 mb-4">
@@ -757,9 +1822,6 @@
                     .navbar-brand,
                     .navbar-toggler,
                     .navbar-collapse,
-                    .nav,
-                    .nav-item,
-                    .nav-link,
                     .dropdown,
                     .dropdown-menu,
                     .dropdown-item,
@@ -773,6 +1835,36 @@
                         padding: 0 !important;
                         overflow: hidden !important;
                     }
+                    /* Hide nav elements except profile tabs */
+                    .nav:not(#profileTabs):not(.card-body .nav),
+                    .nav-item:not(#profileTabs .nav-item):not(.card-body .nav-item),
+                    .nav-link:not(#profileTabs .nav-link):not(.card-body .nav-link) {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
+                    /* Show tabs in profile page - exception for profile tabs */
+                    #profileTabs,
+                    #profileTabs .nav,
+                    #profileTabs .nav-item,
+                    #profileTabs .nav-link,
+                    .card-body .nav,
+                    .card-body .nav-item,
+                    .card-body .nav-link {
+                        display: block !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        height: auto !important;
+                        width: auto !important;
+                        margin: initial !important;
+                        padding: initial !important;
+                        overflow: visible !important;
+                    }
                     /* Adjust content margin when header is hidden */
                     .o_portal_wrap .container,
                     .container {
@@ -783,6 +1875,35 @@
                     body {
                         padding-top: 0 !important;
                         margin-top: 0 !important;
+                    }
+                    /* Hide footer and bottom sections */
+                    footer,
+                    .footer,
+                    .o_footer,
+                    .o_website_footer,
+                    .website_footer,
+                    #footer,
+                    footer#footer,
+                    .o_portal_wrap footer,
+                    .o_portal_wrap .footer,
+                    .o_portal_wrap .o_footer,
+                    .o_portal_wrap .o_website_footer,
+                    .o_portal_wrap .website_footer,
+                    .o_portal_wrap #footer,
+                    .oe_structure.oe_footer,
+                    .o_footer_copyright,
+                    .o_footer_copyright_name,
+                    .js_footer,
+                    .footer-copyright,
+                    .copyright {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
                     }
                 </style>
                 <div class="container mt-4 mb-4">
@@ -966,9 +2087,6 @@
                     .navbar-brand,
                     .navbar-toggler,
                     .navbar-collapse,
-                    .nav,
-                    .nav-item,
-                    .nav-link,
                     .dropdown,
                     .dropdown-menu,
                     .dropdown-item,
@@ -982,6 +2100,36 @@
                         padding: 0 !important;
                         overflow: hidden !important;
                     }
+                    /* Hide nav elements except profile tabs */
+                    .nav:not(#profileTabs):not(.card-body .nav),
+                    .nav-item:not(#profileTabs .nav-item):not(.card-body .nav-item),
+                    .nav-link:not(#profileTabs .nav-link):not(.card-body .nav-link) {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
+                    /* Show tabs in profile page - exception for profile tabs */
+                    #profileTabs,
+                    #profileTabs .nav,
+                    #profileTabs .nav-item,
+                    #profileTabs .nav-link,
+                    .card-body .nav,
+                    .card-body .nav-item,
+                    .card-body .nav-link {
+                        display: block !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        height: auto !important;
+                        width: auto !important;
+                        margin: initial !important;
+                        padding: initial !important;
+                        overflow: visible !important;
+                    }
                     /* Adjust content margin when header is hidden */
                     .o_portal_wrap .container,
                     .container {
@@ -992,6 +2140,35 @@
                     body {
                         padding-top: 0 !important;
                         margin-top: 0 !important;
+                    }
+                    /* Hide footer and bottom sections */
+                    footer,
+                    .footer,
+                    .o_footer,
+                    .o_website_footer,
+                    .website_footer,
+                    #footer,
+                    footer#footer,
+                    .o_portal_wrap footer,
+                    .o_portal_wrap .footer,
+                    .o_portal_wrap .o_footer,
+                    .o_portal_wrap .o_website_footer,
+                    .o_portal_wrap .website_footer,
+                    .o_portal_wrap #footer,
+                    .oe_structure.oe_footer,
+                    .o_footer_copyright,
+                    .o_footer_copyright_name,
+                    .js_footer,
+                    .footer-copyright,
+                    .copyright {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
                     }
                 </style>
                 <div class="container mt-4 mb-4">
@@ -1246,9 +2423,6 @@
                     .navbar-brand,
                     .navbar-toggler,
                     .navbar-collapse,
-                    .nav,
-                    .nav-item,
-                    .nav-link,
                     .dropdown,
                     .dropdown-menu,
                     .dropdown-item,
@@ -1262,6 +2436,36 @@
                         padding: 0 !important;
                         overflow: hidden !important;
                     }
+                    /* Hide nav elements except profile tabs */
+                    .nav:not(#profileTabs):not(.card-body .nav),
+                    .nav-item:not(#profileTabs .nav-item):not(.card-body .nav-item),
+                    .nav-link:not(#profileTabs .nav-link):not(.card-body .nav-link) {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
+                    /* Show tabs in profile page - exception for profile tabs */
+                    #profileTabs,
+                    #profileTabs .nav,
+                    #profileTabs .nav-item,
+                    #profileTabs .nav-link,
+                    .card-body .nav,
+                    .card-body .nav-item,
+                    .card-body .nav-link {
+                        display: block !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        height: auto !important;
+                        width: auto !important;
+                        margin: initial !important;
+                        padding: initial !important;
+                        overflow: visible !important;
+                    }
                     /* Adjust content margin when header is hidden */
                     .o_portal_wrap .container,
                     .container {
@@ -1272,6 +2476,35 @@
                     body {
                         padding-top: 0 !important;
                         margin-top: 0 !important;
+                    }
+                    /* Hide footer and bottom sections */
+                    footer,
+                    .footer,
+                    .o_footer,
+                    .o_website_footer,
+                    .website_footer,
+                    #footer,
+                    footer#footer,
+                    .o_portal_wrap footer,
+                    .o_portal_wrap .footer,
+                    .o_portal_wrap .o_footer,
+                    .o_portal_wrap .o_website_footer,
+                    .o_portal_wrap .website_footer,
+                    .o_portal_wrap #footer,
+                    .oe_structure.oe_footer,
+                    .o_footer_copyright,
+                    .o_footer_copyright_name,
+                    .js_footer,
+                    .footer-copyright,
+                    .copyright {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
                     }
                 </style>
                 <div class="container mt-4 mb-4">
@@ -1325,15 +2558,30 @@
                                                 <thead style="background-color: #f8f9fa;">
                                                     <tr>
                                                         <th style="padding: 1rem; font-weight: 600; color: #333;">Payslip Name</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Creation Date</th>
                                                         <th style="padding: 1rem; font-weight: 600; color: #333;">Period</th>
                                                         <th style="padding: 1rem; font-weight: 600; color: #333;">Basic Salary</th>
                                                         <th style="padding: 1rem; font-weight: 600; color: #333;">Gross Salary</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Deduction</th>
                                                         <th style="padding: 1rem; font-weight: 600; color: #333;">Net Salary</th>
                                                         <th style="padding: 1rem; font-weight: 600; color: #333;">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <t t-foreach="payslips" t-as="payslip">
+                                                    <t t-foreach="payslips_with_foreign" t-as="payslip_data">
+                                                        <t t-set="payslip" t-value="payslip_data['payslip']"/>
+                                                        <t t-set="foreign_amounts" t-value="payslip_data.get('foreign_amounts', {})"/>
+                                                        <t t-set="conversion_rate" t-value="payslip_data.get('conversion_rate', 0)"/>
+                                                        <t t-if="foreign_currency_available and foreign_amounts and conversion_rate and conversion_rate != 0">
+                                                            <tr style="background-color: #fff3cd;">
+                                                                <td colspan="2" style="padding: 0.5rem 1rem; font-weight: 600; color: #856404; font-size: 0.85rem; text-align: center;">
+                                                                    <i class="fa fa-exchange me-1"></i>Exchange Rate: 1 <t t-esc="currency_symbol or ''"/> = <t t-esc="'{:.4f}'.format(conversion_rate)"/> <t t-esc="foreign_currency_symbol"/>
+                                                                </td>
+                                                                <td colspan="5" style="padding: 0.5rem 1rem; font-weight: 600; color: #856404; font-size: 0.85rem; text-align: center;">
+                                                                    <i class="fa fa-info-circle me-1"></i>Values shown in <strong><t t-esc="foreign_currency_symbol"/></strong> (<t t-esc="foreign_currency.name if foreign_currency else ''"/>) below original amounts
+                                                                </td>
+                                                            </tr>
+                                                        </t>
                                                         <tr style="border-bottom: 1px solid #e9ecef;">
                                                             <td style="padding: 1rem; vertical-align: middle;">
                                                                 <div class="d-flex align-items-center">
@@ -1346,6 +2594,18 @@
                                                                 </div>
                                                             </td>
                                                             <td style="padding: 1rem; vertical-align: middle;">
+                                                                <div>
+                                                                    <i class="fa fa-calendar text-primary me-2"></i>
+                                                                    <span style="color: #333; font-weight: 500;">
+                                                                        <t t-if="payslip.create_date">
+                                                                            <t t-set="create_date_str" t-value="str(payslip.create_date)"/>
+                                                                            <t t-esc="create_date_str.split(' ')[0] if ' ' in create_date_str else create_date_str"/>
+                                                                        </t>
+                                                                        <t t-else="">N/A</t>
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
                                                                 <span style="color: #333; font-weight: 500;">
                                                                     <t t-if="payslip.date_from and payslip.date_to">
                                                                         <t t-esc="payslip.date_from"/> - <t t-esc="payslip.date_to"/>
@@ -1354,40 +2614,86 @@
                                                                 </span>
                                                             </td>
                                                             <td style="padding: 1rem; vertical-align: middle;">
-                                                                <span style="color: #333; font-weight: 500;">
-                                                                    <t t-if="payslip.line_ids">
-                                                                        <t t-set="basic_line" t-value="payslip.line_ids.filtered(lambda l: l.code == 'BASIC')[:1]"/>
-                                                                        <t t-if="basic_line and basic_line.total">
-                                                                            <t t-esc="'{:.2f}'.format(basic_line.total)"/>
+                                                                <div>
+                                                                    <span style="color: #333; font-weight: 500;">
+                                                                        <t t-if="payslip.line_ids">
+                                                                            <t t-set="basic_line" t-value="payslip.line_ids.filtered(lambda l: l.code == 'BASIC')[:1]"/>
+                                                                            <t t-if="basic_line and basic_line.total">
+                                                                                <t t-esc="currency_symbol or ''"/><t t-esc="'{:.2f}'.format(basic_line.total)"/>
+                                                                            </t>
+                                                                            <t t-else="">N/A</t>
                                                                         </t>
                                                                         <t t-else="">N/A</t>
+                                                                    </span>
+                                                                    <t t-if="foreign_currency_available and foreign_amounts and foreign_amounts.get('basic')">
+                                                                        <br/>
+                                                                        <small style="color: #856404; font-weight: 600;">
+                                                                            <i class="fa fa-exchange me-1"></i><t t-esc="foreign_currency_symbol"/><t t-esc="'{:.2f}'.format(foreign_amounts['basic'])"/>
+                                                                        </small>
                                                                     </t>
-                                                                    <t t-else="">N/A</t>
-                                                                </span>
+                                                                </div>
                                                             </td>
                                                             <td style="padding: 1rem; vertical-align: middle;">
-                                                                <span style="color: #333; font-weight: 500;">
-                                                                    <t t-if="payslip.line_ids">
-                                                                        <t t-set="gross_line" t-value="payslip.line_ids.filtered(lambda l: l.code == 'GROSS')[:1]"/>
-                                                                        <t t-if="gross_line and gross_line.total">
-                                                                            <t t-esc="'{:.2f}'.format(gross_line.total)"/>
+                                                                <div>
+                                                                    <span style="color: #333; font-weight: 500;">
+                                                                        <t t-if="payslip.line_ids">
+                                                                            <t t-set="gross_line" t-value="payslip.line_ids.filtered(lambda l: l.code == 'GROSS')[:1]"/>
+                                                                            <t t-if="gross_line and gross_line.total">
+                                                                                <t t-esc="currency_symbol or ''"/><t t-esc="'{:.2f}'.format(gross_line.total)"/>
+                                                                            </t>
+                                                                            <t t-else="">N/A</t>
                                                                         </t>
                                                                         <t t-else="">N/A</t>
+                                                                    </span>
+                                                                    <t t-if="foreign_currency_available and foreign_amounts and foreign_amounts.get('gross')">
+                                                                        <br/>
+                                                                        <small style="color: #856404; font-weight: 600;">
+                                                                            <i class="fa fa-exchange me-1"></i><t t-esc="foreign_currency_symbol"/><t t-esc="'{:.2f}'.format(foreign_amounts['gross'])"/>
+                                                                        </small>
                                                                     </t>
-                                                                    <t t-else="">N/A</t>
-                                                                </span>
+                                                                </div>
                                                             </td>
                                                             <td style="padding: 1rem; vertical-align: middle;">
-                                                                <span class="badge bg-success" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
-                                                                    <t t-if="payslip.line_ids">
-                                                                        <t t-set="net_line" t-value="payslip.line_ids.filtered(lambda l: l.code == 'NET')[:1]"/>
-                                                                        <t t-if="net_line and net_line.total">
-                                                                            <t t-esc="'{:.2f}'.format(net_line.total)"/>
+                                                                <div>
+                                                                    <span style="color: #d32f2f; font-weight: 500;">
+                                                                        <t t-if="payslip.line_ids">
+                                                                            <t t-set="gross_line" t-value="payslip.line_ids.filtered(lambda l: l.code == 'GROSS')[:1]"/>
+                                                                            <t t-set="net_line" t-value="payslip.line_ids.filtered(lambda l: l.code == 'NET')[:1]"/>
+                                                                            <t t-if="gross_line and gross_line.total and net_line and net_line.total">
+                                                                                <t t-set="deduction" t-value="gross_line.total - net_line.total"/>
+                                                                                <t t-esc="currency_symbol or ''"/><t t-esc="'{:.2f}'.format(deduction)"/>
+                                                                            </t>
+                                                                            <t t-else="">0.00</t>
+                                                                        </t>
+                                                                        <t t-else="">0.00</t>
+                                                                    </span>
+                                                                    <t t-if="foreign_currency_available and foreign_amounts and foreign_amounts.get('deduction')">
+                                                                        <br/>
+                                                                        <small style="color: #d32f2f; font-weight: 600;">
+                                                                            <i class="fa fa-exchange me-1"></i><t t-esc="foreign_currency_symbol"/><t t-esc="'{:.2f}'.format(foreign_amounts['deduction'])"/>
+                                                                        </small>
+                                                                    </t>
+                                                                </div>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <div>
+                                                                    <span class="badge bg-success" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                                                                        <t t-if="payslip.line_ids">
+                                                                            <t t-set="net_line" t-value="payslip.line_ids.filtered(lambda l: l.code == 'NET')[:1]"/>
+                                                                            <t t-if="net_line and net_line.total">
+                                                                                <t t-esc="currency_symbol or ''"/><t t-esc="'{:.2f}'.format(net_line.total)"/>
+                                                                            </t>
+                                                                            <t t-else="">N/A</t>
                                                                         </t>
                                                                         <t t-else="">N/A</t>
+                                                                    </span>
+                                                                    <t t-if="foreign_currency_available and foreign_amounts and foreign_amounts.get('net')">
+                                                                        <br/>
+                                                                        <small class="badge" style="background-color: #856404; color: white; font-size: 0.8rem; padding: 0.3rem 0.6rem; margin-top: 0.3rem; display: inline-block;">
+                                                                            <i class="fa fa-exchange me-1"></i><t t-esc="foreign_currency_symbol"/><t t-esc="'{:.2f}'.format(foreign_amounts['net'])"/>
+                                                                        </small>
                                                                     </t>
-                                                                    <t t-else="">N/A</t>
-                                                                </span>
+                                                                </div>
                                                             </td>
                                                             <td style="padding: 1rem; vertical-align: middle;">
                                                                 <t t-if="payslip.state == 'draft'">
