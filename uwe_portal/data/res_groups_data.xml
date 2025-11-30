@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Group for Employee Portal User -->
+        <!-- This group is used to identify Employee Portal Users -->
+        <record id="uwe_portal_group_employee_portal" model="res.groups">
+            <field name="name">Employee Portal User</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+            <field name="comment">Employee Portal User: Portal access for employees without standard portal menus</field>
+        </record>
+    </data>
+</odoo>
+

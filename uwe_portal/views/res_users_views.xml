@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Extend User Form View -->
+        <record id="view_users_form_employee_portal" model="ir.ui.view">
+            <field name="name">res.users.form.employee.portal</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <!-- Add user_type field after login field -->
+                <xpath expr="//field[@name='login']" position="after">
+                    <field name="user_type" widget="radio" 
+                           options="{'horizontal': true}"/>
+                </xpath>
+                
+                <!-- Hide the default share field (it's used for user type in Odoo) -->
+                <xpath expr="//field[@name='share']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                
+                <!-- Make Create employee button visible for Employee Portal User -->
+                <!-- This button is typically added by hr module in header -->
+                <xpath expr="//header//button[@name='action_create_employee']" position="attributes">
+                    <attribute name="invisible">employee_id or (user_type != 'internal' and user_type != 'employee_portal')</attribute>
+                </xpath>
+                
+            </field>
+        </record>
+
+        <!-- User Tree View Extension -->
+        <record id="view_users_tree_employee_portal" model="ir.ui.view">
+            <field name="name">res.users.tree.employee.portal</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='login']" position="after">
+                    <field name="user_type" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- User Search View Extension -->
+        <record id="view_users_search_employee_portal" model="ir.ui.view">
+            <field name="name">res.users.search.employee.portal</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_search"/>
+            <field name="arch" type="xml">
+                <!-- Add user_type field to search after share field -->
+                <xpath expr="//field[@name='share']" position="after">
+                    <field name="user_type"/>
+                </xpath>
+                
+                <!-- Add filters after separator -->
+                <xpath expr="//separator" position="after">
+                    <filter string="Internal User" name="internal" 
+                            domain="[('user_type', '=', 'internal')]"/>
+                    <filter string="Portal User" name="portal" 
+                            domain="[('user_type', '=', 'portal')]"/>
+                    <filter string="Public" name="public" 
+                            domain="[('user_type', '=', 'public')]"/>
+                    <filter string="Employee Portal User" name="employee_portal" 
+                            domain="[('user_type', '=', 'employee_portal')]"/>
+                </xpath>
+                
+                <!-- Add group by filter -->
+                <xpath expr="//search" position="inside">
+                    <group expand="0" string="Group By">
+                        <filter string="User Type" name="group_user_type" 
+                                context="{'group_by': 'user_type'}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+

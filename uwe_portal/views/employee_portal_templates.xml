@@ -1,0 +1,1439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Employee Portal Home Page Template -->
+        <template id="employee_portal_home" name="Employee Portal Home">
+            <t t-call="portal.portal_layout">
+                <t t-set="my_details" t-value="True"/>
+                <style>
+                    /* Hide portal header and all website navigation menus */
+                    .o_portal_wrap header,
+                    .o_portal_wrap .navbar,
+                    .o_portal_wrap .o_portal_navbar,
+                    .o_portal_wrap .o_portal_header,
+                    header.o_main_header,
+                    .o_portal_wrap .o_portal_chatter_header,
+                    .navbar,
+                    .navbar-nav,
+                    .o_main_navbar,
+                    .o_main_header,
+                    header,
+                    nav,
+                    .o_website_navbar,
+                    .o_menu_header,
+                    .o_menu_systray,
+                    .navbar-brand,
+                    .navbar-toggler,
+                    .navbar-collapse,
+                    .nav,
+                    .nav-item,
+                    .nav-link,
+                    .dropdown,
+                    .dropdown-menu,
+                    .dropdown-item,
+                    .dropdown-toggle {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
+                    /* Adjust content margin when header is hidden */
+                    .o_portal_wrap .container,
+                    .container {
+                        margin-top: 0 !important;
+                        padding-top: 2rem !important;
+                    }
+                    /* Hide body padding/margin that might be added for navbar */
+                    body {
+                        padding-top: 0 !important;
+                        margin-top: 0 !important;
+                    }
+                </style>
+                <div class="container mt-4 mb-4">
+                    <!-- Welcome Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px;">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8 text-white">
+                                            <h2 class="mb-2" style="font-weight: 600;">Welcome to Employee Portal</h2>
+                                            <p class="mb-0" style="font-size: 1.1rem; opacity: 0.9;">
+                                                Hello, <strong><t t-esc="request.env.user.name"/></strong>! Access your employee resources and manage your information.
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <i class="fa fa-user-circle" style="font-size: 80px; opacity: 0.3;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grid Menu Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h3 class="mb-4" style="color: #333; font-weight: 600;">
+                                <i class="fa fa-th-large text-primary me-2"></i>Quick Access
+                            </h3>
+                            <div class="row g-4">
+                                <!-- TIME OFF Card -->
+                                <div class="col-md-3 col-sm-6">
+                                    <a href="/my/employee-portal/time-off" class="text-decoration-none menu-card-link">
+                                        <div class="card border-0 shadow-lg h-100 menu-card" style="transition: all 0.3s ease; border-radius: 15px; overflow: hidden;">
+                                            <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                                <div class="mb-3">
+                                                    <div class="rounded-circle bg-white bg-opacity-20 d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; backdrop-filter: blur(10px);">
+                                                        <i class="fa fa-calendar-check-o text-white" style="font-size: 40px;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="text-white mb-2" style="font-weight: 600; font-size: 1.3rem;">TIME OFF</h4>
+                                                <p class="text-white mb-0" style="opacity: 0.9; font-size: 0.9rem;">Request and manage your leave</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- PAYROLL Card -->
+                                <div class="col-md-3 col-sm-6">
+                                    <a href="/my/employee-portal/payroll" class="text-decoration-none menu-card-link">
+                                        <div class="card border-0 shadow-lg h-100 menu-card" style="transition: all 0.3s ease; border-radius: 15px; overflow: hidden;">
+                                            <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                                <div class="mb-3">
+                                                    <div class="rounded-circle bg-white bg-opacity-20 d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; backdrop-filter: blur(10px);">
+                                                        <i class="fa fa-money text-white" style="font-size: 40px;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="text-white mb-2" style="font-weight: 600; font-size: 1.3rem;">PAYROLL</h4>
+                                                <p class="text-white mb-0" style="opacity: 0.9; font-size: 0.9rem;">View your payslips and salary</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- ATTENDANCE Card -->
+                                <div class="col-md-3 col-sm-6">
+                                    <a href="/my/employee-portal/attendance" class="text-decoration-none menu-card-link">
+                                        <div class="card border-0 shadow-lg h-100 menu-card" style="transition: all 0.3s ease; border-radius: 15px; overflow: hidden;">
+                                            <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                                <div class="mb-3">
+                                                    <div class="rounded-circle bg-white bg-opacity-20 d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; backdrop-filter: blur(10px);">
+                                                        <i class="fa fa-clock-o text-white" style="font-size: 40px;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="text-white mb-2" style="font-weight: 600; font-size: 1.3rem;">ATTENDANCE</h4>
+                                                <p class="text-white mb-0" style="opacity: 0.9; font-size: 0.9rem;">Check in/out and view records</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- OVERTIME Card -->
+                                <div class="col-md-3 col-sm-6">
+                                    <a href="#" class="text-decoration-none menu-card-link">
+                                        <div class="card border-0 shadow-lg h-100 menu-card" style="transition: all 0.3s ease; border-radius: 15px; overflow: hidden;">
+                                            <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                                <div class="mb-3">
+                                                    <div class="rounded-circle bg-white bg-opacity-20 d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; backdrop-filter: blur(10px);">
+                                                        <i class="fa fa-hourglass-half text-white" style="font-size: 40px;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="text-white mb-2" style="font-weight: 600; font-size: 1.3rem;">OVERTIME</h4>
+                                                <p class="text-white mb-0" style="opacity: 0.9; font-size: 0.9rem;">Request and track overtime</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- PROFILE Card -->
+                                <div class="col-md-3 col-sm-6">
+                                    <a href="/my/employee-portal/profile" class="text-decoration-none menu-card-link">
+                                        <div class="card border-0 shadow-lg h-100 menu-card" style="transition: all 0.3s ease; border-radius: 15px; overflow: hidden;">
+                                            <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                                <div class="mb-3">
+                                                    <div class="rounded-circle bg-white bg-opacity-20 d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; backdrop-filter: blur(10px);">
+                                                        <i class="fa fa-user-circle-o text-white" style="font-size: 40px;"></i>
+                                                    </div>
+                                                </div>
+                                                <h4 class="text-white mb-2" style="font-weight: 600; font-size: 1.3rem;">PROFILE</h4>
+                                                <p class="text-white mb-0" style="opacity: 0.9; font-size: 0.9rem;">View and manage your profile</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <style>
+                    .hover-card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+                    }
+                    .menu-card {
+                        cursor: pointer;
+                    }
+                    .menu-card:hover {
+                        transform: translateY(-10px) scale(1.02);
+                        box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important;
+                    }
+                    .menu-card-link {
+                        display: block;
+                    }
+                </style>
+            </t>
+        </template>
+
+        <!-- Employee Profile Page Template -->
+        <template id="employee_portal_profile" name="Employee Portal Profile">
+            <t t-call="portal.portal_layout">
+                <t t-set="my_details" t-value="True"/>
+                <style>
+                    /* Hide portal header and all website navigation menus */
+                    .o_portal_wrap header,
+                    .o_portal_wrap .navbar,
+                    .o_portal_wrap .o_portal_navbar,
+                    .o_portal_wrap .o_portal_header,
+                    header.o_main_header,
+                    .o_portal_wrap .o_portal_chatter_header,
+                    .navbar,
+                    .navbar-nav,
+                    .o_main_navbar,
+                    .o_main_header,
+                    header,
+                    nav,
+                    .o_website_navbar,
+                    .o_menu_header,
+                    .o_menu_systray,
+                    .navbar-brand,
+                    .navbar-toggler,
+                    .navbar-collapse,
+                    .nav,
+                    .nav-item,
+                    .nav-link,
+                    .dropdown,
+                    .dropdown-menu,
+                    .dropdown-item,
+                    .dropdown-toggle {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
+                    /* Adjust content margin when header is hidden */
+                    .o_portal_wrap .container,
+                    .container {
+                        margin-top: 0 !important;
+                        padding-top: 2rem !important;
+                    }
+                    /* Hide body padding/margin that might be added for navbar */
+                    body {
+                        padding-top: 0 !important;
+                        margin-top: 0 !important;
+                    }
+                </style>
+                <div class="container mt-4 mb-4">
+                    <!-- Back Button -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <a href="/my/employee-portal" class="text-decoration-none">
+                                <button class="btn btn-light border" style="border-radius: 8px;">
+                                    <i class="fa fa-arrow-left me-2"></i>Back to Home
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Welcome Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px;">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8 text-white">
+                                            <h2 class="mb-2" style="font-weight: 600;">My Profile</h2>
+                                            <p class="mb-0" style="font-size: 1.1rem; opacity: 0.9;">
+                                                <t t-if="employee">
+                                                    View and manage your employee information
+                                                </t>
+                                                <t t-else="">
+                                                    Your employee profile information
+                                                </t>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <i class="fa fa-user-circle" style="font-size: 80px; opacity: 0.3;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Employee Information Card -->
+                    <t t-if="employee">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-header bg-white border-bottom" style="padding: 1.5rem;">
+                                        <h4 class="mb-0" style="color: #333; font-weight: 600;">
+                                            <i class="fa fa-id-card text-primary me-2"></i>Employee Information
+                                        </h4>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="flex-shrink-0">
+                                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                            <i class="fa fa-user text-primary"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Full Name</h6>
+                                                        <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;"><t t-esc="employee.name"/></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="flex-shrink-0">
+                                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                            <i class="fa fa-briefcase text-success"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Job Title</h6>
+                                                        <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;">
+                                                            <t t-esc="employee.job_id.name if employee.job_id else 'N/A'"/>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="flex-shrink-0">
+                                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                            <i class="fa fa-building text-info"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Department</h6>
+                                                        <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;">
+                                                            <t t-esc="employee.department_id.name if employee.department_id else 'N/A'"/>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="flex-shrink-0">
+                                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                            <i class="fa fa-envelope text-warning"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Work Email</h6>
+                                                        <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;">
+                                                            <t t-esc="employee.work_email if employee.work_email else 'N/A'"/>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="flex-shrink-0">
+                                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                            <i class="fa fa-phone text-danger"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Work Phone</h6>
+                                                        <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;">
+                                                            <t t-esc="employee.work_phone if employee.work_phone else 'N/A'"/>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <t t-if="employee.contract_ids">
+                                                <t t-set="active_contract" t-value="employee.contract_ids.filtered(lambda c: c.state == 'open')[:1]"/>
+                                                <t t-if="active_contract and active_contract.date_start">
+                                                    <div class="col-md-6 mb-3">
+                                                        <div class="d-flex align-items-start">
+                                                            <div class="flex-shrink-0">
+                                                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                                    <i class="fa fa-calendar text-secondary"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-3">
+                                                                <h6 class="mb-1 text-muted" style="font-size: 0.85rem; text-transform: uppercase;">Contract Start Date</h6>
+                                                                <p class="mb-0" style="font-size: 1.1rem; font-weight: 500;">
+                                                                    <t t-esc="active_contract.date_start"/>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Quick Actions Section -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header bg-white border-bottom" style="padding: 1.5rem;">
+                                    <h4 class="mb-0" style="color: #333; font-weight: 600;">
+                                        <i class="fa fa-bolt text-warning me-2"></i>Quick Actions
+                                    </h4>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div class="row">
+                                        <!-- Action Card 1 -->
+                                        <div class="col-md-4 mb-3">
+                                            <a href="#" class="text-decoration-none">
+                                                <div class="card border-0 shadow-sm h-100 hover-card" style="transition: all 0.3s ease; cursor: pointer;">
+                                                    <div class="card-body text-center p-4">
+                                                        <div class="mb-3">
+                                                            <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                                                                <i class="fa fa-file-text-o text-primary" style="font-size: 30px;"></i>
+                                                            </div>
+                                                        </div>
+                                                        <h5 class="mb-2" style="color: #333; font-weight: 600;">My Documents</h5>
+                                                        <p class="text-muted mb-0" style="font-size: 0.9rem;">Access your documents</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- Action Card 2 -->
+                                        <div class="col-md-4 mb-3">
+                                            <a href="#" class="text-decoration-none">
+                                                <div class="card border-0 shadow-sm h-100 hover-card" style="transition: all 0.3s ease; cursor: pointer;">
+                                                    <div class="card-body text-center p-4">
+                                                        <div class="mb-3">
+                                                            <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                                                                <i class="fa fa-calendar-check-o text-success" style="font-size: 30px;"></i>
+                                                            </div>
+                                                        </div>
+                                                        <h5 class="mb-2" style="color: #333; font-weight: 600;">My Schedule</h5>
+                                                        <p class="text-muted mb-0" style="font-size: 0.9rem;">View your schedule</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- Action Card 3 -->
+                                        <div class="col-md-4 mb-3">
+                                            <a href="#" class="text-decoration-none">
+                                                <div class="card border-0 shadow-sm h-100 hover-card" style="transition: all 0.3s ease; cursor: pointer;">
+                                                    <div class="card-body text-center p-4">
+                                                        <div class="mb-3">
+                                                            <div class="rounded-circle bg-info bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                                                                <i class="fa fa-user-circle-o text-info" style="font-size: 30px;"></i>
+                                                            </div>
+                                                        </div>
+                                                        <h5 class="mb-2" style="color: #333; font-weight: 600;">My Profile</h5>
+                                                        <p class="text-muted mb-0" style="font-size: 0.9rem;">Update your profile</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    .hover-card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+                    }
+                </style>
+            </t>
+        </template>
+
+        <!-- Employee Time Off Page Template -->
+        <template id="employee_portal_time_off" name="Employee Portal Time Off">
+            <t t-call="portal.portal_layout">
+                <t t-set="my_details" t-value="True"/>
+                <style>
+                    /* Hide portal header and all website navigation menus */
+                    .o_portal_wrap header,
+                    .o_portal_wrap .navbar,
+                    .o_portal_wrap .o_portal_navbar,
+                    .o_portal_wrap .o_portal_header,
+                    header.o_main_header,
+                    .o_portal_wrap .o_portal_chatter_header,
+                    .navbar,
+                    .navbar-nav,
+                    .o_main_navbar,
+                    .o_main_header,
+                    header,
+                    nav,
+                    .o_website_navbar,
+                    .o_menu_header,
+                    .o_menu_systray,
+                    .navbar-brand,
+                    .navbar-toggler,
+                    .navbar-collapse,
+                    .nav,
+                    .nav-item,
+                    .nav-link,
+                    .dropdown,
+                    .dropdown-menu,
+                    .dropdown-item,
+                    .dropdown-toggle {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
+                    /* Adjust content margin when header is hidden */
+                    .o_portal_wrap .container,
+                    .container {
+                        margin-top: 0 !important;
+                        padding-top: 2rem !important;
+                    }
+                    /* Hide body padding/margin that might be added for navbar */
+                    body {
+                        padding-top: 0 !important;
+                        margin-top: 0 !important;
+                    }
+                </style>
+                <div class="container mt-4 mb-4">
+                    <!-- Back Button -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <a href="/my/employee-portal" class="text-decoration-none">
+                                <button class="btn btn-light border" style="border-radius: 8px;">
+                                    <i class="fa fa-arrow-left me-2"></i>Back to Home
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Success/Error Messages -->
+                    <t t-if="request.params.get('created') == '1'">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                                    <i class="fa fa-check-circle me-2"></i>Leave request created successfully!
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="request.params.get('canceled') == '1'">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                                    <i class="fa fa-check-circle me-2"></i>Leave request canceled successfully!
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="request.params.get('error') == '1'">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                                    <i class="fa fa-exclamation-circle me-2"></i>An error occurred while processing your request.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="request.params.get('error') == '2'">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                                    <i class="fa fa-exclamation-triangle me-2"></i>This leave request cannot be canceled as it has already been approved or refused.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Welcome Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px;">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8 text-white">
+                                            <h2 class="mb-2" style="font-weight: 600;">
+                                                <i class="fa fa-calendar-check-o me-2"></i>Time Off Requests
+                                            </h2>
+                                            <p class="mb-0" style="font-size: 1.1rem; opacity: 0.9;">
+                                                View and manage your leave requests
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <i class="fa fa-calendar" style="font-size: 80px; opacity: 0.3;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Time Off Requests Table -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header bg-white border-bottom" style="padding: 1.5rem;">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h4 class="mb-0" style="color: #333; font-weight: 600;">
+                                            <i class="fa fa-list text-primary me-2"></i>My Leave Requests
+                                        </h4>
+                                        <a href="/my/employee-portal/time-off/create" class="btn btn-primary" style="border-radius: 8px;">
+                                            <i class="fa fa-plus me-2"></i>Create New Request
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+                                    <t t-if="leave_requests">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover mb-0">
+                                                <thead style="background-color: #f8f9fa;">
+                                                    <tr>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Leave Type</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">From Date</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">To Date</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Duration</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Status</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Request Date</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333; text-align: center;">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="leave_requests" t-as="leave">
+                                                        <tr style="border-bottom: 1px solid #e9ecef;">
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                                        <i class="fa fa-calendar text-primary"></i>
+                                                                    </div>
+                                                                    <div>
+                                                                        <strong style="color: #333;"><t t-esc="leave.holiday_status_id.name if leave.holiday_status_id else 'N/A'"/></strong>
+                                                                        <br/>
+                                                                        <small class="text-muted" t-if="leave.name"><t t-esc="leave.name"/></small>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <span style="color: #333; font-weight: 500;">
+                                                                    <t t-if="leave.date_from">
+                                                                        <t t-esc="leave.date_from"/>
+                                                                    </t>
+                                                                    <t t-else="">N/A</t>
+                                                                </span>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <span style="color: #333; font-weight: 500;">
+                                                                    <t t-if="leave.date_to">
+                                                                        <t t-esc="leave.date_to"/>
+                                                                    </t>
+                                                                    <t t-else="">N/A</t>
+                                                                </span>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <span class="badge bg-info" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                                                                    <t t-if="leave.number_of_days">
+                                                                        <t t-esc="str(int(leave.number_of_days)) + ' day(s)'"/>
+                                                                    </t>
+                                                                    <t t-else="">N/A</t>
+                                                                </span>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <t t-if="leave.state == 'draft'">
+                                                                    <span class="badge bg-secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Draft</span>
+                                                                </t>
+                                                                <t t-elif="leave.state == 'confirm'">
+                                                                    <span class="badge bg-warning" style="font-size: 0.9rem; padding: 0.5rem 1rem;">To Approve</span>
+                                                                </t>
+                                                                <t t-elif="leave.state == 'validate'">
+                                                                    <span class="badge bg-success" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Approved</span>
+                                                                </t>
+                                                                <t t-elif="leave.state == 'refuse'">
+                                                                    <span class="badge bg-danger" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Refused</span>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <span class="badge bg-secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                                                                        <t t-esc="leave.state or 'N/A'"/>
+                                                                    </span>
+                                                                </t>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <small class="text-muted">
+                                                                    <t t-if="leave.create_date">
+                                                                        <t t-esc="leave.create_date"/>
+                                                                    </t>
+                                                                    <t t-else="">N/A</t>
+                                                                </small>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle; text-align: center;">
+                                                                <t t-if="leave.state in ['draft', 'confirm']">
+                                                                    <form method="post" action="/my/employee-portal/time-off/cancel" style="display: inline;">
+                                                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                                        <input type="hidden" name="leave_id" t-att-value="leave.id"/>
+                                                                        <button type="submit" class="btn btn-sm btn-danger" style="border-radius: 6px;" onclick="return confirm('Are you sure you want to cancel this leave request?');">
+                                                                            <i class="fa fa-times me-1"></i>Cancel
+                                                                        </button>
+                                                                    </form>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <span class="text-muted" style="font-size: 0.85rem;">No actions available</span>
+                                                                </t>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="text-center p-5">
+                                            <i class="fa fa-calendar-times-o" style="font-size: 60px; color: #ccc; margin-bottom: 1rem;"></i>
+                                            <p class="text-muted mb-0" style="font-size: 1.1rem;">No leave requests found</p>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    .table tbody tr:hover {
+                        background-color: #f8f9fa;
+                        transition: background-color 0.2s ease;
+                    }
+                </style>
+            </t>
+        </template>
+
+        <!-- Employee Time Off Create Page Template -->
+        <template id="employee_portal_time_off_create" name="Employee Portal Time Off Create">
+            <t t-call="portal.portal_layout">
+                <t t-set="my_details" t-value="True"/>
+                <style>
+                    /* Hide portal header and all website navigation menus */
+                    .o_portal_wrap header,
+                    .o_portal_wrap .navbar,
+                    .o_portal_wrap .o_portal_navbar,
+                    .o_portal_wrap .o_portal_header,
+                    header.o_main_header,
+                    .o_portal_wrap .o_portal_chatter_header,
+                    .navbar,
+                    .navbar-nav,
+                    .o_main_navbar,
+                    .o_main_header,
+                    header,
+                    nav,
+                    .o_website_navbar,
+                    .o_menu_header,
+                    .o_menu_systray,
+                    .navbar-brand,
+                    .navbar-toggler,
+                    .navbar-collapse,
+                    .nav,
+                    .nav-item,
+                    .nav-link,
+                    .dropdown,
+                    .dropdown-menu,
+                    .dropdown-item,
+                    .dropdown-toggle {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
+                    /* Adjust content margin when header is hidden */
+                    .o_portal_wrap .container,
+                    .container {
+                        margin-top: 0 !important;
+                        padding-top: 2rem !important;
+                    }
+                    /* Hide body padding/margin that might be added for navbar */
+                    body {
+                        padding-top: 0 !important;
+                        margin-top: 0 !important;
+                    }
+                </style>
+                <div class="container mt-4 mb-4">
+                    <!-- Back Button -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <a href="/my/employee-portal/time-off" class="text-decoration-none">
+                                <button class="btn btn-light border" style="border-radius: 8px;">
+                                    <i class="fa fa-arrow-left me-2"></i>Back to Time Off
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Welcome Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px;">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8 text-white">
+                                            <h2 class="mb-2" style="font-weight: 600;">
+                                                <i class="fa fa-plus-circle me-2"></i>Create Leave Request
+                                            </h2>
+                                            <p class="mb-0" style="font-size: 1.1rem; opacity: 0.9;">
+                                                Submit a new time off request
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <i class="fa fa-calendar-plus-o" style="font-size: 80px; opacity: 0.3;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Error Message -->
+                    <t t-if="error">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 8px; border-left: 4px solid #dc3545;">
+                                    <div class="d-flex align-items-start">
+                                        <div class="flex-shrink-0">
+                                            <i class="fa fa-exclamation-triangle" style="font-size: 1.5rem; margin-top: 0.25rem;"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h5 class="alert-heading mb-2" style="font-weight: 600;">Error</h5>
+                                            <p class="mb-0" style="font-size: 1rem;"><t t-esc="error"/></p>
+                                        </div>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="margin-top: 0.25rem;"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Create Leave Request Form -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header bg-white border-bottom" style="padding: 1.5rem;">
+                                    <h4 class="mb-0" style="color: #333; font-weight: 600;">
+                                        <i class="fa fa-edit text-primary me-2"></i>Leave Request Details
+                                    </h4>
+                                </div>
+                                <div class="card-body p-4">
+                                    <form method="post" action="/my/employee-portal/time-off/create">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <div class="row">
+                                            <!-- Leave Type -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="holiday_status_id" class="form-label" style="font-weight: 600; color: #333;">
+                                                    Leave Type <span class="text-danger">*</span>
+                                                </label>
+                                                <select class="form-select" id="holiday_status_id" name="holiday_status_id" required="required" style="border-radius: 8px; padding: 0.75rem;">
+                                                    <option value="">-- Select Leave Type --</option>
+                                                    <t t-foreach="leave_types" t-as="leave_type">
+                                                        <option t-att-value="leave_type.id">
+                                                            <t t-esc="leave_type.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <!-- From Date -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="date_from" class="form-label" style="font-weight: 600; color: #333;">
+                                                    From Date <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="date" class="form-control" id="date_from" name="date_from" required="required" style="border-radius: 8px; padding: 0.75rem;"/>
+                                            </div>
+
+                                            <!-- To Date -->
+                                            <div class="col-md-6 mb-3">
+                                                <label for="date_to" class="form-label" style="font-weight: 600; color: #333;">
+                                                    To Date <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="date" class="form-control" id="date_to" name="date_to" required="required" style="border-radius: 8px; padding: 0.75rem;"/>
+                                            </div>
+
+                                            <!-- Half Day Option -->
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label" style="font-weight: 600; color: #333;">Half Day</label>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="request_unit_half" name="request_unit_half" value="1" style="cursor: pointer;"/>
+                                                    <label class="form-check-label" for="request_unit_half" style="cursor: pointer;">
+                                                        Request half day
+                                                    </label>
+                                                </div>
+                                                <div id="half_day_period" style="display: none; margin-top: 0.5rem;">
+                                                    <select class="form-select" name="request_date_from_period" style="border-radius: 8px; padding: 0.75rem;">
+                                                        <option value="am">Morning (AM)</option>
+                                                        <option value="pm">Afternoon (PM)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Description -->
+                                            <div class="col-12 mb-3">
+                                                <label for="name" class="form-label" style="font-weight: 600; color: #333;">
+                                                    Description
+                                                </label>
+                                                <textarea class="form-control" id="name" name="name" rows="4" placeholder="Enter reason for leave request..." style="border-radius: 8px; padding: 0.75rem;"></textarea>
+                                            </div>
+
+                                            <!-- Submit Buttons -->
+                                            <div class="col-12">
+                                                <div class="d-flex justify-content-end gap-2">
+                                                    <a href="/my/employee-portal/time-off" class="btn btn-light border" style="border-radius: 8px;">
+                                                        <i class="fa fa-times me-2"></i>Cancel
+                                                    </a>
+                                                    <button type="submit" class="btn btn-primary" style="border-radius: 8px;">
+                                                        <i class="fa fa-check me-2"></i>Submit Request
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    // Show/hide half day period selector
+                    document.getElementById('request_unit_half').addEventListener('change', function() {
+                        var periodDiv = document.getElementById('half_day_period');
+                        if (this.checked) {
+                            periodDiv.style.display = 'block';
+                        } else {
+                            periodDiv.style.display = 'none';
+                        }
+                    });
+                </script>
+            </t>
+        </template>
+
+        <!-- Employee Attendance Page Template -->
+        <template id="employee_portal_attendance" name="Employee Portal Attendance">
+            <t t-call="portal.portal_layout">
+                <t t-set="my_details" t-value="True"/>
+                <style>
+                    /* Hide portal header and all website navigation menus */
+                    .o_portal_wrap header,
+                    .o_portal_wrap .navbar,
+                    .o_portal_wrap .o_portal_navbar,
+                    .o_portal_wrap .o_portal_header,
+                    header.o_main_header,
+                    .o_portal_wrap .o_portal_chatter_header,
+                    .navbar,
+                    .navbar-nav,
+                    .o_main_navbar,
+                    .o_main_header,
+                    header,
+                    nav,
+                    .o_website_navbar,
+                    .o_menu_header,
+                    .o_menu_systray,
+                    .navbar-brand,
+                    .navbar-toggler,
+                    .navbar-collapse,
+                    .nav,
+                    .nav-item,
+                    .nav-link,
+                    .dropdown,
+                    .dropdown-menu,
+                    .dropdown-item,
+                    .dropdown-toggle {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
+                    /* Adjust content margin when header is hidden */
+                    .o_portal_wrap .container,
+                    .container {
+                        margin-top: 0 !important;
+                        padding-top: 2rem !important;
+                    }
+                    /* Hide body padding/margin that might be added for navbar */
+                    body {
+                        padding-top: 0 !important;
+                        margin-top: 0 !important;
+                    }
+                </style>
+                <div class="container mt-4 mb-4">
+                    <!-- Back Button -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <a href="/my/employee-portal" class="text-decoration-none">
+                                <button class="btn btn-light border" style="border-radius: 8px;">
+                                    <i class="fa fa-arrow-left me-2"></i>Back to Home
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Welcome Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body p-4" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 10px;">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8 text-white">
+                                            <h2 class="mb-2" style="font-weight: 600;">
+                                                <i class="fa fa-clock-o me-2"></i>Attendance Records
+                                            </h2>
+                                            <p class="mb-0" style="font-size: 1.1rem; opacity: 0.9;">
+                                                View your check-in and check-out records
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <i class="fa fa-clock-o" style="font-size: 80px; opacity: 0.3;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Success/Error Messages -->
+                    <t t-if="request.params.get('checked_in') == '1'">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                                    <i class="fa fa-check-circle me-2"></i>Successfully checked in!
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="request.params.get('checked_out') == '1'">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                                    <i class="fa fa-check-circle me-2"></i>Successfully checked out!
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="request.params.get('error') == '1'">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                                    <i class="fa fa-exclamation-circle me-2"></i>An error occurred while processing your request.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="request.params.get('error') == '2'">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                                    <i class="fa fa-exclamation-triangle me-2"></i>You are already checked in. Please check out first.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="request.params.get('error') == '3'">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="border-radius: 8px;">
+                                    <i class="fa fa-exclamation-triangle me-2"></i>You are not checked in. Please check in first.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Check In/Out Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body p-4">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <h4 class="mb-2" style="color: #333; font-weight: 600;">
+                                                <i class="fa fa-clock-o text-primary me-2"></i>Current Status
+                                            </h4>
+                                            <t t-if="current_attendance">
+                                                <p class="mb-0 text-muted">
+                                                    <i class="fa fa-check-circle text-success me-2"></i>
+                                                    Checked in since: <strong><t t-esc="current_attendance.check_in"/></strong>
+                                                </p>
+                                            </t>
+                                            <t t-else="">
+                                                <p class="mb-0 text-muted">
+                                                    <i class="fa fa-times-circle text-danger me-2"></i>
+                                                    Currently not checked in
+                                                </p>
+                                            </t>
+                                        </div>
+                                        <div class="col-md-4 text-end">
+                                            <t t-if="current_attendance">
+                                                <form method="post" action="/my/employee-portal/attendance/check-out" style="display: inline;">
+                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                    <button type="submit" class="btn btn-danger btn-lg" style="border-radius: 8px; padding: 0.75rem 2rem;">
+                                                        <i class="fa fa-sign-out me-2"></i>Check Out
+                                                    </button>
+                                                </form>
+                                            </t>
+                                            <t t-else="">
+                                                <form method="post" action="/my/employee-portal/attendance/check-in" style="display: inline;">
+                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                    <button type="submit" class="btn btn-success btn-lg" style="border-radius: 8px; padding: 0.75rem 2rem;">
+                                                        <i class="fa fa-sign-in me-2"></i>Check In
+                                                    </button>
+                                                </form>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Attendance Records Table -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header bg-white border-bottom" style="padding: 1.5rem;">
+                                    <h4 class="mb-0" style="color: #333; font-weight: 600;">
+                                        <i class="fa fa-list text-primary me-2"></i>My Attendance Records
+                                    </h4>
+                                </div>
+                                <div class="card-body p-0">
+                                    <t t-if="attendance_records">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover mb-0">
+                                                <thead style="background-color: #f8f9fa;">
+                                                    <tr>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Date</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Check In</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Check Out</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Worked Hours</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="attendance_records" t-as="attendance">
+                                                        <tr style="border-bottom: 1px solid #e9ecef;">
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="rounded-circle bg-info bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                                        <i class="fa fa-calendar text-info"></i>
+                                                                    </div>
+                                                                    <div>
+                                                                        <strong style="color: #333;">
+                                                                            <t t-if="attendance.check_in">
+                                                                                <t t-esc="attendance.check_in"/>
+                                                                            </t>
+                                                                            <t t-else="">N/A</t>
+                                                                        </strong>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <span style="color: #333; font-weight: 500;">
+                                                                    <t t-if="attendance.check_in">
+                                                                        <t t-esc="attendance.check_in"/>
+                                                                    </t>
+                                                                    <t t-else="">N/A</t>
+                                                                </span>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <span style="color: #333; font-weight: 500;">
+                                                                    <t t-if="attendance.check_out">
+                                                                        <t t-esc="attendance.check_out"/>
+                                                                    </t>
+                                                                    <t t-else="">
+                                                                        <span class="badge bg-warning" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Still Checked In</span>
+                                                                    </t>
+                                                                </span>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <t t-if="attendance.worked_hours">
+                                                                    <span class="badge bg-success" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                                                                        <t t-esc="str(round(attendance.worked_hours, 2)) + ' hours'"/>
+                                                                    </span>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <span class="text-muted">-</span>
+                                                                </t>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="text-center p-5">
+                                            <i class="fa fa-clock-o" style="font-size: 60px; color: #ccc; margin-bottom: 1rem;"></i>
+                                            <p class="text-muted mb-0" style="font-size: 1.1rem;">No attendance records found</p>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    .table tbody tr:hover {
+                        background-color: #f8f9fa;
+                        transition: background-color 0.2s ease;
+                    }
+                </style>
+            </t>
+        </template>
+
+        <!-- Employee Payroll Page Template -->
+        <template id="employee_portal_payroll" name="Employee Portal Payroll">
+            <t t-call="portal.portal_layout">
+                <t t-set="my_details" t-value="True"/>
+                <style>
+                    /* Hide portal header and all website navigation menus */
+                    .o_portal_wrap header,
+                    .o_portal_wrap .navbar,
+                    .o_portal_wrap .o_portal_navbar,
+                    .o_portal_wrap .o_portal_header,
+                    header.o_main_header,
+                    .o_portal_wrap .o_portal_chatter_header,
+                    .navbar,
+                    .navbar-nav,
+                    .o_main_navbar,
+                    .o_main_header,
+                    header,
+                    nav,
+                    .o_website_navbar,
+                    .o_menu_header,
+                    .o_menu_systray,
+                    .navbar-brand,
+                    .navbar-toggler,
+                    .navbar-collapse,
+                    .nav,
+                    .nav-item,
+                    .nav-link,
+                    .dropdown,
+                    .dropdown-menu,
+                    .dropdown-item,
+                    .dropdown-toggle {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        width: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                    }
+                    /* Adjust content margin when header is hidden */
+                    .o_portal_wrap .container,
+                    .container {
+                        margin-top: 0 !important;
+                        padding-top: 2rem !important;
+                    }
+                    /* Hide body padding/margin that might be added for navbar */
+                    body {
+                        padding-top: 0 !important;
+                        margin-top: 0 !important;
+                    }
+                </style>
+                <div class="container mt-4 mb-4">
+                    <!-- Back Button -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <a href="/my/employee-portal" class="text-decoration-none">
+                                <button class="btn btn-light border" style="border-radius: 8px;">
+                                    <i class="fa fa-arrow-left me-2"></i>Back to Home
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Welcome Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body p-4" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px;">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8 text-white">
+                                            <h2 class="mb-2" style="font-weight: 600;">
+                                                <i class="fa fa-money me-2"></i>Payroll &amp; Payslips
+                                            </h2>
+                                            <p class="mb-0" style="font-size: 1.1rem; opacity: 0.9;">
+                                                View your payslips and salary information
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <i class="fa fa-money" style="font-size: 80px; opacity: 0.3;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payslips Table -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header bg-white border-bottom" style="padding: 1.5rem;">
+                                    <h4 class="mb-0" style="color: #333; font-weight: 600;">
+                                        <i class="fa fa-list text-primary me-2"></i>My Payslips
+                                    </h4>
+                                </div>
+                                <div class="card-body p-0">
+                                    <t t-if="payslips and len(payslips) > 0">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover mb-0">
+                                                <thead style="background-color: #f8f9fa;">
+                                                    <tr>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Payslip Name</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Period</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Basic Salary</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Gross Salary</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Net Salary</th>
+                                                        <th style="padding: 1rem; font-weight: 600; color: #333;">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="payslips" t-as="payslip">
+                                                        <tr style="border-bottom: 1px solid #e9ecef;">
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="rounded-circle bg-success bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                                        <i class="fa fa-file-text-o text-success"></i>
+                                                                    </div>
+                                                                    <div>
+                                                                        <strong style="color: #333;"><t t-esc="payslip.name or 'N/A'"/></strong>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <span style="color: #333; font-weight: 500;">
+                                                                    <t t-if="payslip.date_from and payslip.date_to">
+                                                                        <t t-esc="payslip.date_from"/> - <t t-esc="payslip.date_to"/>
+                                                                    </t>
+                                                                    <t t-else="">N/A</t>
+                                                                </span>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <span style="color: #333; font-weight: 500;">
+                                                                    <t t-if="payslip.line_ids">
+                                                                        <t t-set="basic_line" t-value="payslip.line_ids.filtered(lambda l: l.code == 'BASIC')[:1]"/>
+                                                                        <t t-if="basic_line and basic_line.total">
+                                                                            <t t-esc="'{:.2f}'.format(basic_line.total)"/>
+                                                                        </t>
+                                                                        <t t-else="">N/A</t>
+                                                                    </t>
+                                                                    <t t-else="">N/A</t>
+                                                                </span>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <span style="color: #333; font-weight: 500;">
+                                                                    <t t-if="payslip.line_ids">
+                                                                        <t t-set="gross_line" t-value="payslip.line_ids.filtered(lambda l: l.code == 'GROSS')[:1]"/>
+                                                                        <t t-if="gross_line and gross_line.total">
+                                                                            <t t-esc="'{:.2f}'.format(gross_line.total)"/>
+                                                                        </t>
+                                                                        <t t-else="">N/A</t>
+                                                                    </t>
+                                                                    <t t-else="">N/A</t>
+                                                                </span>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <span class="badge bg-success" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                                                                    <t t-if="payslip.line_ids">
+                                                                        <t t-set="net_line" t-value="payslip.line_ids.filtered(lambda l: l.code == 'NET')[:1]"/>
+                                                                        <t t-if="net_line and net_line.total">
+                                                                            <t t-esc="'{:.2f}'.format(net_line.total)"/>
+                                                                        </t>
+                                                                        <t t-else="">N/A</t>
+                                                                    </t>
+                                                                    <t t-else="">N/A</t>
+                                                                </span>
+                                                            </td>
+                                                            <td style="padding: 1rem; vertical-align: middle;">
+                                                                <t t-if="payslip.state == 'draft'">
+                                                                    <span class="badge bg-secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Draft</span>
+                                                                </t>
+                                                                <t t-elif="payslip.state == 'verify'">
+                                                                    <span class="badge bg-warning" style="font-size: 0.9rem; padding: 0.5rem 1rem;">To Verify</span>
+                                                                </t>
+                                                                <t t-elif="payslip.state == 'done'">
+                                                                    <span class="badge bg-success" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Done</span>
+                                                                </t>
+                                                                <t t-elif="payslip.state == 'paid'">
+                                                                    <span class="badge bg-info" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Paid</span>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <span class="badge bg-secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                                                                        <t t-esc="payslip.state or 'N/A'"/>
+                                                                    </span>
+                                                                </t>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="text-center p-5">
+                                            <i class="fa fa-file-text-o" style="font-size: 60px; color: #ccc; margin-bottom: 1rem;"></i>
+                                            <p class="text-muted mb-0" style="font-size: 1.1rem;">No payslips found</p>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    .table tbody tr:hover {
+                        background-color: #f8f9fa;
+                        transition: background-color 0.2s ease;
+                    }
+                </style>
+            </t>
+        </template>
+    </data>
+</odoo>
+
