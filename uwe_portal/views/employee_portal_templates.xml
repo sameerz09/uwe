@@ -109,6 +109,22 @@
                         overflow: hidden !important;
                     }
                 </style>
+                <script>
+                    // Hide "My account" text only
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var elements = document.querySelectorAll('.o_portal_wrap h1, .o_portal_wrap h2, .o_portal_wrap h3, .o_portal_wrap .o_portal_wrap h1, .o_portal_wrap .o_portal_wrap h2');
+                        elements.forEach(function(el) {
+                            var text = el.textContent.trim();
+                            if (text === 'My account' || text === 'My Account') {
+                                el.style.display = 'none';
+                                el.style.visibility = 'hidden';
+                                el.style.height = '0';
+                                el.style.margin = '0';
+                                el.style.padding = '0';
+                            }
+                        });
+                    });
+                </script>
                 <div class="container mt-4 mb-4">
                     <!-- Logout Button - Top Right -->
                     <div class="row mb-3">
