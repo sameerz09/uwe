@@ -1,2 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_res_users_employee_portal,res.users.employee.portal,model_res_users,base.group_user,1,1,1,1
+access_hr_holidays_employee_request_portal,hr.holidays.employee.request.portal,hr_holidays.model_hr_leave,base.group_portal,1,1,1,1
+access_hr_holidays_status_employee_portal,hr.holidays.status.employee.portal,hr_holidays.model_hr_leave_type,base.group_portal,1,0,0,0
+access_hr_employee_portal,hr.employee.portal,hr.model_hr_employee,base.group_portal,1,0,0,0
+access_mail_activity_portal,mail.activity.portal,mail.model_mail_activity,base.group_portal,1,1,1,1
+access_mail_activity_type_holidays_portal,mail.activity.type.holidays.portal,mail.model_mail_activity_type,base.group_portal,1,0,0,0
+access_calendar_event_hr_portal,calendar.event.hr.portal,calendar.model_calendar_event,base.group_portal,1,1,1,1
+access_calendar_attendee_hr_portal,calendar.attendee.hr.portal,calendar.model_calendar_attendee,base.group_portal,1,1,1,1

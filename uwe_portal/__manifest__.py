@@ -13,9 +13,10 @@
     'author': "UWE",
     'category': 'Portal',
     'version': '17.0.1.0.0',
-    'depends': ['base', 'portal', 'hr', 'hr_holidays', 'hr_attendance', 'hr_payroll', 'website'],
+    'depends': ['base', 'portal', 'hr', 'hr_holidays', 'hr_attendance', 'hr_payroll', 'website', 'calendar'],
     'data': [
         'security/ir.model.access.csv',
+        'security/hr_leave_security.xml',
         'data/res_groups_data.xml',
         'views/employee_portal_templates.xml',
         'views/res_users_views.xml',
