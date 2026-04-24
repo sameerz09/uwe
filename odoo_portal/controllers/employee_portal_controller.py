@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-#    UWE Portal Models
-#    Copyright (C) 2024 UWE
+#    Odoo Portal Models
+#    Copyright (C) 2025 Odoo Box
 #
 ###############################################################################
 
@@ -38,7 +38,7 @@ class EmployeePortalController(CustomerPortal):
         values.update({
             'page_name': 'employee_portal_home',
         })
-        return request.render("uwe_portal.employee_portal_home", values)
+        return request.render("odoo_portal.employee_portal_home", values)
 
     @http.route(['/my/employee-portal/profile'], type='http', auth="user", website=True, methods=['GET', 'POST'], csrf=True)
     def employee_portal_profile(self, **kw):
@@ -78,83 +78,42 @@ class EmployeePortalController(CustomerPortal):
                     # image_file is a FileStorage object from werkzeug
                     image_data = base64.b64encode(image_file.read()).decode('utf-8')
                 
-                # Certificate fields - Full Names
-                full_name_english = kw.get('full_name_english', '').strip()
-                full_name_arabic = kw.get('full_name_arabic', '').strip()
+                # Certificate fields removed - not in default Odoo
                 
-                # Certificate fields - Details
-                passport_number = kw.get('passport_number', '').strip()
-                visa_number = kw.get('visa_number', '').strip()
-                emirati_id_number = kw.get('emirati_id_number', '').strip()
-                english_level_exam = kw.get('english_level_exam', '').strip()
-                program_name = kw.get('program_name', '').strip()
-                academic_year = kw.get('academic_year', '').strip()
-                license_number = kw.get('license_number', '').strip()
+                # Get available fields in hr.employee model to filter out non-existent fields
+                employee_fields = set(request.env['hr.employee']._fields.keys())
                 
-                # Certificate fields - Letters (HTML)
-                letter_to_students = kw.get('letter_to_students', '').strip()
-                letter_to_employees = kw.get('letter_to_employees', '').strip()
+                # Helper function to safely add field if it exists
+                def safe_add_field(field_name, value, update_dict):
+                    """Add field to update_dict only if it exists in the model"""
+                    if field_name in employee_fields and value:
+                        update_dict[field_name] = value
                 
-                # Certificate fields - Template
-                certificate_template = kw.get('certificate_template', '').strip()
-                custom_certificate_message = kw.get('custom_certificate_message', '').strip()
-                
-                # Update employee record
+                # Update employee record - only include fields that exist in default Odoo
                 update_vals = {}
-                if work_phone:
-                    update_vals['work_phone'] = work_phone
-                if work_email:
-                    update_vals['work_email'] = work_email
-                if mobile_phone:
-                    update_vals['mobile_phone'] = mobile_phone
-                if private_email:
-                    update_vals['private_email'] = private_email
+                
+                # Basic contact info (default Odoo fields)
+                safe_add_field('work_phone', work_phone, update_vals)
+                safe_add_field('work_email', work_email, update_vals)
+                safe_add_field('mobile_phone', mobile_phone, update_vals)
                 if image_data:
-                    update_vals['image_1920'] = image_data
+                    safe_add_field('image_1920', image_data, update_vals)
                 
-                # Certificate fields
-                if full_name_english:
-                    update_vals['full_name_english'] = full_name_english
-                if full_name_arabic:
-                    update_vals['full_name_arabic'] = full_name_arabic
-                if passport_number:
-                    update_vals['passport_number'] = passport_number
-                if visa_number:
-                    update_vals['visa_number'] = visa_number
-                if emirati_id_number:
-                    update_vals['emirati_id_number'] = emirati_id_number
-                if english_level_exam:
-                    update_vals['english_level_exam'] = english_level_exam
-                if program_name:
-                    update_vals['program_name'] = program_name
-                if academic_year:
-                    update_vals['academic_year'] = academic_year
-                if license_number:
-                    update_vals['license_number'] = license_number
-                if letter_to_students:
-                    update_vals['letter_to_students'] = letter_to_students
-                if letter_to_employees:
-                    update_vals['letter_to_employees'] = letter_to_employees
-                if certificate_template:
-                    update_vals['certificate_template'] = certificate_template
-                if custom_certificate_message:
-                    update_vals['custom_certificate_message'] = custom_certificate_message
+                # Certificate fields removed - not in default Odoo
                 
-                # Private Information fields
+                # Private Information fields (default Odoo fields)
                 private_street = kw.get('private_street', '').strip()
                 private_street2 = kw.get('private_street2', '').strip()
                 private_city = kw.get('private_city', '').strip()
                 private_zip = kw.get('private_zip', '').strip()
                 private_phone = kw.get('private_phone', '').strip()
-                bank_account_id = kw.get('bank_account_id', '').strip()
-                lang = kw.get('lang', '').strip()
                 km_home_work = kw.get('km_home_work', '').strip()
                 license_plate = kw.get('license_plate', '').strip()
                 marital = kw.get('marital', '').strip()
                 children = kw.get('children', '').strip()
                 emergency_contact = kw.get('emergency_contact', '').strip()
                 emergency_phone = kw.get('emergency_phone', '').strip()
-                certificate = kw.get('certificate_level', '').strip()  # Note: field name is 'certificate' not 'certificate_level'
+                certificate = kw.get('certificate_level', '').strip()
                 study_field = kw.get('study_field', '').strip()
                 study_school = kw.get('study_school', '').strip()
                 identification_id = kw.get('identification_id', '').strip()
@@ -166,112 +125,79 @@ class EmployeePortalController(CustomerPortal):
                 country_of_birth = kw.get('country_of_birth', '').strip()
                 is_non_resident = kw.get('is_non_resident') == 'on'
                 visa_no = kw.get('visa_no', '').strip()
-                permit_no = kw.get('work_permit_no', '').strip()  # Note: field name is 'permit_no' not 'work_permit_no'
+                permit_no = kw.get('work_permit_no', '').strip()
                 visa_expire = kw.get('visa_expire', '').strip()
                 work_permit_expiration_date = kw.get('work_permit_expiration_date', '').strip()
                 
-                # Add private information fields to update_vals
-                if private_street:
-                    update_vals['private_street'] = private_street
-                if private_street2:
-                    update_vals['private_street2'] = private_street2
-                if private_city:
-                    update_vals['private_city'] = private_city
-                if private_zip:
-                    update_vals['private_zip'] = private_zip
-                if private_phone:
-                    update_vals['private_phone'] = private_phone
-                if lang:
-                    update_vals['lang'] = lang
+                # Add private information fields to update_vals (only if they exist)
+                safe_add_field('private_street', private_street, update_vals)
+                safe_add_field('private_street2', private_street2, update_vals)
+                safe_add_field('private_city', private_city, update_vals)
+                safe_add_field('private_zip', private_zip, update_vals)
+                safe_add_field('private_phone', private_phone, update_vals)
+                
                 if km_home_work:
                     try:
-                        update_vals['km_home_work'] = float(km_home_work)
+                        safe_add_field('km_home_work', float(km_home_work), update_vals)
                     except:
                         pass
-                if license_plate:
-                    update_vals['license_plate'] = license_plate
-                if marital:
-                    update_vals['marital'] = marital
+                
+                safe_add_field('license_plate', license_plate, update_vals)
+                safe_add_field('marital', marital, update_vals)
+                
                 if children:
                     try:
-                        update_vals['children'] = int(children)
+                        safe_add_field('children', int(children), update_vals)
                     except:
                         pass
-                if emergency_contact:
-                    update_vals['emergency_contact'] = emergency_contact
-                if emergency_phone:
-                    update_vals['emergency_phone'] = emergency_phone
-                if certificate:
-                    update_vals['certificate'] = certificate
-                if study_field:
-                    update_vals['study_field'] = study_field
-                if study_school:
-                    update_vals['study_school'] = study_school
-                if identification_id:
-                    update_vals['identification_id'] = identification_id
-                if ssnid:
-                    update_vals['ssnid'] = ssnid
-                if passport_id:
-                    update_vals['passport_id'] = passport_id
-                if gender:
-                    update_vals['gender'] = gender
-                if birthday:
-                    update_vals['birthday'] = birthday
-                if place_of_birth:
-                    update_vals['place_of_birth'] = place_of_birth
-                update_vals['is_non_resident'] = is_non_resident
-                if visa_no:
-                    update_vals['visa_no'] = visa_no
-                if permit_no:
-                    update_vals['permit_no'] = permit_no
-                if visa_expire:
-                    update_vals['visa_expire'] = visa_expire
-                if work_permit_expiration_date:
-                    update_vals['work_permit_expiration_date'] = work_permit_expiration_date
                 
-                # Handle file uploads for Many2many attachments
-                attachment_field_mapping = {
-                    'letter_to_students_attachment': 'letter_to_students_attachment_ids',
-                    'letter_to_employees_attachment': 'letter_to_employees_attachment_ids',
-                    'passport_or_id_attachment': 'passport_or_id_attachment_ids',
-                    'cv_attachment': 'cv_attachment_ids',
-                    'photo_attachment': 'photo_attachment_ids',
-                    'visa_uae_attachment': 'visa_uae_attachment_ids',
-                    'degree_attachment': 'degree_attachment_ids',
-                }
+                safe_add_field('emergency_contact', emergency_contact, update_vals)
+                safe_add_field('emergency_phone', emergency_phone, update_vals)
+                safe_add_field('certificate', certificate, update_vals)
+                safe_add_field('study_field', study_field, update_vals)
+                safe_add_field('study_school', study_school, update_vals)
+                safe_add_field('identification_id', identification_id, update_vals)
+                safe_add_field('ssnid', ssnid, update_vals)
+                safe_add_field('passport_id', passport_id, update_vals)
+                safe_add_field('gender', gender, update_vals)
+                safe_add_field('birthday', birthday, update_vals)
+                safe_add_field('place_of_birth', place_of_birth, update_vals)
+                safe_add_field('country_of_birth', country_of_birth, update_vals)
                 
-                # Process each attachment field
-                for form_field_name, model_field_name in attachment_field_mapping.items():
-                    file_obj = kw.get(form_field_name)
-                    if file_obj:
-                        # Create ir.attachment record
-                        file_data = base64.b64encode(file_obj.read()).decode('utf-8')
-                        attachment = request.env['ir.attachment'].sudo().create({
-                            'name': file_obj.filename,
-                            'type': 'binary',
-                            'datas': file_data,
-                            'res_model': 'hr.employee',
-                            'res_id': employee.id,
-                        })
-                        # Add to Many2many field
-                        if model_field_name not in update_vals:
-                            update_vals[model_field_name] = [(4, attachment.id)]
-                        else:
-                            # If already has attachments, append
-                            if isinstance(update_vals[model_field_name], list):
-                                update_vals[model_field_name].append((4, attachment.id))
-                            else:
-                                update_vals[model_field_name] = [(4, attachment.id)]
+                if 'is_non_resident' in employee_fields:
+                    update_vals['is_non_resident'] = is_non_resident
                 
-                # Handle work_permit_attachment separately (still Binary field)
+                safe_add_field('visa_no', visa_no, update_vals)
+                safe_add_field('permit_no', permit_no, update_vals)
+                safe_add_field('visa_expire', visa_expire, update_vals)
+                safe_add_field('work_permit_expiration_date', work_permit_expiration_date, update_vals)
+                
+                # Custom attachment fields removed - not in default Odoo
+                # Only handle work_permit_attachment if field exists
                 work_permit_file = kw.get('work_permit_attachment')
-                if work_permit_file:
-                    file_data = base64.b64encode(work_permit_file.read()).decode('utf-8')
-                    update_vals['has_work_permit'] = file_data
+                if work_permit_file and 'has_work_permit' in employee_fields:
+                    try:
+                        file_data = base64.b64encode(work_permit_file.read()).decode('utf-8')
+                        update_vals['has_work_permit'] = file_data
+                    except Exception as e:
+                        _logger.warning("Error processing work permit attachment: %s", str(e))
                 
                 if update_vals:
-                    employee.sudo().write(update_vals)
-                    success = "Profile updated successfully!"
+                    try:
+                        # Filter out any fields that might not exist (double check)
+                        employee_fields = set(request.env['hr.employee']._fields.keys())
+                        filtered_vals = {k: v for k, v in update_vals.items() if k in employee_fields}
+                        
+                        if filtered_vals:
+                            employee.sudo().write(filtered_vals)
+                            success = "Profile updated successfully!"
+                        else:
+                            error = "No valid fields to update."
+                    except Exception as write_error:
+                        error = f"Error updating profile: {str(write_error)}"
+                        _logger.error("Error writing employee profile: %s", str(write_error))
+                        import traceback
+                        _logger.error(traceback.format_exc())
                 else:
                     error = "No changes to save."
                     
@@ -281,11 +207,29 @@ class EmployeePortalController(CustomerPortal):
                 import traceback
                 _logger.error(traceback.format_exc())
         
+        # Helper function to safely get field value
+        def safe_get_field(emp, field_name, default=''):
+            """Safely get field value from employee record"""
+            if not emp:
+                return default
+            try:
+                if field_name in emp._fields:
+                    value = getattr(emp, field_name, default)
+                    # Handle Many2many and One2many fields - return empty list if None
+                    if value is None and isinstance(default, list):
+                        return []
+                    # Return value or default
+                    return value if value else default
+            except (AttributeError, KeyError):
+                pass
+            return default
+        
         values.update({
             'employee': employee,
             'error': error,
             'success': success,
             'page_name': 'employee_portal_profile',
+            'safe_get_field': safe_get_field,  # Pass helper function to template
         })
         return request.render("odoo_portal.employee_portal_profile", values)
 
@@ -318,7 +262,7 @@ class EmployeePortalController(CustomerPortal):
             'leave_requests': leave_requests,
             'page_name': 'employee_portal_time_off',
         })
-        return request.render("uwe_portal.employee_portal_time_off", values)
+        return request.render("odoo_portal.employee_portal_time_off", values)
 
     @http.route(['/my/employee-portal/attendance'], type='http', auth="user", website=True)
     def employee_portal_attendance(self, **kw):
@@ -869,20 +813,10 @@ class EmployeePortalController(CustomerPortal):
             if not user_employee or user_employee.id != employee.id:
                 return request.redirect('/my/employee-portal/profile?error=unauthorized')
             
-            # Map field names
-            field_mapping = {
-                'letter_to_students_attachment': 'letter_to_students_attachment_ids',
-                'letter_to_employees_attachment': 'letter_to_employees_attachment_ids',
-                'passport_or_id_attachment': 'passport_or_id_attachment_ids',
-                'cv_attachment': 'cv_attachment_ids',
-                'photo_attachment': 'photo_attachment_ids',
-                'visa_uae_attachment': 'visa_uae_attachment_ids',
-                'degree_attachment': 'degree_attachment_ids',
-            }
-            
-            model_field_name = field_mapping.get(field_name)
-            if not model_field_name or not hasattr(employee, model_field_name):
-                return request.redirect('/my/employee-portal/profile?error=invalid_field')
+            # Custom attachment fields removed - not in default Odoo
+            # This function is only for custom Many2many attachment fields which don't exist in default Odoo
+            # Return error since these fields are not available
+            return request.redirect('/my/employee-portal/profile?error=invalid_field')
             
             # Get attachment and verify it belongs to the employee
             attachment = request.env['ir.attachment'].sudo().browse(attachment_id)
