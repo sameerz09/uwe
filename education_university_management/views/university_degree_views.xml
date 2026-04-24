@@ -6,6 +6,14 @@
         <field name="model">university.degree.result</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_fill_student_marks"
+                            string="Fill Student Marks"
+                            type="object"
+                            class="btn-primary"
+                            confirm="This will delete all existing lines and reload marks for the selected semester. Continue?"
+                            invisible="not student_id or not semester_date"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -23,11 +31,18 @@
                                 <tree editable="bottom">
                                     <field name="course_code"/>
                                     <field name="course_title"/>
+                                    <field name="semester_date"/>
                                     <field name="total_marks"/>
                                     <field name="unit1"/>
                                     <field name="unit2"/>
                                     <field name="percentage"/>
                                     <field name="grade"/>
+                                    <field name="exam_result_id" column_invisible="1"/>
+                                    <button name="action_open_exam_result"
+                                            type="object"
+                                            icon="fa-external-link"
+                                            title="View Exam Result"
+                                            invisible="not exam_result_id"/>
                                 </tree>
                             </field>
                         </page>

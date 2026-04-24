@@ -1,0 +1,107 @@
+/* ── UWE Sign Dialog ── */
+
+/* Tab navigation */
+.uwe-sign-tabs {
+    background: #fff;
+    gap: 4px;
+}
+
+.uwe-sign-tab-btn {
+    background: none;
+    border: 1px solid transparent;
+    border-bottom: 3px solid transparent;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6c757d;
+    cursor: pointer;
+    border-radius: 4px 4px 0 0;
+    transition: color .15s, border-color .15s;
+}
+
+.uwe-sign-tab-btn:hover {
+    color: #0d6efd;
+    border-bottom-color: #bee5f8;
+}
+
+.uwe-sign-tab-btn.active {
+    color: #0d6efd;
+    border-color: #dee2e6 #dee2e6 #fff;
+    border-bottom-color: #0d6efd;
+    background: #fff;
+}
+
+/* Canvas wrapper */
+.uwe-sign-canvas-wrap {
+    background: #fafafa;
+    overflow: hidden;
+    position: relative;
+    min-height: 220px;
+}
+
+.uwe-sign-canvas-wrap canvas {
+    display: block;
+    width: 100%;
+    height: 220px;
+    touch-action: none;
+}
+
+/* Baseline in draw canvas */
+#uweCanvasDraw {
+    cursor: crosshair;
+}
+
+/* Saved signature display */
+.uwe-sign-saved-signature {
+    max-height: 80px;
+    max-width: 260px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 4px;
+}
+
+/* Document content */
+.uwe-sign-doc-content {
+    min-height: 100px;
+    background: #fff;
+}
+
+/* Sign button – matches Odoo purple style */
+.btn.uwe-sign-open-dialog {
+    background-color: #714B67;
+    border-color: #714B67;
+    color: #fff;
+    font-weight: 500;
+    padding: 8px 24px;
+}
+
+.btn.uwe-sign-open-dialog:hover {
+    background-color: #5c3d54;
+    border-color: #5c3d54;
+    color: #fff;
+}
+
+/* Modal tweaks */
+#uweSignModal .modal-dialog {
+    max-width: 780px;
+}
+
+#uweSignModal .modal-header {
+    background: #fff;
+    border-bottom: 1px solid #dee2e6;
+}
+
+#uweSignModal .modal-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Name input */
+#uweSignName {
+    font-size: 15px;
+}
+
+/* Small clear trash icon */
+.uwe-sign-clear-btn {
+    padding: 4px 8px;
+    font-size: 16px;
+}

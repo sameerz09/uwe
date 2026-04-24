@@ -85,6 +85,85 @@ class UniversityDegreeResult(models.Model):
             'docs': docs,
         }
 
+    def action_fill_student_marks(self):
+        """Fill courses_results by searching exam result lines directly by student_no."""
+        self.ensure_one()
+        if not self.student_id:
+            raise UserError(_('Please select a student before filling marks.'))
+        if not self.semester_date:
+            raise UserError(_('Please select a semester date before filling marks.'))
+
+        student_no = self.student_id.student_no
+        student_id = self.student_id.id
+
+        # Find all exam result lines for this student where
+        # the exam semester_date is on or before this degree result's semester_date
+        student_filter = ['|',
+            ('student_no', '=', student_no),
+            ('student_id', '=', student_id),
+        ] if student_no else [('student_id', '=', student_id)]
+
+        domain = student_filter + [
+            ('exam_result_id.semester_date', '=', self.semester_date),
+        ]
+
+        exam_lines = self.env['university.exam.result.line'].search(domain)
+
+        if not exam_lines:
+            raise UserError(_(
+                'No exam result lines found for student "%s" (No: %s) '
+                'with semester date %s.\n'
+                'Please ensure exam results have been entered for this student and semester.'
+            ) % (self.student_id.name, student_no or 'N/A', self.semester_date))
+
+        # Delete all existing lines and recreate from scratch
+        self.courses_results.unlink()
+
+        lines_to_create = []
+        seen_codes = set()
+
+        for line in exam_lines:
+            exam = line.exam_result_id
+            if not exam or not exam.subject_id:
+                continue
+
+            course_code = exam.subject_id.code or ''
+
+            if course_code in seen_codes:
+                continue
+
+            lines_to_create.append({
+                'degree_result_id': self.id,
+                'exam_result_id': exam.id,
+                'semester_date': exam.semester_date,
+                'course_code': course_code,
+                'course_title': exam.subject_id.name or '',
+                'total_marks': line.total_marks or '0',
+                'unit1': line.unit1,
+                'unit2': line.unit2,
+                'percentage': line.percentage or '',
+                'grade': line.grade or '',
+            })
+            seen_codes.add(course_code)
+
+        if not lines_to_create:
+            raise UserError(_(
+                'No subjects could be matched for student "%s".'
+            ) % self.student_id.name)
+
+        self.env['university.degree.result.line'].create(lines_to_create)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Marks Filled'),
+                'message': _('%d course(s) loaded successfully.') % len(lines_to_create),
+                'type': 'success',
+                'sticky': False,
+            },
+        }
+
     def action_send_degree(self):
         """
         Generate a single report for multiple records and send an email to the student.
