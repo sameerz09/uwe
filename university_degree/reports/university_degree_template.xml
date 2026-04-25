@@ -6,9 +6,9 @@
 
         <!-- Styles (consider moving to a report asset bundle) -->
         <style>
-          html, body { margin:0 !important; padding:0 !important; background:#e3e2d8; font-size:13px; }
-          main { margin:0; padding:0; }
-          .certificate-wrapper { width:100%; background:#e3e2d8; padding:20px; box-sizing:border-box; position:relative; }
+          html, body { margin:0 !important; padding:0 !important; background:#e3e2d8; font-size:13px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+          main { margin:0; padding:0; height:100vh; display:flex; flex-direction:column; }
+          .certificate-wrapper { width:100%; background:#e3e2d8; padding:20px; box-sizing:border-box; position:relative; height:100%; display:flex; flex-direction:column; }
           .separator, .separator-bottom { text-align:center; }
           .separator img, .separator-bottom img { width:900px; height:180px; }
           .certificate-header { margin-top:-60px; margin-bottom:10px; text-align:center; }
@@ -46,6 +46,9 @@
                      [('student_id','=', o.student_id.id)],
                      order='semester_date asc, id asc'
                    )"/>
+
+        <!-- Repeats on every page in wkhtmltopdf: paints beige background on all pages -->
+        <div style="position:fixed; top:0; left:0; width:210mm; height:297mm; background:#e3e2d8; z-index:-9999; -webkit-print-color-adjust:exact;"></div>
 
         <t t-if="results">
 
@@ -156,8 +159,7 @@
                       <tr>
                         <th>Course Code</th>
                         <th>Course Title</th>
-                        <th>Unit 1</th>
-                        <th>Unit 2</th>
+                        <th>Unit</th>
                         <th>Total Mark</th>
                         <th>Percentage</th>
                         <th>Grade</th>
@@ -168,7 +170,6 @@
                           <td><span t-field="line.course_code"/></td>
                           <td><t t-esc="(line.course_title or '').replace('–','-').replace('—','-')"/></td>
                           <td><span t-field="line.unit1"/></td>
-                          <td><span t-field="line.unit2"/></td>
                           <td><span t-field="line.total_marks"/></td>
                           <td><t t-esc="(str(line.percentage or '')).replace('–','-').replace('—','-')"/></td>
                           <td><t t-esc="(line.grade or '').replace('–','-').replace('—','-')"/></td>
@@ -176,7 +177,7 @@
                       </t>
 
                       <t t-if="not sem.courses_results">
-                        <tr><td colspan="7" style="text-align:center;">No courses found for this semester.</td></tr>
+                        <tr><td colspan="6" style="text-align:center;">No courses found for this semester.</td></tr>
                       </t>
                     </table>
 
@@ -268,7 +269,7 @@
                 </table>
 
                 <!-- Bottom separator -->
-                <div class="separator-bottom" style="margin-top:10px;">
+                <div class="separator-bottom" style="margin-top:auto;">
                   <img t-att-src="ABS + '/university_degree/static/description/separator.png'" alt="Bottom Separator"/>
                 </div>
 
