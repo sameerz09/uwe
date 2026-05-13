@@ -32,15 +32,11 @@ class UniversityBatch(models.Model):
     @api.model
     def create(self, vals):
         """Return the name as a str of semester + academic year"""
-        semester_id = self.env['university.semester'].browse(
-            vals['semester_id'])
-        academic_year_id = self.env['university.academic.year'].browse(
-            vals['academic_year_id'])
-        department_id = self.env['university.department'].browse(
-            vals['department_id'])
-        # name = str(department_id.code + ' - ' + semester_id.name + ' - ' + academic_year_id.name)
-        name = str( academic_year_id.name + ' - ' + department_id.code +  ' - ' + str(semester_id.semester_no) )
-        vals['name'] = name
+        if vals.get('semester_id') and vals.get('academic_year_id') and vals.get('department_id'):
+            semester_id = self.env['university.semester'].browse(vals['semester_id'])
+            academic_year_id = self.env['university.academic.year'].browse(vals['academic_year_id'])
+            department_id = self.env['university.department'].browse(vals['department_id'])
+            vals['name'] = str(academic_year_id.name + ' - ' + department_id.code + ' - ' + str(semester_id.semester_no))
         return super(UniversityBatch, self).create(vals)
 
     name = fields.Char(string="Name", help="Name of the Batch", readonly=True)
