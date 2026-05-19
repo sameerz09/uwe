@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_security_hide_delete_account" inherit_id="portal.portal_my_security">
+        <xpath expr="//section[@name='portal_deactivate_account']" position="replace"/>
+    </template>
+</odoo>
