@@ -42,6 +42,8 @@ class UniversityStudent(models.Model):
         res = super(UniversityStudent, self).create(vals)
         return res
 
+    active = fields.Boolean(default=True, string="Active",
+                            help="Set to false to archive the student")
     partner_id = fields.Many2one(
         'res.partner', string='Partner', help="Student Partner",
         required=True, ondelete="cascade")
