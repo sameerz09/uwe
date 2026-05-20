@@ -61,10 +61,28 @@ class UniversityBatch(models.Model):
                                         'batch_id',
                                         string="Students",
                                         help="Students of this Batch")
+    student_count = fields.Integer(string="Student Count",
+                                   compute="_compute_student_count",
+                                   store=True)
+
+    @api.depends('batch_student_ids')
+    def _compute_student_count(self):
+        for batch in self:
+            batch.student_count = len(batch.batch_student_ids)
     year_id = fields.Many2one('university.year', string="Year", required=True)
     timetable_report = fields.Binary(string="Timetable Report", readonly=True)
     timetable_report_name = fields.Char(string="Report Filename", readonly=True)
 
+
+    def action_open_students(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Students',
+            'res_model': 'university.student',
+            'view_mode': 'list,form',
+            'domain': [('batch_id', '=', self.id)],
+            'context': {'default_batch_id': self.id},
+        }
 
     def action_open_attendance_wizard(self):
         return {

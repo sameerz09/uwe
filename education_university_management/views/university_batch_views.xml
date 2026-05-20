@@ -11,6 +11,7 @@
                 <field name="batch_strength"/>
                 <field name="academic_year_id"/>
                 <field name="faculty_id"/>
+                <field name="student_count"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click o_res_partner_kanban">
@@ -25,10 +26,6 @@
                                 </div>
                                 <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
                                 <ul style="text-align:center !important;">
-                                    <li t-if="record.batch_strength.raw_value">
-                                        Strength :
-                                        <field name="batch_strength"/>
-                                    </li>
                                     <li t-if="record.academic_year_id.raw_value">
                                         Academic Year :
                                         <field name="academic_year_id"/>
@@ -36,6 +33,10 @@
                                     <li t-if="record.faculty_id.raw_value">
                                         Faculty :
                                         <field name="faculty_id"/>
+                                    </li>
+                                    <li>
+                                        Students :
+                                        <field name="student_count"/>
                                     </li>
                                 </ul>
                             </div>
@@ -80,6 +81,9 @@
                         <button name="education_university_management.action_university_timetable_batch_view"
                                 type="action" class="oe_stat_button"
                                 icon="fa-calendar" string="Timetable"/>
+                        <button class="oe_stat_button" icon="fa-users" type="object" name="action_open_students">
+                            <field name="student_count" widget="statinfo" string="Students"/>
+                        </button>
                     </div>
                     <group>
                         <group>
