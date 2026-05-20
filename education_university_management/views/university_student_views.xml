@@ -286,6 +286,7 @@
                 <field name="last_name"/>
                 <field name="email"/>
                 <field name="mobile"/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
                     <filter string="Department" name="department_id" context="{'group_by':'department_id'}"/>
                     <filter string="Year" name="year_id" context="{'group_by':'year_id'}"/>
