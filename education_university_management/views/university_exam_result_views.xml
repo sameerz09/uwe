@@ -13,6 +13,9 @@
                     <field name="state" readonly="1" widget="statusbar"/>
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                            invisible="active == True"/>
+                    <field name="active" invisible="1"/>
                     <h1>
                         <field name="name" readonly="1"/>
                     </h1>
@@ -79,10 +82,25 @@
         </field>
     </record>
 
+    <record id="university_exam_result_view_search" model="ir.ui.view">
+        <field name="name">university.exam.result.view.search</field>
+        <field name="model">university.exam.result</field>
+        <field name="arch" type="xml">
+            <search string="UW Exam Results">
+                <field name="name"/>
+                <field name="batch_id"/>
+                <field name="subject_id"/>
+                <separator/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
     <record id="university_exam_result_action" model="ir.actions.act_window">
         <field name="name">UW Exam Results</field>
         <field name="res_model">university.exam.result</field>
         <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="university_exam_result_view_search"/>
     </record>
 
     <menuitem id="university_exam_valuation_menu" parent="menu_university_exam_root"

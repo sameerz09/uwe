@@ -23,6 +23,7 @@ class UniversityExamResult(models.Model):
     university_exam_result_line_ids = fields.One2many('university.exam.result.line', 'exam_result_id', string='Exam Result Line', help="Exam Result Line")
     is_degree_result_created = fields.Boolean(string='Degree Result Created',
                                            help="Is Degree Result created or not")
+    active = fields.Boolean(default=True)
     
     def action_exam_result_done(self):
         self.state = 'done'
