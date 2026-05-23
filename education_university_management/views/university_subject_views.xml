@@ -10,6 +10,9 @@
                 <field name="name"/>
                 <field name="type"/>
                 <field name="weightage"/>
+                <field name="timetable_count" string="Timetables"/>
+                <field name="batch_count" string="Batches"/>
+                <field name="student_count" string="Students"/>
             </tree>
         </field>
     </record>
@@ -20,6 +23,29 @@
         <field name="arch" type="xml">
             <form string="Subject">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_timetables"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-calendar">
+                            <field name="timetable_count" widget="statinfo" string="Timetables"/>
+                        </button>
+                        <button name="action_open_batches"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-th-list">
+                            <field name="batch_count" widget="statinfo" string="Batches"/>
+                        </button>
+                        <button name="action_open_students"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-users">
+                            <field name="student_count" widget="statinfo" string="Students"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                            invisible="active == True"/>
+                    <field name="active" invisible="1"/>
                     <group>
                         <group>
                             <field name="code"/>
@@ -47,10 +73,26 @@
         </field>
     </record>
     <!-- Menu action of university subject-->
+    <!-- Search view with archived filter -->
+    <record id="university_subject_view_search" model="ir.ui.view">
+        <field name="name">university.subject.view.search</field>
+        <field name="model">university.subject</field>
+        <field name="arch" type="xml">
+            <search string="Subject">
+                <field name="name" string="Subject"/>
+                <field name="code"/>
+                <separator/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
     <record id="university_subject_action" model="ir.actions.act_window">
         <field name="name">Subject</field>
         <field name="res_model">university.subject</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'active_test': True}</field>
+        <field name="search_view_id" ref="university_subject_view_search"/>
     </record>
 
     <menuitem parent="menu_university_configuration_root"

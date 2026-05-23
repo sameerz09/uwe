@@ -19,7 +19,7 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class UniversitySubject(models.Model):
@@ -46,3 +46,77 @@ class UniversitySubject(models.Model):
     is_theory = fields.Boolean(string="Theoritical")
     subject_style = fields.Selection([('campus', 'Campus'), ('online', 'Online')], string='Style', default='campus', required=True)
     pass_mark = fields.Float(string='Pass Mark', help="Enter the pass mark for this subject")
+    active = fields.Boolean(default=True)
+    timetable_count = fields.Integer(string="Timetables", compute='_compute_timetable_batch_student_count')
+    batch_count = fields.Integer(string="Batches", compute='_compute_timetable_batch_student_count')
+    student_count = fields.Integer(string="Students", compute='_compute_timetable_batch_student_count')
+
+    def _get_timetable_ids(self, subject_id):
+        """Return distinct timetable IDs that include this subject from both schedule line models."""
+        lines = self.env['timetable.schedule.line'].search([('subject', '=', subject_id)])
+        timetable_ids = set(lines.mapped('timetable_id').ids)
+
+        uwa_lines = self.env['uwa.timetable.schedule.line'].search([
+            '|', '|', '|', '|', '|', '|',
+            ('monday_subject', '=', subject_id),
+            ('tuesday_subject', '=', subject_id),
+            ('wednesday_subject', '=', subject_id),
+            ('thuresday_subject', '=', subject_id),
+            ('friday_subject', '=', subject_id),
+            ('saturday_subject', '=', subject_id),
+            ('sunday_subject', '=', subject_id),
+        ])
+        timetable_ids |= set(uwa_lines.mapped('timetable_id').ids)
+        return list(timetable_ids)
+
+    def _compute_timetable_batch_student_count(self):
+        for subject in self:
+            timetable_ids = subject._get_timetable_ids(subject.id)
+            timetables = self.env['university.timetable'].browse(timetable_ids)
+            batch_ids = timetables.mapped('batch_id').ids
+
+            subject.timetable_count = len(timetable_ids)
+            subject.batch_count = len(set(batch_ids))
+            subject.student_count = self.env['university.student'].search_count(
+                [('batch_id', 'in', batch_ids)]
+            )
+
+    def action_open_timetables(self):
+        self.ensure_one()
+        timetable_ids = self._get_timetable_ids(self.id)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Timetables',
+            'res_model': 'university.timetable',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', timetable_ids)],
+        }
+
+    def action_open_batches(self):
+        self.ensure_one()
+        timetable_ids = self._get_timetable_ids(self.id)
+        timetables = self.env['university.timetable'].browse(timetable_ids)
+        batch_ids = list(set(timetables.mapped('batch_id').ids))
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Batches',
+            'res_model': 'university.batch',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', batch_ids)],
+        }
+
+    def action_open_students(self):
+        self.ensure_one()
+        timetable_ids = self._get_timetable_ids(self.id)
+        timetables = self.env['university.timetable'].browse(timetable_ids)
+        batch_ids = list(set(timetables.mapped('batch_id').ids))
+        student_ids = self.env['university.student'].search(
+            [('batch_id', 'in', batch_ids)]
+        ).ids
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Students',
+            'res_model': 'university.student',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', student_ids)],
+        }
